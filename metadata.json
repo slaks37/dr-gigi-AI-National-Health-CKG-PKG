@@ -1,0 +1,8 @@
+{
+  "name": "dr Gigi AI",
+  "description": "Healthy Teeth, Healthy Life - Sistem pakar kedokteran gigi digital dengan AI Vision dan NLP untuk skrining awal dan konsultasi.",
+  "requestFramePermissions": ["camera", "geolocation"],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="50%" stop-color="#312e81" />
+      <stop offset="100%" stop-color="#4338ca" />
+    </linearGradient>
+    <linearGradient id="cardGrad3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.14" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.04" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="600" height="450" fill="url(#bgGrad3)" />
+  
+  <g opacity="0.08" stroke="#a5b4fc" stroke-width="1.5">
+    <line x1="0" y1="75" x2="600" y2="75" />
+    <line x1="0" y1="150" x2="600" y2="150" />
+    <line x1="0" y1="225" x2="600" y2="225" />
+    <line x1="0" y1="300" x2="600" y2="300" />
+    <line x1="0" y1="375" x2="600" y2="375" />
+    <line x1="100" y1="0" x2="100" y2="450" />
+    <line x1="200" y1="0" x2="200" y2="450" />
+    <line x1="300" y1="0" x2="300" y2="450" />
+    <line x1="400" y1="0" x2="400" y2="450" />
+    <line x1="500" y1="0" x2="500" y2="450" />
+  </g>
+
+  <!-- Hospital & Polyclinic Silhouette -->
+  <g transform="translate(150, 75)">
+    <rect x="0" y="25" width="300" height="225" rx="20" fill="url(#cardGrad3)" stroke="#a5b4fc" stroke-width="2" stroke-opacity="0.4" />
+    
+    <!-- Medical Heartbeat Wave Emblem -->
+    <circle cx="150" cy="80" r="38" fill="#4f46e5" fill-opacity="0.4" stroke="#a5b4fc" stroke-width="2" />
+    <circle cx="150" cy="80" r="28" fill="#ffffff" />
+    
+    <!-- Heart pulse path inside emblem -->
+    <path d="M 132 80 L 140 80 L 145 68 L 152 92 L 157 74 L 161 83 L 168 80" fill="none" stroke="#4338ca" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+    
+    <rect x="35" y="135" width="60" height="42" rx="8" fill="#a5b4fc" fill-opacity="0.2" stroke="#a5b4fc" stroke-width="1.5" stroke-opacity="0.3" />
+    <rect x="205" y="135" width="60" height="42" rx="8" fill="#a5b4fc" fill-opacity="0.2" stroke="#a5b4fc" stroke-width="1.5" stroke-opacity="0.3" />
+    
+    <rect x="120" y="135" width="60" height="115" rx="10" fill="#ffffff" fill-opacity="0.25" stroke="#a5b4fc" stroke-width="2" stroke-opacity="0.5" />
+    <line x1="150" y1="135" x2="150" y2="250" stroke="#a5b4fc" stroke-width="2" stroke-opacity="0.7" />
+  </g>
+
+  <!-- Typography & Badge -->
+  <g transform="translate(300, 360)" text-anchor="middle">
+    <rect x="-160" y="-20" width="320" height="36" rx="18" fill="#ffffff" fill-opacity="0.95" />
+    <text x="0" y="4" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#3730a3" letter-spacing="1">
+      🩺 POLIKLINIK RAWAT JALAN &amp; SPESIALIS
+    </text>
+  </g>
+
+  <text x="300" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#c7d2fe" font-weight="500">
+    Fasilitas Kesehatan Terintegrasi Rekam Medis Elektronik
+  </text>
+</svg>

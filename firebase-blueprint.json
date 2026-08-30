@@ -1,0 +1,86 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile with role",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "doctor", "patient"] },
+        "displayName": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Clinic": {
+      "title": "Dental Clinic",
+      "description": "Clinic data for locations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "address": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "address"]
+    },
+    "Record": {
+      "title": "Medical Record",
+      "description": "A diagnosis or analysis record",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "id": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "patient_id": { "type": "string" },
+        "type": { "type": "string" },
+        "diagnosa": { "type": "string" },
+        "icd10": { "type": "string" },
+        "confidence": { "type": "string" },
+        "image_url": { "type": "string" },
+        "json_output": { "type": "object" },
+        "markdown_report": { "type": "string" },
+        "is_accurate": { "type": "boolean" },
+        "feedback_notes": { "type": "string" }
+      },
+      "required": ["userId", "id", "timestamp"]
+    },
+    "Appointment": {
+      "title": "Medical Appointment",
+      "description": "An appointment record",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "id": { "type": "string" },
+        "patient_id": { "type": "string" },
+        "patient_name": { "type": "string" },
+        "date": { "type": "string" },
+        "doctor": { "type": "string" },
+        "notes": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["userId", "id", "date"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles collection"
+    },
+    "/clinics/{clinicId}": {
+      "schema": { "$ref": "#/entities/Clinic" },
+      "description": "Clinics collection"
+    },
+    "/records/{recordId}": {
+      "schema": { "$ref": "#/entities/Record" },
+      "description": "Records collection"
+    },
+    "/appointments/{appointmentId}": {
+      "schema": { "$ref": "#/entities/Appointment" },
+      "description": "Appointments collection"
+    }
+  }
+}

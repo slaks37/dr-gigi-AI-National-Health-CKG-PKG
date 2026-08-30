@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* Accessibility Classes */
+html.text-size-small {
+  font-size: 14px;
+}
+html.text-size-medium {
+  font-size: 16px;
+}
+html.text-size-large {
+  font-size: 18px;
+}
+
+html.high-contrast {
+  filter: contrast(1.5) saturate(1.2);
+}
