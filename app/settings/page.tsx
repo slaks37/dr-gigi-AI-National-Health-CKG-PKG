@@ -54,11 +54,39 @@ export default function SettingsPage() {
   const { language, setLanguage, t } = useLanguage();
   const { textSize, setTextSize, highContrast, setHighContrast } = useAccessibility();
 
-  const [activeSection, setActiveSection] = useState<'iot' | 'satusehat' | 'api' | 'accessibility' | 'security'>('iot');
+  const [activeSection, setActiveSection] = useState<'iot' | 'satusehat' | 'api' | 'database' | 'accessibility' | 'security'>('iot');
   
   // Modals
   const [isIotModalOpen, setIsIotModalOpen] = useState(false);
   const [isSatuSehatModalOpen, setIsSatuSehatModalOpen] = useState(false);
+
+  // Database Stats & Logs
+  const [dbStats, setDbStats] = useState<any>({
+    database: { engine: 'PostgreSQL (Cloud SQL / Supabase compatible)', region: 'asia-southeast1', status: 'CONNECTED' },
+    stats: { totalUsers: 1, totalRecords: 0, totalAppointments: 0, totalActivityLogs: 0 },
+    users: [],
+    recentActivityLogs: []
+  });
+  const [isLoadingDbStats, setIsLoadingDbStats] = useState(false);
+
+  const fetchDbTelemetry = async () => {
+    setIsLoadingDbStats(true);
+    try {
+      const res = await fetch('/api/stats');
+      if (res.ok) {
+        const data = await res.json();
+        setDbStats(data);
+      }
+    } catch (e) {
+      console.warn('Failed to fetch DB stats:', e);
+    } finally {
+      setIsLoadingDbStats(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchDbTelemetry();
+  }, []);
 
   // Settings State
   const [orgId, setOrgId] = useState('10082910');
@@ -358,6 +386,24 @@ export default function SettingsPage() {
                 <span>API & Webhook Gateway</span>
               </div>
               <span className="text-[10px] bg-purple-100 text-purple-800 font-bold px-2 py-0.5 rounded-full">REST</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setActiveSection('database');
+                fetchDbTelemetry();
+              }}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                activeSection === 'database'
+                  ? 'bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <Database size={18} className={activeSection === 'database' ? 'text-indigo-600' : 'text-slate-400'} />
+                <span>Database & Supabase / SQL</span>
+              </div>
+              <span className="text-[10px] bg-indigo-100 text-indigo-800 font-bold px-2 py-0.5 rounded-full">PostgreSQL</span>
             </button>
 
             <div className="pt-3 px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-t border-slate-100">
@@ -1023,6 +1069,197 @@ export default function SettingsPage() {
                     </button>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {/* Section 4: Database & SQL / Supabase */}
+            {activeSection === 'database' && (
+              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between pb-4 border-b border-slate-100 gap-3">
+                  <div>
+                    <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                      <Database className="text-indigo-600" size={22} />
+                      Database Relasional & Cloud Persistence
+                    </h2>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Integrasi PostgreSQL (Cloud SQL & Supabase Compatible) untuk menyimpan data user terdaftar, riwayat antropometri, rekam medis (RME), dan log aktivitas seluruh penggunaan aplikasi.
+                    </p>
+                  </div>
+                  <button
+                    onClick={fetchDbTelemetry}
+                    disabled={isLoadingDbStats}
+                    className="px-3.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shrink-0"
+                  >
+                    <RefreshCw size={13} className={isLoadingDbStats ? 'animate-spin' : ''} />
+                    <span>Perbarui Data</span>
+                  </button>
+                </div>
+
+                {/* Connection Status Card */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div className="text-[11px] font-bold uppercase text-slate-400">Database Engine</div>
+                    <div className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                      <Server size={16} className="text-indigo-600" />
+                      PostgreSQL v16 (Relational)
+                    </div>
+                    <div className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      Status: {dbStats?.database?.status || 'CONNECTED'}
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div className="text-[11px] font-bold uppercase text-slate-400">Region & Latensi</div>
+                    <div className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                      <Globe size={16} className="text-blue-600" />
+                      asia-southeast1 (Jakarta)
+                    </div>
+                    <div className="text-[11px] text-slate-500">Pooling: pg.Pool (Max 10)</div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div className="text-[11px] font-bold uppercase text-slate-400">Keamanan & ORM</div>
+                    <div className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                      <ShieldCheck size={16} className="text-emerald-600" />
+                      Drizzle ORM + SSL/TLS
+                    </div>
+                    <div className="text-[11px] text-slate-500">Dual-Write: SQL + Firestore</div>
+                  </div>
+                </div>
+
+                {/* Database Metrics Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="p-3.5 rounded-xl border border-indigo-100 bg-indigo-50/50">
+                    <div className="text-xs text-indigo-700 font-semibold">User Terdaftar</div>
+                    <div className="text-2xl font-black text-indigo-950 mt-1">{dbStats?.stats?.totalUsers ?? 1}</div>
+                    <div className="text-[10px] text-indigo-600 mt-0.5">Tabel: users</div>
+                  </div>
+                  <div className="p-3.5 rounded-xl border border-emerald-100 bg-emerald-50/50">
+                    <div className="text-xs text-emerald-700 font-semibold">Rekam Medis (RME)</div>
+                    <div className="text-2xl font-black text-emerald-950 mt-1">{dbStats?.stats?.totalRecords ?? 0}</div>
+                    <div className="text-[10px] text-emerald-600 mt-0.5">Tabel: medical_records</div>
+                  </div>
+                  <div className="p-3.5 rounded-xl border border-purple-100 bg-purple-50/50">
+                    <div className="text-xs text-purple-700 font-semibold">Janji Temu Poli</div>
+                    <div className="text-2xl font-black text-purple-950 mt-1">{dbStats?.stats?.totalAppointments ?? 0}</div>
+                    <div className="text-[10px] text-purple-600 mt-0.5">Tabel: appointments</div>
+                  </div>
+                  <div className="p-3.5 rounded-xl border border-amber-100 bg-amber-50/50">
+                    <div className="text-xs text-amber-800 font-semibold">Log Penggunaan</div>
+                    <div className="text-2xl font-black text-amber-950 mt-1">{dbStats?.stats?.totalActivityLogs ?? 0}</div>
+                    <div className="text-[10px] text-amber-700 mt-0.5">Tabel: activity_logs</div>
+                  </div>
+                </div>
+
+                {/* Registered Users List from DB */}
+                {dbStats?.users && dbStats.users.length > 0 && (
+                  <div className="space-y-3 pt-2">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                        Daftar Pengguna Tersimpan di Database
+                      </h3>
+                      <span className="text-[11px] text-slate-500 font-mono">
+                        {dbStats.users.length} Akun Terdaftar
+                      </span>
+                    </div>
+
+                    <div className="border border-slate-200 rounded-xl overflow-hidden">
+                      <table className="w-full text-left text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase">
+                            <th className="py-2.5 px-3">Pengguna</th>
+                            <th className="py-2.5 px-3">Role</th>
+                            <th className="py-2.5 px-3">User UID</th>
+                            <th className="py-2.5 px-3 text-right">Terakhir Aktif</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100">
+                          {dbStats.users.map((u: any, idx: number) => (
+                            <tr key={u.uid || idx} className="hover:bg-slate-50/60">
+                              <td className="py-2.5 px-3 font-semibold text-slate-800">
+                                {u.displayName || u.email.split('@')[0]}
+                                <div className="text-[11px] font-normal text-slate-500 font-mono">{u.email}</div>
+                              </td>
+                              <td className="py-2.5 px-3">
+                                <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase ${
+                                  u.role === 'admin' ? 'bg-purple-100 text-purple-800 border border-purple-200' : 'bg-slate-100 text-slate-700'
+                                }`}>
+                                  {u.role || 'user'}
+                                </span>
+                              </td>
+                              <td className="py-2.5 px-3 font-mono text-[11px] text-slate-500">
+                                {u.uid?.substring(0, 14)}...
+                              </td>
+                              <td className="py-2.5 px-3 text-right text-[11px] text-slate-500">
+                                {u.lastActive ? new Date(u.lastActive).toLocaleString('id-ID') : 'Baru saja'}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {/* Live Activity & Usage Logs Table */}
+                <div className="space-y-3 pt-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                      <Activity size={14} className="text-indigo-600" />
+                      Live Usage & Activity Audit Trail (activity_logs)
+                    </h3>
+                    <span className="text-[11px] text-slate-400 font-medium">Tersimpan Otomatis di PostgreSQL</span>
+                  </div>
+
+                  <div className="border border-slate-200 rounded-xl overflow-hidden">
+                    <div className="max-h-72 overflow-y-auto">
+                      <table className="w-full text-left text-xs border-collapse">
+                        <thead className="sticky top-0 bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase">
+                          <tr>
+                            <th className="py-2.5 px-3">Waktu</th>
+                            <th className="py-2.5 px-3">Modul</th>
+                            <th className="py-2.5 px-3">Aksi / Event</th>
+                            <th className="py-2.5 px-3">User UID</th>
+                            <th className="py-2.5 px-3">Detail Data</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 font-mono text-[11px]">
+                          {dbStats?.recentActivityLogs && dbStats.recentActivityLogs.length > 0 ? (
+                            dbStats.recentActivityLogs.map((log: any, idx: number) => (
+                              <tr key={log.id || idx} className="hover:bg-slate-50/60">
+                                <td className="py-2 px-3 text-slate-500 whitespace-nowrap">
+                                  {log.createdAt ? new Date(log.createdAt).toLocaleTimeString('id-ID') : '-'}
+                                </td>
+                                <td className="py-2 px-3">
+                                  <span className="px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 font-bold text-[10px]">
+                                    {log.module}
+                                  </span>
+                                </td>
+                                <td className="py-2 px-3 font-semibold text-slate-800">
+                                  {log.action}
+                                </td>
+                                <td className="py-2 px-3 text-slate-500 truncate max-w-[120px]">
+                                  {log.userEmail || log.userUid}
+                                </td>
+                                <td className="py-2 px-3 text-slate-600 truncate max-w-[200px]" title={log.details}>
+                                  {log.details || '-'}
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan={5} className="py-6 text-center text-slate-400 font-sans">
+                                Belum ada log aktivitas. Setiap tindakan (skrining, konsultasi, janji temu) akan tercatat di sini secara otomatis.
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             )}
 

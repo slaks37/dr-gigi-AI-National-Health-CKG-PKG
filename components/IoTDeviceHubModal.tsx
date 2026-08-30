@@ -78,7 +78,8 @@ export default function IoTDeviceHubModal({ isOpen, onClose, onApplyData }: IoTD
 
   // Web Bluetooth Integration (Browser Native)
   const handleConnectBluetooth = async () => {
-    if (typeof navigator === 'undefined' || !navigator.bluetooth) {
+    const nav = typeof navigator !== 'undefined' ? (navigator as any) : null;
+    if (!nav || !nav.bluetooth) {
       setBtStatus('Web Bluetooth API tidak didukung di browser ini. Gunakan Chrome/Edge di desktop atau Android.');
       return;
     }
@@ -87,7 +88,7 @@ export default function IoTDeviceHubModal({ isOpen, onClose, onApplyData }: IoTD
       setIsScanningBt(true);
       setBtStatus('Mencari perangkat BLE kesehatan sekitar (Smart Scale, Tensimeter, Oximeter)...');
       
-      const device = await navigator.bluetooth.requestDevice({
+      const device = await nav.bluetooth.requestDevice({
         acceptAllDevices: true,
         optionalServices: [
           'weight_scale', 

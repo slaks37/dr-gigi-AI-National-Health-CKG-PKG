@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, auth, signInWithPopup, googleProvider, signOut as firebaseSignOut, onAuthStateChanged } from '../app/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../app/lib/firebase';
+import { syncUserProfileToDb, recordAppUsage } from '../app/lib/db';
 
 interface AuthContextType {
   user: User | null;
@@ -62,7 +63,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             } catch(e) {
               console.error("Failed to create user:", e);
             }
-            if (!isSuperAdmin) setRole(defaultRole);
+            const effectiveRole = isSuperAdmin ? 'admin' : (userSnap.exists() ? userSnap.data().role : defaultRole);
+            if (!isSuperAdmin) setRole(effectiveRole);
+
+            // Persist user and session to PostgreSQL Database
+            if (currentUser.email) {
+              syncUserProfileToDb({
+                uid: currentUser.uid,
+                email: currentUser.email,
+                displayName: currentUser.displayName,
+                photoURL: currentUser.photoURL,
+                role: effectiveRole || 'patient',
+              }).catch(console.warn);
+
+              recordAppUsage('auth', 'USER_SESSION_STARTED', {
+                email: currentUser.email,
+                displayName: currentUser.displayName,
+              }).catch(console.warn);
+            }
           }
         } catch (error) {
           console.error("Error setting up user role:", error);

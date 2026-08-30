@@ -25,7 +25,7 @@ import {
 interface SatuSehatModalProps {
   isOpen: boolean;
   onClose: () => void;
-  patientData: {
+  patientData?: {
     name?: string;
     age?: string;
     height?: string;
@@ -46,7 +46,7 @@ interface SatuSehatModalProps {
 export default function SatuSehatModal({ 
   isOpen, 
   onClose, 
-  patientData, 
+  patientData = {}, 
   diagnosa, 
   icd10,
   postureSeverityScore,
