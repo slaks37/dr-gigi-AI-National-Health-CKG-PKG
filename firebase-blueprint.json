@@ -48,6 +48,20 @@
       },
       "required": ["userId", "id", "timestamp"]
     },
+    "Patient": {
+      "title": "Patient",
+      "description": "Patient information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "dateOfBirth": { "type": "string" },
+        "gender": { "type": "string" },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "userId"]
+    },
     "Appointment": {
       "title": "Medical Appointment",
       "description": "An appointment record",
@@ -81,6 +95,10 @@
     "/appointments/{appointmentId}": {
       "schema": { "$ref": "#/entities/Appointment" },
       "description": "Appointments collection"
+    },
+    "/patients/{patientId}": {
+      "schema": { "$ref": "#/entities/Patient" },
+      "description": "Patients collection"
     }
   }
 }

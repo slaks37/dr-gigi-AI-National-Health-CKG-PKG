@@ -267,9 +267,14 @@ export default function ConsultationPage() {
             <Link href="/" className="flex items-center gap-2 text-slate-600 hover:text-emerald-600 transition-colors">
                 <span className="font-bold">← {t('common.backToHome')}</span>
             </Link>
-            <h1 className="font-bold text-lg text-slate-800 flex items-center gap-2">
-                <Smile className="text-emerald-600" /> dr Gigi AI Chat
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="font-bold text-lg text-slate-800 flex items-center gap-2">
+                  <Smile className="text-emerald-600" /> dr Gigi AI Chat
+              </h1>
+              <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-semibold bg-emerald-100 text-emerald-800 rounded-full border border-emerald-200">
+                Agnes AI
+              </span>
+            </div>
             <div className="flex items-center gap-4">
               <Link href="/dashboard" className="hidden sm:flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium">
                   <LayoutDashboard size={18} />

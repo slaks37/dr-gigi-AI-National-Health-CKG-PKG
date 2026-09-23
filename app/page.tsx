@@ -142,10 +142,10 @@ export default function Home() {
             <div className="text-left relative z-10 flex-1">
               <h2 className="text-xl md:text-2xl font-bold text-emerald-900 flex items-center gap-2 mb-2">
                 <MapPin className="text-emerald-500" size={24} /> 
-                Cari Klinik & Dokter Gigi Terdekat
+                Cari Dental Clinic, Dental & Rumah Sakit Terdekat
               </h2>
               <p className="text-emerald-700/80 mb-0">
-                Layanan darurat atau pemeriksaan rutin? Temukan klinik terbaik di sekitar Anda dengan cepat.
+                Temukan rekomendasi dental clinic, dokter gigi dental care, dan rumah sakit terdekat di sekitar Anda.
               </p>
             </div>
             
@@ -173,7 +173,7 @@ export default function Home() {
                   href={`/clinics?lat=${location.lat}&lng=${location.lng}`}
                   className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-md flex items-center justify-center gap-2"
                 >
-                  Lihat Klinik Terdekat &rarr;
+                  Lihat Faskes Terdekat &rarr;
                 </Link>
               )}
               {locationStatus === 'error' && (

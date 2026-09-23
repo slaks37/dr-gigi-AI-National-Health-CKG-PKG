@@ -291,6 +291,53 @@ export async function deleteAppointment(id: string) {
   }
 }
 
+export async function savePatient(patient: any) {
+  if (!auth.currentUser) throw new Error("Not authenticated");
+  try {
+    const patientId = patient.id;
+    patient.userId = auth.currentUser.uid;
+    patient.createdAt = patient.createdAt || new Date().toISOString();
+    
+    await setDoc(doc(db, 'patients', patientId), patient);
+    return patientId;
+  } catch(error) {
+    handleFirestoreError(error, OperationType.CREATE, 'patients');
+  }
+}
+
+export async function getAllPatients(role?: string | null) {
+  if (!auth.currentUser) return [];
+  try {
+    let q;
+    if (role === 'admin' || role === 'doctor') {
+      q = query(collection(db, 'patients'));
+    } else {
+      q = query(
+        collection(db, 'patients'),
+        where('userId', '==', auth.currentUser.uid)
+      );
+    }
+    const snap = await getDocs(q);
+    const patients = snap.docs.map(doc => doc.data());
+    patients.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return patients;
+  } catch(error) {
+    handleFirestoreError(error, OperationType.LIST, 'patients');
+    return [];
+  }
+}
+
+export async function getPatient(id: string) {
+  if (!auth.currentUser) return null;
+  try {
+    const snap = await getDoc(doc(db, 'patients', id));
+    return snap.exists() ? snap.data() : null;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.GET, `patients/${id}`);
+    return null;
+  }
+}
+
 export async function migrateFromLocalStorage() {
   // Can be implemented to migrate existing local records to database
 }

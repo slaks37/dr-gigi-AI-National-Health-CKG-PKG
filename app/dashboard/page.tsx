@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { LayoutDashboard, ArrowLeft, Search, Calendar, User, FileText, Trash2, Eye, Download, Activity, AlertCircle, FileJson, FileType, Archive, X, Smile, MapPin, Settings } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import Image from 'next/image';
-import { getAllRecords, deleteRecord, migrateFromLocalStorage, saveAppointment, getAllUsers, getAllAppointments } from '../lib/db';
+import { getAllRecords, deleteRecord, migrateFromLocalStorage, saveAppointment, getAllUsers, getAllAppointments, getAllPatients } from '../lib/db';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { useLanguage } from '../../components/LanguageProvider';
@@ -45,6 +45,7 @@ export default function DashboardPage() {
   const reportRef = useRef<HTMLDivElement>(null);
   
   const [users, setUsers] = useState<any[]>([]);
+  const [patients, setPatients] = useState<any[]>([]);
 
   useEffect(() => {
     setMounted(true);
@@ -64,6 +65,9 @@ export default function DashboardPage() {
         // Sort by timestamp (newest first)
         data.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
         setRecords(data);
+
+        const patientsData = await getAllPatients(role);
+        setPatients(patientsData);
 
         // if admin, load users
         if (role === 'admin' || role === 'doctor') {
@@ -193,9 +197,15 @@ export default function DashboardPage() {
     }
   };
 
+  const getPatientName = (patient_id: string, record: any) => {
+    const p = patients.find(p => p.id === patient_id);
+    if (p && p.name) return p.name;
+    return record.json_output?.patient_name || patient_id;
+  };
+
   const filteredRecords = records.filter(record => {
     const matchesSearch = 
-      record.patient_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      getPatientName(record.patient_id, record).toLowerCase().includes(searchTerm.toLowerCase()) ||
       record.diagnosa.toLowerCase().includes(searchTerm.toLowerCase()) ||
       record.icd10.toLowerCase().includes(searchTerm.toLowerCase());
     
@@ -274,7 +284,7 @@ export default function DashboardPage() {
     const appointment = {
       id: Math.random().toString(36).substring(7),
       patient_id: selectedRecord.patient_id,
-      patient_name: selectedRecord.patient_id, // Assuming ID is used as name in this demo
+      patient_name: getPatientName(selectedRecord.patient_id, selectedRecord),
       date: appointmentDate.toISOString(),
       doctor: scheduleData.doctor,
       notes: scheduleData.notes,
@@ -473,7 +483,7 @@ export default function DashboardPage() {
                         <div className="flex justify-between items-start">
                           <div className="flex flex-col min-w-0 pr-2">
                             <span className="font-bold text-slate-800 text-sm truncate">
-                              {record.patient_id}
+                              {getPatientName(record.patient_id, record)}
                             </span>
                             <span className="text-[10px] font-medium text-emerald-600 uppercase tracking-wider mt-0.5 truncate">
                               {record.type || 'Dental Check-up Umum'}
@@ -523,7 +533,7 @@ export default function DashboardPage() {
                           <Activity size={14} /> {selectedRecord.type || 'Dental Check-up Umum'}
                         </span>
                         <span className="flex items-center gap-1">
-                          <User size={16} /> {selectedRecord.patient_id}
+                          <User size={16} /> {getPatientName(selectedRecord.patient_id, selectedRecord)}
                         </span>
                         <span className="flex items-center gap-1">
                           <Calendar size={16} /> {formatDate(selectedRecord.timestamp)}
@@ -578,7 +588,7 @@ export default function DashboardPage() {
                         <h1 className="text-2xl font-bold text-slate-900">{t('report.titleDashboard')}</h1>
                         <p className="text-slate-500">dr Gigi AI - Healthy Teeth, Healthy Life</p>
                         <div className="mt-2 text-sm text-slate-600 flex justify-center gap-4">
-                            <span>{t('report.name')}: {selectedRecord.patient_id}</span>
+                            <span>{t('report.name')}: {getPatientName(selectedRecord.patient_id, selectedRecord)}</span>
                             <span>{t('report.date')}: {formatDate(selectedRecord.timestamp)}</span>
                         </div>
                       </div>
@@ -750,7 +760,7 @@ export default function DashboardPage() {
               ) : (
                 <div className="space-y-6">
                   <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
-                    <Activity size={20} className="text-emerald-600" /> Riwayat Konsultasi: {selectedRecord.patient_id}
+                    <Activity size={20} className="text-emerald-600" /> Riwayat Konsultasi: {getPatientName(selectedRecord.patient_id, selectedRecord)}
                   </h3>
                   <div className="relative border-l-2 border-emerald-100 ml-3 space-y-8">
                     {getPatientHistory().map((historyRecord, index) => (

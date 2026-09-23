@@ -1,16 +1,10 @@
-import { defineConfig } from "eslint/config";
-import next from "eslint-config-next";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import firebaseRulesPlugin from '@firebase/eslint-plugin-security-rules';
+import nextPlugin from "@next/eslint-plugin-next";
+import firebaseRulesPlugin from "@firebase/eslint-plugin-security-rules";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-export default defineConfig([
+export default [
   {
-    ignores: ['dist/**/*', '.next/**/*', 'node_modules/**/*']
+    ignores: ["dist/**/*", ".next/**/*", "node_modules/**/*"]
   },
-  ...next,
-  firebaseRulesPlugin.configs['flat/recommended']
-]);
+  nextPlugin.flatConfig.recommended,
+  firebaseRulesPlugin.configs["flat/recommended"]
+];

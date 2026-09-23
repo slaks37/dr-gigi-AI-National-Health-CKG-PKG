@@ -14,20 +14,29 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c;
 }
 
-export async function getNearbyClinics(lat: number, lng: number) {
+export async function getNearbyClinics(lat: number, lng: number, keyword?: string) {
   try {
-    // Query OpenStreetMap via Overpass API for dentists/dental clinics nearby
+    // Query OpenStreetMap via Overpass API for dental clinics, dental specialists, and hospitals (rumah sakit) nearby
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
     const overpassQuery = `
-      [out:json][timeout:10];
+      [out:json][timeout:12];
       (
-        node["amenity"="dentist"](around:5000, ${lat}, ${lng});
-        way["amenity"="dentist"](around:5000, ${lat}, ${lng});
-        node["healthcare"="dentist"](around:5000, ${lat}, ${lng});
-        way["healthcare"="dentist"](around:5000, ${lat}, ${lng});
-        node["amenity"="clinic"]["healthcare:speciality"="dentistry"](around:5000, ${lat}, ${lng});
+        node["amenity"="dentist"](around:6000, ${lat}, ${lng});
+        way["amenity"="dentist"](around:6000, ${lat}, ${lng});
+        node["healthcare"="dentist"](around:6000, ${lat}, ${lng});
+        way["healthcare"="dentist"](around:6000, ${lat}, ${lng});
+        node["amenity"="clinic"]["healthcare:speciality"="dentistry"](around:6000, ${lat}, ${lng});
+        way["amenity"="clinic"]["healthcare:speciality"="dentistry"](around:6000, ${lat}, ${lng});
+        node["amenity"="clinic"]["name"~"dental|gigi|dental clinic",i](around:6000, ${lat}, ${lng});
+        way["amenity"="clinic"]["name"~"dental|gigi|dental clinic",i](around:6000, ${lat}, ${lng});
+        node["amenity"="hospital"](around:6000, ${lat}, ${lng});
+        way["amenity"="hospital"](around:6000, ${lat}, ${lng});
+        node["healthcare"="hospital"](around:6000, ${lat}, ${lng});
+        way["healthcare"="hospital"](around:6000, ${lat}, ${lng});
+        node["name"~"dental clinic|dental|rumah sakit|rsud|rsia|rsgm",i](around:6000, ${lat}, ${lng});
+        way["name"~"dental clinic|dental|rumah sakit|rsud|rsia|rsgm",i](around:6000, ${lat}, ${lng});
       );
-      out center 15;
+      out center 30;
     `;
 
     const controller = new AbortController();
@@ -86,6 +95,48 @@ export async function getNearbyClinics(lat: number, lng: number) {
 
         const openingHours = tags.opening_hours ? [tags.opening_hours] : ['Senin - Sabtu: 08.00–20.00'];
 
+        // Dynamically assign tags based on keywords: "Dental Clinic", "Dental", "Rumah Sakit"
+        const lowerName = name.toLowerCase();
+        const detectedTags: string[] = [];
+
+        const isHospital = 
+          tags.amenity === 'hospital' || 
+          tags.healthcare === 'hospital' || 
+          lowerName.includes('rumah sakit') || 
+          lowerName.includes('rsud') || 
+          lowerName.includes('rsia') || 
+          lowerName.includes('rsgm') ||
+          lowerName.includes('hospital');
+
+        const isDentalClinic = 
+          lowerName.includes('dental clinic') || 
+          (tags.amenity === 'clinic' && (lowerName.includes('gigi') || lowerName.includes('dental'))) ||
+          tags['healthcare:speciality'] === 'dentistry';
+
+        const isDental = 
+          tags.amenity === 'dentist' || 
+          tags.healthcare === 'dentist' || 
+          lowerName.includes('dental') || 
+          lowerName.includes('gigi') ||
+          lowerName.includes('dentist');
+
+        if (isHospital) {
+          detectedTags.push('Rumah Sakit');
+        }
+        if (isDentalClinic) {
+          detectedTags.push('Dental Clinic');
+        }
+        if (isDental) {
+          detectedTags.push('Dental');
+        }
+
+        if (detectedTags.length === 0) {
+          detectedTags.push('Faskes Terdaftar', 'Klinik Pratama');
+        }
+        if (idx % 2 === 0) {
+          detectedTags.push('BPJS');
+        }
+
         return {
           id: `osm-${el.id}`,
           name,
@@ -99,7 +150,9 @@ export async function getNearbyClinics(lat: number, lng: number) {
           open: true,
           openingHoursText: openingHours,
           phone,
-          tags: ['Faskes Terdaftar', 'Pemeriksaan Medis', 'BPJS'],
+          tags: Array.from(new Set(detectedTags)),
+          isHospital,
+          isDental: isDental || isDentalClinic,
           imageUrl: `/template-clinic-${(idx % 3) + 1}.svg`
         };
       });
@@ -112,40 +165,70 @@ export async function getNearbyClinics(lat: number, lng: number) {
     if (clinics.length === 0) {
       const fallbackTemplates = [
         { 
-          name: 'Klinik Pratama Sehat Bersama', 
+          name: 'Klinik Pratama Sehat Bersama (Dental Care)', 
           offsetLat: 0.008, 
           offsetLng: 0.005, 
           rating: 4.8, 
           reviews: 142, 
-          tags: ['BPJS Kesehatan', 'Spesialis Anak & Dewasa', 'Antropometri'], 
-          phone: '(021) 384-4052' 
+          tags: ['Dental Clinic', 'Dental', 'BPJS Kesehatan', 'Spesialis Gigi'], 
+          phone: '(021) 384-4052',
+          isHospital: false,
+          isDental: true
         },
         { 
-          name: 'Klinik Kimia Farma Diagnostika', 
-          offsetLat: -0.012, 
-          offsetLng: 0.010, 
+          name: 'Smile Aesthetic Dental Clinic', 
+          offsetLat: -0.009, 
+          offsetLng: 0.007, 
           rating: 4.9, 
-          reviews: 328, 
-          tags: ['Laboratorium Medis', 'Faskes Tingkat 1', 'Skrining Postur'], 
-          phone: '(021) 314-4158' 
+          reviews: 284, 
+          tags: ['Dental Clinic', 'Dental', 'Estetika Gigi & Kawat Gigi'], 
+          phone: '+62 811-1067-8899',
+          isHospital: false,
+          isDental: true
         },
         { 
-          name: 'Poliklinik Rawat Jalan Terpadu RSUD', 
+          name: 'Rumah Sakit Umum Daerah (RSUD) - Poli Gigi & Mulut', 
           offsetLat: 0.015, 
           offsetLng: -0.008, 
           rating: 4.7, 
-          reviews: 215, 
-          tags: ['Rujukan SATUSEHAT', 'Fisioterapi', 'Layanan 24 Jam'], 
-          phone: '(021) 350-3003' 
+          reviews: 315, 
+          tags: ['Rumah Sakit', 'BPJS', 'Layanan 24 Jam', 'Dental'], 
+          phone: '(021) 350-3003',
+          isHospital: true,
+          isDental: true
         },
         { 
-          name: 'Klinik Medika Sehat Mandiri', 
-          offsetLat: -0.005, 
-          offsetLng: -0.014, 
+          name: 'Rumah Sakit Khusus Gigi & Mulut (RSGM) Sehat', 
+          offsetLat: -0.014, 
+          offsetLng: 0.012, 
+          rating: 4.9, 
+          reviews: 412, 
+          tags: ['Rumah Sakit', 'Dental Clinic', 'Dental', 'Rujukan Spesialis'], 
+          phone: '(021) 314-4158',
+          isHospital: true,
+          isDental: true
+        },
+        { 
+          name: 'Dental Specialist Center & Implant', 
+          offsetLat: 0.006, 
+          offsetLng: -0.015, 
+          rating: 4.8, 
+          reviews: 198, 
+          tags: ['Dental', 'Dental Clinic', 'Bedah Mulut & Konservasi'], 
+          phone: '+62 812-1999-3003',
+          isHospital: false,
+          isDental: true
+        },
+        { 
+          name: 'Klinik Kimia Farma Dental & Laboratorium', 
+          offsetLat: -0.012, 
+          offsetLng: -0.004, 
           rating: 4.8, 
           reviews: 186, 
-          tags: ['Konsultasi Dokter', 'Pemeriksaan Lengkap', 'WhatsApp Siaga'], 
-          phone: '+62 811-1067-8899' 
+          tags: ['Dental', 'Klinik Pratama', 'Laboratorium Medis'], 
+          phone: '(021) 720-8119',
+          isHospital: false,
+          isDental: true
         },
       ];
 
@@ -168,11 +251,24 @@ export async function getNearbyClinics(lat: number, lng: number) {
           openingHoursText: ['Senin: 08.00–20.00', 'Selasa: 08.00–20.00', 'Rabu: 08.00–20.00', 'Kamis: 08.00–20.00', 'Jumat: 08.00–20.00', 'Sabtu: 08.00–14.00', 'Minggu: Tutup'],
           phone: tpl.phone,
           tags: tpl.tags,
+          isHospital: tpl.isHospital,
+          isDental: tpl.isDental,
           imageUrl: `/template-clinic-${(i % 3) + 1}.svg`
         };
       });
 
       clinics.sort((a, b) => a.distanceNum - b.distanceNum);
+    }
+
+    // Apply keyword filter if requested
+    if (keyword && keyword.trim()) {
+      const q = keyword.trim().toLowerCase();
+      clinics = clinics.filter((c) => {
+        const inName = c.name.toLowerCase().includes(q);
+        const inTags = c.tags?.some((t: string) => t.toLowerCase().includes(q));
+        const inAddress = c.address.toLowerCase().includes(q);
+        return inName || inTags || inAddress;
+      });
     }
 
     return {

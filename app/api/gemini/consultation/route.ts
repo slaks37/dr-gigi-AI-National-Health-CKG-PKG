@@ -1,14 +1,35 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
+import { isAgnesConfigured, callAgnesConsultation } from "@/app/lib/agnesAi";
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-  httpOptions: {
-    headers: {
-      'User-Agent': 'aistudio-build',
+export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
+
+let aiClient: GoogleGenAI | null = null;
+function getAI() {
+  if (!aiClient) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return null;
     }
+    aiClient = new GoogleGenAI({
+      apiKey,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
   }
-});
+  return aiClient;
+}
+
+const CANDIDATE_MODELS = [
+  "gemini-2.5-flash",
+  "gemini-flash-latest",
+  "gemini-3.8-flash",
+  "gemini-3.1-flash-lite",
+];
 
 export async function POST(req: NextRequest) {
   try {
@@ -92,20 +113,67 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.7-flash",
-      contents: contents,
-      config: {
-        systemInstruction: systemInstruction || undefined,
-      },
-    });
+    let lastError: any = null;
+
+    // 1. PRIMARY: Prioritize Agnes AI when configured
+    if (isAgnesConfigured()) {
+      try {
+        console.log("[Primary Engine] Memproses konsultasi menggunakan Agnes AI...");
+        const agnesText = await callAgnesConsultation({
+          systemInstruction,
+          messages,
+          currentMessage
+        });
+
+        if (agnesText && agnesText.trim().length > 0) {
+          console.log("[Agnes AI Success] Konsultasi berhasil diproses oleh Agnes AI.");
+          return NextResponse.json({ text: agnesText, success: true, provider: 'agnes-ai' });
+        }
+      } catch (agnesErr: any) {
+        console.warn("[Agnes AI Failed] Percobaan Agnes AI dialihkan ke fallback Gemini:", agnesErr?.message || agnesErr);
+        lastError = agnesErr;
+      }
+    }
+
+    // 2. FALLBACK / ALTERNATIVE: Gemini AI
+    let response: any = null;
+    const ai = getAI();
+
+    if (ai) {
+      console.log("[Fallback Engine] Mencoba model Gemini untuk konsultasi...");
+      for (const model of CANDIDATE_MODELS) {
+        try {
+          response = await ai.models.generateContent({
+            model,
+            contents: contents,
+            config: {
+              systemInstruction: systemInstruction || undefined,
+            },
+          });
+          if (response && response.text) {
+            break;
+          }
+        } catch (err: any) {
+          console.warn(`[Gemini Consultation] Model ${model} failed, trying fallback:`, err?.message || err);
+          lastError = err;
+        }
+      }
+    } else {
+      if (!lastError) {
+        lastError = new Error("GEMINI_API_KEY tidak tersedia di server.");
+      }
+    }
+
+    if (!response || !response.text) {
+      throw lastError || new Error("Semua model AI (Agnes AI & Gemini) sedang sibuk. Silakan coba beberapa saat lagi.");
+    }
 
     const responseText = response.text || "";
-    return NextResponse.json({ text: responseText, success: true });
+    return NextResponse.json({ text: responseText, success: true, provider: 'gemini' });
   } catch (error: any) {
-    console.error("Gemini Consultation API Error:", error);
+    console.error("Consultation API Error:", error);
     return NextResponse.json(
-      { error: error?.message || "Terjadi kesalahan saat konsultasi dengan Gemini AI.", success: false },
+      { error: error?.message || "Terjadi kesalahan saat konsultasi dengan AI.", success: false },
       { status: 500 }
     );
   }

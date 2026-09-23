@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import Image from 'next/image';
 import { saveRecord, updateRecord } from '../lib/db';
+import { compressImageToGenerativePart, safeCallGeminiAnalyze } from '../lib/imageUtils';
 import { useLanguage } from '../../components/LanguageProvider';
 import LoginButton from '../../components/LoginButton';
 import { useAuth } from '../../components/AuthProvider';
@@ -125,6 +126,8 @@ export default function CheckupAnakPage() {
   const [symptoms, setSymptoms] = useState('');
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingStep, setLoadingStep] = useState('');
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [result, setResult] = useState<any | null>(null);
   const [showJson, setShowJson] = useState(false);
   const [feedbackGiven, setFeedbackGiven] = useState<'yes' | 'no' | null>(null);
@@ -220,31 +223,7 @@ export default function CheckupAnakPage() {
   };
 
   const fileToGenerativePart = async (item: MediaItem): Promise<{ data: string; mimeType: string }> => {
-    return new Promise((resolve, reject) => {
-      if (item.file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const base64Data = (reader.result as string).split(',')[1];
-          resolve({
-            data: base64Data,
-            mimeType: item.mimeType || 'image/jpeg'
-          });
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(item.file);
-      } else if (item.url.startsWith('data:')) {
-        const base64Data = item.url.split(',')[1];
-        resolve({
-          data: base64Data,
-          mimeType: item.mimeType || 'image/jpeg'
-        });
-      } else {
-        resolve({
-          data: item.url,
-          mimeType: item.mimeType || 'image/jpeg'
-        });
-      }
-    });
+    return compressImageToGenerativePart(item.file || item.url, 1000, 0.80);
   };
 
   const saveToHistory = async (data: any, image: string) => {
@@ -280,7 +259,12 @@ export default function CheckupAnakPage() {
     if (mediaItems.length === 0) return;
 
     setLoading(true);
+    setAnalysisError(null);
     setResult(null);
+    setLoadingStep('Mengompresi dan mengoptimalkan gambar...');
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
 
     try {
       const prompt = `Lakukan VALIDASI GAMBAR terlebih dahulu. Apakah ini gambar gigi/mulut anak? Jika TIDAK, set 'is_dental_image': false dan hentikan analisis. Jika YA, lanjutkan analisis SEMUA foto. Untuk setiap temuan, WAJIB sertakan 'image_index' (integer, mulai dari 0). Deteksi penyakit atau gigi sehat dengan bounding box presisi.
@@ -297,40 +281,40 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
       
       const mediaParts = await Promise.all(mediaItems.map(fileToGenerativePart));
 
-      const apiRes = await fetch('/api/gemini/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          systemInstruction: SYSTEM_INSTRUCTION,
-          prompt,
-          images: mediaParts
-        })
-      });
+      setLoadingStep('Menganalisis gigi anak dengan Agnes AI...');
 
-      const resData = await apiRes.json();
-      if (!apiRes.ok || !resData.success) {
-        throw new Error(resData.error || "Gagal melakukan analisis media dengan Gemini AI");
-      }
+      const responseText = await safeCallGeminiAnalyze({
+        systemInstruction: SYSTEM_INSTRUCTION,
+        prompt,
+        images: mediaParts
+      }, controller.signal);
 
-      const responseText = resData.result;
+      setLoadingStep('Menyusun rekam medis digital...');
       console.log("Raw response:", responseText);
       
+      if (!responseText) {
+        throw new Error("AI tidak mengembalikan hasil analisis.");
+      }
+
+      let cleaned = responseText.trim();
+      if (cleaned.startsWith('```json')) {
+        cleaned = cleaned.replace(/^```json\s*/i, '').replace(/\s*```$/, '');
+      } else if (cleaned.startsWith('```')) {
+        cleaned = cleaned.replace(/^```\s*/i, '').replace(/\s*```$/, '');
+      }
+
       try {
-        if (responseText) {
-            const parsedResult = JSON.parse(responseText);
-            setResult(parsedResult);
-            // Save to RME Dashboard
-            if (mediaItems.length > 0) {
-                await saveToHistory(parsedResult, mediaItems[0].url);
-            }
-        } else {
-            throw new Error("Empty response");
+        const parsedResult = JSON.parse(cleaned.trim());
+        setResult(parsedResult);
+        // Save to RME Dashboard
+        if (mediaItems.length > 0) {
+          await saveToHistory(parsedResult, mediaItems[0].url);
         }
       } catch (e) {
         console.error("Failed to parse JSON:", e);
         setResult({
-            markdown_report: responseText || "Error: No text returned",
-            json_output: { status: "error", message: "Failed to parse structured output" }
+          markdown_report: responseText || "Error: Format respon tidak dapat dibaca",
+          json_output: { status: "error", message: "Gagal mengurai format JSON terstruktur" }
         });
       }
 
@@ -339,18 +323,25 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
       
       let errorMessage = "Terjadi kesalahan saat menganalisis media. Silakan coba lagi.";
       
-      // Handle Rate Limit specifically
-      if (error.message?.includes("429") || error.message?.toLowerCase().includes("rate limit")) {
-        errorMessage = "Batas penggunaan API (Rate Limit) terlampaui. Mohon tunggu 1 menit sebelum mencoba lagi.";
+      if (error.name === 'AbortError') {
+        errorMessage = "Waktu analisis melebihi batas (timeout 60 detik). Mohon periksa koneksi internet dan coba lagi.";
+      } else if (error.message?.includes("The string did not match the expected pattern")) {
+        errorMessage = "Format data gambar tidak sesuai atau ukuran berkas terlalu besar. Mohon pilih foto ulang dengan resolusi standar.";
+      } else if (error.message?.includes("503") || error.message?.toLowerCase().includes("high demand") || error.message?.toLowerCase().includes("sibuk")) {
+        errorMessage = "Server AI sedang sibuk. Silakan klik tombol Analisis Sekarang lagi untuk mencoba ulang.";
+      } else if (error.message?.includes("429") || error.message?.toLowerCase().includes("rate limit")) {
+        errorMessage = "Batas penggunaan API (Rate Limit) terlampaui. Mohon tunggu 30 detik sebelum mencoba lagi.";
       } else if (error.message?.includes("API Key")) {
         errorMessage = "API Key tidak valid atau tidak ditemukan. Hubungi administrator.";
       } else if (error.message) {
         errorMessage = error.message;
       }
 
-      alert(errorMessage);
+      setAnalysisError(errorMessage);
     } finally {
+      clearTimeout(timeoutId);
       setLoading(false);
+      setLoadingStep('');
     }
   };
 
@@ -530,7 +521,12 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
             <Link href="/" className="flex items-center gap-2 text-slate-600 hover:text-emerald-600 transition-colors">
                 <span className="font-bold">← {t('common.backToHome')}</span>
             </Link>
-            <h1 className="font-bold text-lg text-slate-800">{t('checkupAnak.title')}</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="font-bold text-lg text-slate-800">{t('checkupAnak.title')}</h1>
+              <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-semibold bg-emerald-100 text-emerald-800 rounded-full border border-emerald-200">
+                Agnes AI
+              </span>
+            </div>
             <div className="flex items-center gap-4">
               <Link href="/dashboard" className="flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium">
                   <LayoutDashboard size={18} />
@@ -682,6 +678,26 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
                 ))}
               </div>
 
+              {/* Error Message Banner */}
+              {analysisError && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start justify-between gap-3 text-sm">
+                  <div className="flex items-start gap-2.5">
+                    <AlertCircle className="text-red-500 shrink-0 mt-0.5" size={18} />
+                    <div>
+                      <p className="font-semibold text-red-800">Gagal Memproses Pemeriksaan</p>
+                      <p className="mt-0.5 text-xs text-red-700">{analysisError}</p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => setAnalysisError(null)} 
+                    className="text-red-400 hover:text-red-600 shrink-0 p-1"
+                    title="Tutup"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              )}
+
               <button
                 onClick={analyzeMedia}
                 disabled={loading}
@@ -689,11 +705,13 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
               >
                 {loading ? (
                   <>
-                    <RefreshCw className="animate-spin" /> Menganalisis...
+                    <RefreshCw className="animate-spin" size={20} /> 
+                    <span>{loadingStep || 'Menganalisis Gigi Anak...'}</span>
                   </>
                 ) : (
                   <>
-                    <Activity /> Analisis Sekarang
+                    <Activity size={20} /> 
+                    <span>Analisis Sekarang</span>
                   </>
                 )}
               </button>
