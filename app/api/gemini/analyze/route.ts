@@ -139,10 +139,27 @@ export async function POST(req: NextRequest) {
     }
 
     let responseText = (response.text || "{}").trim();
-    if (responseText.startsWith('```json')) {
-      responseText = responseText.replace(/^```json\s*/i, '').replace(/\s*```$/, '');
-    } else if (responseText.startsWith('```')) {
-      responseText = responseText.replace(/^```\s*/i, '').replace(/\s*```$/, '');
+    if (responseText.includes('```json')) {
+      const match = responseText.match(/```json\s*([\s\S]*?)\s*```/i);
+      if (match) {
+        responseText = match[1].trim();
+      }
+    } else if (responseText.includes('```')) {
+      const match = responseText.match(/```\s*([\s\S]*?)\s*```/i);
+      if (match) {
+        responseText = match[1].trim();
+      }
+    }
+
+    // Try finding JSON boundary if there are stray characters
+    try {
+      JSON.parse(responseText);
+    } catch {
+      const firstBrace = responseText.indexOf('{');
+      const lastBrace = responseText.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace > firstBrace) {
+        responseText = responseText.substring(firstBrace, lastBrace + 1);
+      }
     }
 
     return NextResponse.json({ result: responseText, success: true, provider: 'gemini' });

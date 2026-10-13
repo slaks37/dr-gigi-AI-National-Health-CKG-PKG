@@ -5,7 +5,7 @@ import { Camera, Upload, RefreshCw, FileText, Download, ChevronDown, ChevronUp, 
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import Image from 'next/image';
-import { saveRecord, updateRecord } from '../lib/db';
+import { saveRecord, updateRecord, generateSecureId } from '../lib/db';
 import { compressImageToGenerativePart, safeCallGeminiAnalyze } from '../lib/imageUtils';
 import { useLanguage } from '../../components/LanguageProvider';
 import LoginButton from '../../components/LoginButton';
@@ -234,16 +234,16 @@ export default function CheckupAnakPage() {
         : (data.json_output.summary?.status === 'SEHAT' ? 'Gigi Sehat' : 'Tidak Terdeteksi');
 
       const icd10 = data.json_output.findings && data.json_output.findings.length > 0
-        ? data.json_output.findings.map((f: any) => f.icd10).join(', ')
+        ? data.json_output.findings.map((f: any) => f.icd10).filter(Boolean).join(', ')
         : (data.json_output.summary?.status === 'SEHAT' ? 'Z01.2' : '-');
 
       const newRecord = {
-        id: Math.random().toString(36).substring(7),
+        id: generateSecureId('rec'),
         timestamp: new Date().toISOString(),
-        patient_id: data.json_output.patient_id || 'unknown',
+        patient_id: data.json_output.patient_id || 'anak_pasien',
         type: 'Dental Check-up Anak',
         diagnosa: diagnosa,
-        icd10: icd10,
+        icd10: icd10 || 'Z01.2',
         confidence: data.json_output.findings?.[0]?.confidence_score || '100%',
         image_url: image, // Save the first image as thumbnail/reference
         json_output: data.json_output,
@@ -722,22 +722,36 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
         {/* Results Section */}
         {result && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {!user ? (
-                <div className="bg-white p-8 rounded-2xl text-center shadow-lg border border-slate-200">
-                    <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <CheckCircle className="text-emerald-500" size={32} />
-                    </div>
-                    <h2 className="text-xl font-bold text-slate-800 mb-2">Analisis Berhasil Selesai!</h2>
-                    <p className="text-slate-600 mb-6 max-w-md mx-auto">
-                        AI telah berhasil menyelesaikan analisis dari foto gigi yang Anda berikan. 
-                        Silakan Masuk (Login) atau Daftar terlebih dahulu untuk melihat hasil lengkapnya secara gratis.
-                    </p>
-                    <div className="flex justify-center">
-                        <LoginButton />
-                    </div>
+            {!user && (
+              <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-amber-50 border border-emerald-200 rounded-2xl p-5 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-emerald-950 shadow-sm" data-html2canvas-ignore>
+                <div className="flex items-center gap-3.5">
+                  <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-base shrink-0 shadow-sm">
+                    ✓
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm text-emerald-900">Analisis Gigi Anak Selesai (Mode Tamu)</p>
+                    <p className="text-xs text-slate-600 mt-0.5">Hasil telah disimpan aman di perangkat. Masuk akun dengan Google untuk sinkronisasi Rekam Medis (RME) Cloud dan cetak PDF rekam gigi anak.</p>
+                  </div>
                 </div>
-            ) : (
-            <div ref={resultContainerRef} className="space-y-8 bg-white p-8 rounded-2xl">
+                <LoginButton />
+              </div>
+            )}
+
+            <div ref={resultContainerRef} className="space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+            
+            {/* Emergency Red Flag Alert */}
+            {(result.json_output?.is_emergency || result.json_output?.urgency_level === 'DARURAT') && (
+              <div className="bg-red-50 border-2 border-red-500 text-red-900 rounded-2xl p-5 flex items-start gap-4 shadow-sm" data-html2canvas-ignore>
+                <AlertCircle className="text-red-600 shrink-0 mt-0.5" size={26} />
+                <div>
+                  <h4 className="font-bold text-base text-red-800">PERINGATAN TRIASE GAWAT DARURAT GIGI ANAK</h4>
+                  <p className="text-xs sm:text-sm text-red-700 mt-1 leading-relaxed">
+                    Terdeteksi tanda klinis kegawatdaruratan pada anak (seperti abses/pembengkakan gusi parah, nyeri hebat, atau trauma dentoalveolar). 
+                    <strong> Segera bawa anak ke Dokter Gigi Spesialis Kedokteran Gigi Anak (Sp.KGA) atau IGD Rumah Sakit terdekat!</strong>
+                  </p>
+                </div>
+              </div>
+            )}
             
             {/* Report Header for PDF */}
             <div className="border-b-2 border-slate-800 pb-6 mb-6">
@@ -916,8 +930,8 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
               </Link>
             </div>
 
-          </div>
-          )}
+            </div>
+
           </div>
         )}
 

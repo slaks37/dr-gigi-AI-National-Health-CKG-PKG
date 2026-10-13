@@ -79,9 +79,7 @@ export default function DashboardPage() {
       }
     };
 
-    if (user && role) {
-      loadData();
-    }
+    loadData();
   }, [user, role]);
 
   const handleDelete = async (id: string) => {
@@ -354,6 +352,21 @@ export default function DashboardPage() {
             >
               Super Admin CRM
             </button>
+          </div>
+        )}
+
+        {!user && (
+          <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-blue-50 border border-emerald-200 rounded-xl p-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-emerald-950 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                i
+              </div>
+              <div>
+                <p className="font-semibold text-sm text-emerald-900">Mode Tamu Aktif • Menampilkan Rekam Medis Lokal</p>
+                <p className="text-xs text-slate-600 mt-0.5">Hasil pemeriksaan Anda tersimpan di peramban ini. Masuk akun dengan Google untuk sinkronisasi permanen ke Cloud & SATUSEHAT.</p>
+              </div>
+            </div>
+            <LoginButton />
           </div>
         )}
 

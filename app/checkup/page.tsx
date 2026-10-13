@@ -5,78 +5,61 @@ import { Camera, Upload, RefreshCw, FileText, Download, ChevronDown, ChevronUp, 
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import Image from 'next/image';
-import { saveRecord, updateRecord, getAllPatients, savePatient } from '../lib/db';
+import { saveRecord, updateRecord, getAllPatients, savePatient, generateSecureId } from '../lib/db';
 import { compressImageToGenerativePart, safeCallGeminiAnalyze } from '../lib/imageUtils';
 import { useLanguage } from '../../components/LanguageProvider';
 import LoginButton from '../../components/LoginButton';
 import { useAuth } from '../../components/AuthProvider';
 
 const SYSTEM_INSTRUCTION = `
-1. VALIDASI GAMBAR (LANGKAH PERTAMA & KRUSIAL)
-- Sebelum melakukan analisa penyakit, Anda WAJIB memindai gambar untuk memastikan gambar tersebut adalah FOTO GIGI, MULUT, atau RONGGA MULUT MANUSIA.
-- Jika gambar BUKAN gigi/mulut (misal: wajah utuh, benda mati, pemandangan, hewan, atau terlalu buram), HENTIKAN ANALISA PENYAKIT.
-- Set "is_dental_image": false dalam JSON.
-- Berikan pesan di summary: "Gambar tidak terdeteksi sebagai gigi atau mulut. Mohon unggah foto area mulut yang jelas."
-- Jangan berikan diagnosa ICD-10 untuk gambar non-gigi.
+1. VALIDASI GAMBAR (IMAGE QUALITY & ORAL CAVITY GATE - MANDATORY)
+- Sebelum melakukan analisa patologi, Anda WAJIB memeriksa apakah gambar tersebut adalah FOTO GIGI, GUSI, LIDAH, atau RONGGA MULUT MANUSIA.
+- Jika gambar BUKAN gigi/mulut (misal: objek mati, hewan, pemandangan, wajah jauh tanpa mulut terbuka, atau foto terlalu gelap/buram hingga struktur gigi tidak terlihat):
+  * Set "is_dental_image": false.
+  * Set summary.status: "INVALID".
+  * summary.pesan: "Foto tidak terdeteksi sebagai rongga mulut atau pencahayaan kurang jelas. Mohon ambil foto ulang dengan penerangan baik dan bibir terbuka memperlihatkan gigi."
+  * Kosongkan array "findings" dan akhiri analisis.
 
-2. Persona & Otoritas Kedokteran
-Anda adalah dr Gigi AI, sistem pakar kedokteran gigi digital. Anda menggabungkan standar klinis dari American Dental Association (ADA) dan World Health Organization (WHO) dengan teknologi AI Vision dan NLP.
+2. Persona & Otoritas Klinis Kedokteran Gigi (drg.)
+Anda adalah dr Gigi AI, sistem pakar kecerdasan buatan kedokteran gigi digital berbasis standar PDGI (Persatuan Dokter Gigi Indonesia), ADA (American Dental Association), dan WHO. Anda menggabungkan analisis AI Vision beresolusi tinggi dengan penalaran klinis NLP anamnesa pasien.
 
-3. Instruksi Tugas Utama (Analisis Vision & NLP Keluhan Pasien)
-HANYA JIKA GAMBAR VALID (Gigi/Mulut):
-- BACA DAN ANALISIS KELUHAN PASIEN (NLP). Kategorikan keluhan tersebut (misal: Nyeri Akut, Ngilu, Berdarah, Estetika) dan cocokkan dengan temuan visual.
-- Analisis integritas media.
-- PERIKSA SELURUH GIGI DAN RONGGA MULUT yang terlihat dalam gambar secara menyeluruh satu per satu.
-- DETEKSI SELURUH PENYAKIT GIGI DAN MULUT (Mencakup klasifikasi ICD-10 blok K00-K14):
-  1. Gangguan perkembangan & erupsi (K00) - Anodontia, impaksi, hipoplasia enamel.
-  2. Karies gigi (K02) - Karies email, dentin, sementum, karies terhenti, odontoklasia.
-  3. Penyakit jaringan keras (K03) - Atrisi, abrasi, erosi, hipersementosis.
-  4. Penyakit pulpa & periapikal (K04) - Pulpitis, nekrosis pulpa, abses periapikal.
-  5. Gingivitis & periodontitis (K05) - Radang gusi akut/kronis, poket parodontal.
-  6. Gangguan gingiva/alveolar (K06) - Resesi gingiva, pembesaran gusi.
-  7. Anomali dentofasial (K07) - Maloklusi, asimetri rahang.
-  8. Gangguan lain (K08) - Kehilangan gigi, sisa akar (radiks).
-  9. Kista regio oral (K09) - Kista odontogenik.
-  10. Penyakit rahang & kelenjar liur (K10-K11).
-  11. Stomatitis & lesi terkait (K12) - Sariawan (aphthous ulcer).
-  12. Penyakit bibir & mukosa oral (K13) - Leukoplakia, cheilitis.
-  13. Penyakit lidah (K14) - Glositis, lidah geografik, tongue tie.
-  Berikan diagnosa dengan menyertakan kode referensi ICD-10 yang sesuai.
-- JANGAN LEWATKAN SATU PUN BAGIAN YANG SAKIT. Jika ada banyak gigi yang bermasalah, masukkan SEMUANYA ke dalam array \`findings\`.
-- Berikan penilaian berdasarkan kemiripan visual dengan database patologi oral dan keluhan yang diberikan.
-- JIKA ADA PENYAKIT: Tentukan koordinat bounding box (kotak pembatas) area yang sakit dengan SANGAT PRESISI (margin error minimal, ketat pada area lesi). Gunakan skala 0-1000 untuk ymin, xmin, ymax, xmax.
-- JIKA SEHAT: Pastikan tidak ada kotak pembatas yang dihasilkan.
+3. Standar Nomenklatur & Notasi Gigi Internasional (FDI Two-Digit System)
+Pada setiap temuan gigi, sebutkan nomor gigi FDI dan nama anatomisnya:
+- Rahang Atas Kanan (Kuadran 1): Gigi 18 s/d 11 (Molar 3 s/d Insisivus Sentral)
+- Rahang Atas Kiri (Kuadran 2): Gigi 21 s/d 28 (Insisivus Sentral s/d Molar 3)
+- Rahang Bawah Kiri (Kuadran 3): Gigi 31 s/d 38 (Insisivus Sentral s/d Molar 3)
+- Rahang Bawah Kanan (Kuadran 4): Gigi 41 s/d 48 (Insisivus Sentral s/d Molar 3)
+- Gigi Susu / Desidui (Kuadran 5-8): Gigi 51-55, 61-65, 71-75, 81-85.
+(Jika lesi mengenai mukosa umum/gusi generalisata, isi tooth_number dengan "-" dan tooth_name dengan "Jaringan Lunak / Gingiva").
 
-4. Penanganan Kondisi Sehat (GIGI SEHAT)
-- Jika TIDAK ditemukan anomali atau penyakit pada SELURUH gigi:
-  - Nyatakan dengan jelas bahwa kondisi gigi "Gigi Sehat" dan "Tidak ditemukan sakit pada seluruh gambar".
-  - WAJIB tetap memberikan rekomendasi untuk melakukan pemeriksaan rutin (check-up) ke dokter gigi setiap 6 bulan sekali.
+4. Klasifikasi Kedalaman Karies & Patologi Oral (ICD-10 K00-K14)
+- Karies Gigi (K02):
+  * Karies Superfisialis (Email/Enamel) - K02.0: Baru mengenai lapisan luar email, bintik coklat/hitam/white spot, belum ngilu.
+  * Karies Media (Dentin) - K02.1: Menembus dentin, terbentuk kavitas/lubang, ngilu saat dingin/manis.
+  * Karies Profunda (Mendekati/Mengenai Pulpa) - K02.2 / K04.0: Lubang dalam, nyeri spontan/berdenyut.
+- Patologi Pulpa & Periapikal (K04):
+  * Pulpitis Reversibel / Ireversibel (K04.0), Nekrosis Pulpa / Gigi Mati (K04.1), Periodontitis Apikalis (K04.4), Abses Periapikal (K04.7).
+- Periodontologi & Jaringan Keras:
+  * Kalkulus / Karang Gigi (K03.6) - Supragingival & Subgingival.
+  * Gingivitis Akut/Kronis (K05.0) - Gusi berdarah, kemerahan.
+  * Periodontitis Kronis (K05.3) - Kegoyangan gigi, resesi gingiva (K06.0).
+  * Atrisi / Abrasi (K03.0 / K03.1).
+- Mukosa Oral: Ulkus Aftosa / Sariawan (K12.0), Leukoplakia (K13.2).
+- Kondisi Sehat: Z01.2 (Pemeriksaan Gigi Rutin).
 
-5. Referensi ICD-10 Lengkap untuk Kedokteran Gigi
-Gunakan kode-kode berikut untuk semua diagnosa (jika ada penyakit):
-- K00.0 Anodontia
-- K01.1 Impacted Teeth
-- K02.0 Caries (Enamel)
-- K02.1 Caries (Dentine)
-- K02.2 Caries (Cementum)
-- K03.0 Attrition
-- K03.1 Abrasion
-- K03.6 Calculus
-- K04.0 Pulpitis
-- K04.1 Necrosis of Pulp
-- K04.4 Apical Periodontitis
-- K04.7 Periapical Abscess
-- K05.0 Acute Gingivitis
-- K05.3 Chronic Periodontitis
-- K06.0 Gingival Recession
-- K07.6 TMJ Disorder
-- K12.0 Oral Aphthae
-- K13.2 Leukoplakia
-- Z01.2 Dental Examination (Untuk kondisi sehat)
+5. Triase Kegawatdaruratan Gigi (Red Flag Emergency Protocol)
+Waspadai tanda bahaya:
+- Pembengkakan wajah/pipi (edema fasial / risiko Angina Ludwig / selulitis).
+- Abses fluktuatif dengan demam tinggi.
+- Trismus (sulit/tidak bisa membuka mulut).
+- Nyeri berdenyut hebat terus-menerus tanpa henti.
+Jika tanda bahaya ada:
+- Set "is_emergency": true.
+- Set "urgency_level": "DARURAT".
+- Berikan peringatan keras di rekomendasi untuk SEGERA ke IGD Rumah Sakit atau Dokter Gigi Spesialis Bedah Mulut.
 
-6. Protokol Output Ganda (MANDATORY)
-Setiap akhir analisis, Anda HARUS menghasilkan dua blok output dalam format JSON tunggal.
-Format JSON yang WAJIB diikuti:
+6. Protokol Output JSON & Laporan Klinis Ganda (MANDATORY)
+Hasilkan output persis dalam format JSON:
 {
   "json_output": {
     "status": "success",
@@ -87,14 +70,17 @@ Format JSON yang WAJIB diikuti:
     "timestamp": "ISO-8601",
     "analysis_type": "MCU_VISION_NLP",
     "symptoms_analysis": {
-        "category": "...",
-        "interpretation": "..."
+      "category": "...",
+      "interpretation": "..."
     },
     "findings": [
       {
         "image_index": 0,
+        "tooth_number": "11 | 26 | 36 | 46 | dst",
+        "tooth_name": "Insisivus Sentral Atas | Molar Bawah | dst",
         "medis": "...",
         "icd10": "...",
+        "caries_depth": "Superfisialis (Email) | Media (Dentin) | Profunda | Non-Karies",
         "confidence_score": "0-100%",
         "lokasi_sakit": {
           "ymin": 0, 
@@ -105,20 +91,15 @@ Format JSON yang WAJIB diikuti:
       }
     ],
     "summary": {
-        "status": "SEHAT" | "SAKIT" | "INVALID",
-        "pesan": "..."
+      "status": "SEHAT" | "SAKIT" | "INVALID",
+      "pesan": "..."
     },
     "urgency_level": "NORMAL | PERLU_TINDAKAN | DARURAT",
-    "action_required": ["Scaling", "Tambal", "Rontgen", "Bedah", "Check-up Rutin"],
+    "action_required": ["Scaling", "Tambal Komposit", "Perawatan Saluran Akar", "Rontgen Periapikal/Panoramik", "Pencabutan", "Kontrol Rutin 6 Bulan"],
     "is_emergency": false
   },
-  "markdown_report": "### 👤 Data Pasien\n- **Nama:** ...\n- **Umur:** ... Tahun\n\n### 🗣️ Analisis Keluhan (NLP)\n- **Keluhan Pasien:** [Keluhan asli]\n- **Kategori & Interpretasi:** [Hasil analisis NLP AI]\n\n### 📋 Informasi Penyakit (Visual)\n- **Kondisi Terdeteksi:** [Sebutkan semua temuan atau \"Gigi Sehat\"]\n- **Kode ICD-10:** [List Kode ICD-10]\n- **Tingkat Keyakinan AI:** [X]%\n\n### 🔍 Penjelasan Untuk Anda\n[Berikan penjelasan detil untuk setiap temuan. Jika sehat, jelaskan bahwa tidak terlihat masalah visual namun tetap perlu dijaga].\n\n### 💡 Rekomendasi Dokter Gigi\n- **Apa yang harus diperiksa:** [Misal: Pemeriksaan rutin ke dokter gigi]\n- **Kemungkinan Tindakan:** [Misal: Scaling rutin atau Fluoride treatment]\n- **Instruksi Mandiri:** [Misal: Sikat gigi 2x sehari, flossing, kurangi gula]\n\n---\n*Disclaimer: Hasil ini dihasilkan oleh AI dan bertujuan sebagai skrining awal. Diagnosa final hanya dapat ditegakkan oleh Dokter Gigi melalui pemeriksaan fisik langsung.*"
+  "markdown_report": "### 👤 Data Pasien\n- **Nama:** ...\n- **Umur:** ... Tahun\n\n### 🗣️ Analisis Keluhan (NLP)\n- **Keluhan Pasien:** ...\n- **Interpretasi Klinis:** ...\n\n### 📋 Temuan Patologi Oral & Odontogram\n- **Kondisi Terdeteksi:** [Sebutkan temuan lengkap beserta nomor gigi FDI]\n- **Kode ICD-10:** [Daftar kode ICD-10]\n- **Tingkat Urgensi:** [Normal / Perlu Tindakan / Darurat]\n\n### 🔍 Penjelasan Medis Detail\n[Penjelasan komprehensif bagi pasien mengenai apa yang terjadi pada gigi/gusi]\n\n### 💡 Rencana Perawatan & Rekomendasi Dokter Gigi\n- **Tindakan Klinis yang Dianjurkan:** [Scaling / Restorasi / Foto Rontgen, dll]\n- **Instruksi Perawatan Mandiri di Rumah:** [Teknik sikat gigi, pasta berfluoride, dental floss, pembatasan konsumsi manis]\n\n---\n*Disclaimer: Hasil skrining AI dr Gigi AI ini berfungsi sebagai deteksi dini dan edukasi klinis, bukan pengganti diagnosis definitif dari Dokter Gigi berizin.*"
 }
-
-Catatan untuk lokasi_sakit:
-- Jika sehat atau invalid, kosongkan array findings atau isi lokasi_sakit dengan 0.
-- Jika ada penyakit, isi dengan koordinat area sakit (skala 0-1000).
-- "image_index" WAJIB diisi integer (0, 1, 2...) sesuai urutan gambar yang dianalisis.
 `;
 
 type MediaItem = {
@@ -270,7 +251,7 @@ export default function CheckupPage() {
     try {
       let finalPatientId = selectedPatientId;
       if (finalPatientId === 'new') {
-         finalPatientId = Math.random().toString(36).substring(7);
+         finalPatientId = generateSecureId('pat');
          await savePatient({
              id: finalPatientId,
              name: patientName || 'Pasien',
@@ -282,20 +263,20 @@ export default function CheckupPage() {
 
       // Handle backward compatibility or new structure
       const diagnosa = data.json_output.findings && data.json_output.findings.length > 0 
-        ? data.json_output.findings.map((f: any) => f.medis).join(', ')
+        ? data.json_output.findings.map((f: any) => `${f.tooth_number ? `[Gigi ${f.tooth_number}] ` : ''}${f.medis}`).join(', ')
         : (data.json_output.summary?.status === 'SEHAT' ? 'Gigi Sehat' : 'Tidak Terdeteksi');
 
       const icd10 = data.json_output.findings && data.json_output.findings.length > 0
-        ? data.json_output.findings.map((f: any) => f.icd10).join(', ')
+        ? data.json_output.findings.map((f: any) => f.icd10).filter(Boolean).join(', ')
         : (data.json_output.summary?.status === 'SEHAT' ? 'Z01.2' : '-');
 
       const newRecord = {
-        id: Math.random().toString(36).substring(7),
+        id: generateSecureId('rec'),
         timestamp: new Date().toISOString(),
         patient_id: finalPatientId,
         type: 'Dental Check-up Umum',
         diagnosa: diagnosa,
-        icd10: icd10,
+        icd10: icd10 || 'Z01.2',
         confidence: data.json_output.findings?.[0]?.confidence_score || '100%',
         image_url: image, // Save the first image as thumbnail/reference
         json_output: { ...data.json_output, patient_id: finalPatientId, patient_name: patientName || 'Pasien' },
@@ -806,22 +787,36 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
         {/* Results Section */}
         {result && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {!user ? (
-                <div className="bg-white p-8 rounded-2xl text-center shadow-lg border border-slate-200">
-                    <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <CheckCircle className="text-emerald-500" size={32} />
-                    </div>
-                    <h2 className="text-xl font-bold text-slate-800 mb-2">Pemeriksaan Berhasil Selesai!</h2>
-                    <p className="text-slate-600 mb-6 max-w-md mx-auto">
-                        AI telah berhasil menyelesaikan analisis dari foto gigi Anda. 
-                        Silakan Masuk (Login) atau Daftar terlebih dahulu untuk melihat hasil lengkapnya secara gratis.
-                    </p>
-                    <div className="flex justify-center">
-                        <LoginButton />
-                    </div>
+            {!user && (
+              <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-blue-50 border border-emerald-200 rounded-2xl p-5 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-emerald-950 shadow-sm" data-html2canvas-ignore>
+                <div className="flex items-center gap-3.5">
+                  <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-base shrink-0 shadow-sm">
+                    ✓
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm text-emerald-900">Pemeriksaan Selesai & Tersimpan Lokal (Mode Tamu)</p>
+                    <p className="text-xs text-slate-600 mt-0.5">Hasil telah diamankan di browser ini. Masuk akun dengan Google untuk mencadangkan ke Rekam Medis Cloud dan sinkronisasi SATUSEHAT Kemenkes.</p>
+                  </div>
                 </div>
-            ) : (
-            <div ref={resultContainerRef} className="space-y-8 bg-white p-8 rounded-2xl">
+                <LoginButton />
+              </div>
+            )}
+
+            <div ref={resultContainerRef} className="space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+            
+            {/* Emergency Red Flag Alert */}
+            {(result.json_output?.is_emergency || result.json_output?.urgency_level === 'DARURAT') && (
+              <div className="bg-red-50 border-2 border-red-500 text-red-900 rounded-2xl p-5 flex items-start gap-4 shadow-sm" data-html2canvas-ignore>
+                <AlertCircle className="text-red-600 shrink-0 mt-0.5" size={26} />
+                <div>
+                  <h4 className="font-bold text-base text-red-800">PERINGATAN TRIASE GAWAT DARURAT GIGI</h4>
+                  <p className="text-xs sm:text-sm text-red-700 mt-1 leading-relaxed">
+                    AI mendeteksi kemungkinan kegawatdaruratan klinis (seperti pembengkakan wajah/edema fasial, abses periapikal aktif, atau nyeri berdenyut parah). 
+                    <strong> Sangat dianjurkan segera mengunjungi IGD Rumah Sakit terdekat atau berkonsultasi langsung dengan Dokter Gigi Spesialis.</strong>
+                  </p>
+                </div>
+              </div>
+            )}
             
             {/* Report Header for PDF */}
             <div className="border-b-2 border-slate-800 pb-6 mb-6">
@@ -883,8 +878,11 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
                                         className="absolute border-2 border-red-500 shadow-[0_0_5px_rgba(255,0,0,0.5)]"
                                         style={style}
                                     >
-                                        <span className="absolute -top-6 left-0 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm whitespace-nowrap z-10">
-                                            {finding.medis}
+                                        <span className="absolute -top-6 left-0 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-md whitespace-nowrap z-10 flex items-center gap-1">
+                                            {finding.tooth_number && finding.tooth_number !== '-' ? (
+                                                <span className="bg-white text-red-700 px-1 rounded text-[9px] font-extrabold">FDI {finding.tooth_number}</span>
+                                            ) : null}
+                                            <span>{finding.medis}</span>
                                         </span>
                                     </div>
                                 );
@@ -1000,8 +998,8 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
               </Link>
             </div>
 
-          </div>
-          )}
+            </div>
+
           </div>
         )}
       </main>
