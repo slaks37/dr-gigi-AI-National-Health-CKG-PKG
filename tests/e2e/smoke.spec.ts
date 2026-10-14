@@ -24,3 +24,21 @@ test('clinical photo paths visibly report review gate', async ({ page }) => {
     await page.goto(path); await expect(page.getByRole('status').filter({ hasText: 'REQUIRES_REVIEW' })).toBeVisible();
   }
 });
+
+test('adult emergency triage works before uploads or authentication',async({page})=>{
+ await page.goto('/checkup');
+ await page.getByLabel('Sulit bernapas',{exact:true}).selectOption('YES');
+ await expect(page.getByTestId('triage-alert')).toContainText('Segera ke IGD');
+ await expect(page.getByLabel('Foto skrining oral',{exact:true})).toBeDisabled();
+ await expect(page.getByRole('button',{name:'Simpan skrining terstruktur'})).toBeDisabled();
+});
+test('pediatric questionnaire preserves unknown answers and never invents healthy result',async({page})=>{
+ await page.goto('/checkup-anak');
+ await expect(page.getByLabel('Nyeri gigi/mulut',{exact:true})).toHaveValue('UNKNOWN');
+ await expect(page.getByTestId('triage-alert')).toContainText('Lengkapi pertanyaan tanda bahaya');
+ await expect(page.getByTestId('structured-result')).toHaveCount(0);
+});
+test('review and annotation pages expose readiness truthfully without private source photos',async({page})=>{
+ await page.goto('/clinical-review');await expect(page.getByRole('heading',{name:'Tinjauan dokter gigi',exact:true})).toBeVisible();await expect(page.getByText('Masuk akun dokter/administrator',{exact:false})).toBeVisible();
+ await page.goto('/dataset-review');await expect(page.getByText('kelengkapan total belum disertifikasi',{exact:false})).toBeVisible();await expect(page.getByRole('img')).toHaveCount(0);
+});

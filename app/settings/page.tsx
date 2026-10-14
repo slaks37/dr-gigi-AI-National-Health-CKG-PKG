@@ -57,6 +57,7 @@ export default function SettingsPage() {
         <h2 className="font-bold text-xl">Status integrasi</h2>
         <p>SATUSEHAT: NOT_CONFIGURED. Tidak ada data yang dikirim. Pratinjau FHIR lokal tersedia untuk administrator; penerimaan server Kemenkes belum diuji.</p>
         <p>IoT: DISCONNECTED. Belum ada perangkat terverifikasi atau pengukuran diterima.</p>
+        <p>Skrining gejala dan pemeriksaan berkas foto tersedia pada halaman dewasa/anak. Aturan klinis masih memerlukan persetujuan profesional.</p>
         <p>Analisis foto/video dan konsultasi AI: REQUIRES_REVIEW. Penggunaan klinis dinonaktifkan sampai validasi dan kontrol penyedia tersedia.</p>
         <p>Kredensial integrasi hanya dikelola pada lingkungan server oleh administrator.</p>
       </section>

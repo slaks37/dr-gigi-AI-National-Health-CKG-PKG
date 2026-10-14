@@ -45,6 +45,10 @@ describe('Firestore authorization with synthetic identities', () => {
     await assertFails(updateDoc(doc(db, 'patients/p'), { userId: 'a' }));
     await assertFails(updateDoc(doc(db, 'patients/p'), { assignedClinicianUids: ['attacker'] }));
   });
+  it('blocks direct browser approval, annotation, quota and reviewer assignment writes', async () => {
+    const db = env.authenticatedContext('admin', { role: 'admin' }).firestore();
+    for (const collection of ['datasetEntries','datasetAnnotations','datasetLabelReviews','clinicalReviews','screeningQuotas']) await assertFails(setDoc(doc(db, collection+'/fake'), { role: 'admin', verification_status: 'APPROVED' }));
+  });
   it('makes audit events append-only to browser users', async () => {
     await assertFails(setDoc(doc(env.authenticatedContext('admin', { role: 'admin' }).firestore(), 'auditLogs/fake'), { actorUid: 'b' }));
   });

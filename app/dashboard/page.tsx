@@ -309,6 +309,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
       <div role="status" className="bg-amber-50 border border-amber-300 p-4 m-4 rounded-xl">Rekam tersimpan adalah catatan/draf yang belum diverifikasi dokter. Hasil AI dan umpan balik pengguna tidak membuktikan diagnosis atau akurasi klinis. Data SQL lama perlu rekonsiliasi oleh administrator.</div>
+      <div className="max-w-6xl mx-auto px-4 flex gap-4"><Link href="/clinical-review" className="text-emerald-700 underline">Tinjauan dokter</Link><Link href="/dataset-review" className="text-emerald-700 underline">Tinjauan dataset berizin</Link></div>
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
