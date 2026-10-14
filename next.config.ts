@@ -2,12 +2,8 @@ import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  serverExternalPackages: ['heic-decode'],
+  outputFileTracingIncludes: { '/api/screenings': ['./node_modules/heic-decode/**/*', './node_modules/libheif-js/**/*'] },
   experimental: {
     cpus: 1,
     memoryBasedWorkersCount: true,

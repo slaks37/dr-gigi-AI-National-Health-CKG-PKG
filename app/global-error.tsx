@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 export default function GlobalError({
   error,
@@ -27,12 +28,12 @@ export default function GlobalError({
             >
               Coba Lagi
             </button>
-            <a
+            <Link
               href="/"
               className="px-6 py-2.5 bg-white text-slate-700 border border-slate-300 rounded-xl font-medium hover:bg-slate-50 transition-colors"
             >
               Kembali ke Beranda
-            </a>
+            </Link>
           </div>
         </div>
       </body>

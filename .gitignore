@@ -5,3 +5,16 @@ coverage/
 *.log
 .env*
 !.env.example
+
+*.tsbuildinfo
+firestore-debug.log
+ui-debug.log
+playwright-report/
+test-results/
+
+# Private dataset artifacts must remain outside the source repository.
+private/
+dataset-private/
+checkpoints/
+*.safetensors
+*.pt

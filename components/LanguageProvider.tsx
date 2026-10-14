@@ -1,5 +1,5 @@
 'use client';
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 type Language = 'id' | 'en';
 
@@ -23,15 +23,14 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
       // we can initialize the state lazily if we were not using SSR. Since this is Next.js,
       // we can just suppress the warning or use a standard pattern.
       // Let's just suppress the warning for this specific line since it's a standard pattern for client-side hydration.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLanguage(savedLang);
     }
   }, []);
 
-  const handleSetLanguage = (lang: Language) => {
+  const handleSetLanguage = useCallback((lang: Language) => {
     setLanguage(lang);
     localStorage.setItem('app_language', lang);
-  };
+  }, []);
 
   const t = (key: string): string => {
     const keys = key.split('.');

@@ -45,7 +45,7 @@ export async function getOrCreateUser(userData: {
 
     return inserted[0];
   } catch (error) {
-    console.error('Error in getOrCreateUser repository:', error);
+    console.error('Error in getOrCreateUser repository:');
     throw new Error('Failed to synchronize user profile', { cause: error });
   }
 }
@@ -86,7 +86,7 @@ export async function logActivity(logData: {
 
     return res[0];
   } catch (error) {
-    console.error('Error logging activity to SQL:', error);
+    console.error('Error logging activity to SQL:');
     // Don't crash caller if logging encounters transient issue
     return null;
   }
@@ -123,6 +123,7 @@ export async function saveMedicalRecord(record: {
       .limit(1);
 
     if (existing.length > 0) {
+      if (existing[0].userUid !== record.userUid) throw new Error('Record ownership mismatch');
       const updated = await db
         .update(medicalRecords)
         .set({
@@ -157,14 +158,14 @@ export async function saveMedicalRecord(record: {
 
     return inserted[0];
   } catch (error) {
-    console.error('Error saving medical record to SQL:', error);
+    console.error('Error saving medical record to SQL:');
     throw new Error('Failed to save medical record to database', { cause: error });
   }
 }
 
 export async function getMedicalRecords(userUid?: string, role?: string) {
   try {
-    if (role === 'admin' || role === 'doctor') {
+    if (role === 'admin') {
       return await db
         .select()
         .from(medicalRecords)
@@ -179,14 +180,14 @@ export async function getMedicalRecords(userUid?: string, role?: string) {
       .where(eq(medicalRecords.userUid, userUid))
       .orderBy(desc(medicalRecords.createdAt));
   } catch (error) {
-    console.error('Error getting medical records from SQL:', error);
-    return [];
+    console.error('Error getting medical records from SQL:');
+    throw new Error('Legacy database unavailable');
   }
 }
 
 export async function deleteMedicalRecord(recordId: string, userUid?: string, role?: string) {
   try {
-    if (role === 'admin' || role === 'doctor') {
+    if (role === 'admin') {
       await db
         .delete(medicalRecords)
         .where(eq(medicalRecords.recordId, recordId));
@@ -205,8 +206,8 @@ export async function deleteMedicalRecord(recordId: string, userUid?: string, ro
       );
     return true;
   } catch (error) {
-    console.error('Error deleting medical record from SQL:', error);
-    return false;
+    console.error('Error deleting medical record from SQL:');
+    throw new Error('Legacy database unavailable');
   }
 }
 
@@ -241,6 +242,7 @@ export async function saveAppointmentSql(apt: {
       .limit(1);
 
     if (existing.length > 0) {
+      if (existing[0].userUid !== apt.userUid) throw new Error('Appointment ownership mismatch');
       const updated = await db
         .update(appointments)
         .set({
@@ -275,14 +277,14 @@ export async function saveAppointmentSql(apt: {
 
     return inserted[0];
   } catch (error) {
-    console.error('Error saving appointment to SQL:', error);
+    console.error('Error saving appointment to SQL:');
     throw new Error('Failed to save appointment to database', { cause: error });
   }
 }
 
 export async function getAppointmentsSql(userUid?: string, role?: string) {
   try {
-    if (role === 'admin' || role === 'doctor') {
+    if (role === 'admin') {
       return await db
         .select()
         .from(appointments)
@@ -297,8 +299,8 @@ export async function getAppointmentsSql(userUid?: string, role?: string) {
       .where(eq(appointments.userUid, userUid))
       .orderBy(desc(appointments.createdAt));
   } catch (error) {
-    console.error('Error getting appointments from SQL:', error);
-    return [];
+    console.error('Error getting appointments from SQL:');
+    throw new Error('Legacy database unavailable');
   }
 }
 
@@ -311,8 +313,8 @@ export async function getRecentActivityLogs(limitCount = 50) {
       .orderBy(desc(activityLogs.createdAt))
       .limit(limitCount);
   } catch (error) {
-    console.error('Error fetching activity logs from SQL:', error);
-    return [];
+    console.error('Error fetching activity logs from SQL:');
+    throw new Error('Legacy database unavailable');
   }
 }
 
@@ -324,7 +326,7 @@ export async function getAllUsersSql() {
       .from(users)
       .orderBy(desc(users.lastActive));
   } catch (error) {
-    console.error('Error fetching all users from SQL:', error);
-    return [];
+    console.error('Error fetching all users from SQL:');
+    throw new Error('Legacy database unavailable');
   }
 }
