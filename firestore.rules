@@ -1,110 +1,52 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
+    function signedIn() { return request.auth != null; }
+    function admin() { return signedIn() && request.auth.token.get('role', '') == 'admin'; }
+    function doctor() { return signedIn() && request.auth.token.get('role', '') == 'doctor'; }
+    function access(data) {
+      return signedIn() && (data.userId == request.auth.uid || admin() ||
+        (doctor() && data.get('assignedClinicianUids', []).hasAny([request.auth.uid])));
     }
-
-    function isSignedIn() { return request.auth != null; }
-    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
-    function incoming() { return request.resource.data; }
-    function existing() { return resource.data; }
-    
-    function isAdmin() {
-      return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    match /users/{uid} {
+      allow get: if signedIn() && (request.auth.uid == uid || admin());
+      allow list: if admin();
+      // Roles are provisioned as Firebase custom claims by a trusted operator.
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['uid', 'email', 'displayName', 'createdAt', 'role'])
+        && request.resource.data.uid == uid && request.resource.data.role == 'patient'
+        && request.resource.data.email == request.auth.token.email;
+      allow update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName']);
+      allow delete: if false;
     }
-    
-    function isDoctor() {
-      return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'doctor';
+    match /records/{id} {
+      allow read: if access(resource.data);
+      // All clinical mutations pass through the verified server transaction and audit trail.
+      allow write: if false;
     }
-
-    function isValidUser(data) {
-      return data.keys().hasAll(['uid', 'email', 'role'])
-        && data.uid == request.auth.uid 
-        && data.role in ['admin', 'doctor', 'patient']
-        && (data.role != 'admin' || (request.auth.token.email != null && request.auth.token.email.lower() == 'stefenlaksana.sl@gmail.com'));
+    match /appointments/{id} {
+      allow read: if access(resource.data);
+      allow write: if false;
     }
-
-    match /users/{userId} {
-      allow read: if isSignedIn();
-      allow list: if isAdmin() || isDoctor() || request.auth.uid == userId;
-      allow write: if isSignedIn() && request.auth.uid == userId;
-      allow delete: if isAdmin();
+    match /patients/{id} {
+      allow read: if access(resource.data);
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid
+        && request.resource.data.id == id
+        && request.resource.data.keys().hasOnly(['id', 'name', 'userId', 'dateOfBirth', 'gender', 'createdAt']);
+      allow update: if access(resource.data)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'dateOfBirth', 'gender']);
+      allow delete: if signedIn() && (resource.data.userId == request.auth.uid || admin());
     }
-
-    function isValidClinic(data) {
-      return data.keys().hasAll(['id', 'name', 'address']);
+    match /preferences/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
     }
-
-    match /clinics/{clinicId} {
-      allow read: if isSignedIn();
-      allow list: if isSignedIn();
-      allow create: if isAdmin() && isValidId(clinicId) && isValidClinic(incoming());
-      allow update: if isAdmin() && isValidClinic(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['name', 'address', 'lat', 'lng', 'createdAt']);
-      allow delete: if isAdmin();
+    match /clinics/{id} {
+      allow read: if signedIn();
+      allow write: if false;
     }
-
-    function isValidRecord(data) {
-      return data.keys().hasAll(['userId', 'id', 'timestamp'])
-        && data.userId == request.auth.uid
-        && data.id is string && data.id.size() <= 128
-        && data.timestamp is string && data.timestamp.size() <= 64;
-    }
-
-    match /records/{recordId} {
-      allow read: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin() || isDoctor());
-      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin() || isDoctor());
-      allow create: if isSignedIn() 
-        && isValidId(recordId) 
-        && isValidRecord(incoming());
-      allow update: if isSignedIn()
-        && isValidRecord(incoming())
-        && (existing().userId == request.auth.uid || isDoctor() || isAdmin())
-        && incoming().userId == existing().userId
-        && incoming().diff(existing()).affectedKeys().hasOnly(['is_accurate', 'feedback_notes', 'diagnosa', 'icd10', 'confidence', 'image_url', 'json_output', 'markdown_report', 'patient_id', 'type']);
-      allow delete: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin());
-    }
-
-    function isValidAppointment(data) {
-      return data.keys().hasAll(['userId', 'id', 'date'])
-        && (data.userId == request.auth.uid || isAdmin() || isDoctor())
-        && data.id is string && data.id.size() <= 128
-        && data.date is string && data.date.size() <= 64;
-    }
-
-    match /appointments/{appointmentId} {
-      allow read: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin() || isDoctor());
-      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin() || isDoctor());
-      allow create: if isSignedIn() 
-        && isValidId(appointmentId) 
-        && isValidAppointment(incoming());
-      allow update: if isSignedIn()
-        && isValidAppointment(incoming())
-        && (existing().userId == request.auth.uid || isAdmin() || isDoctor())
-        && incoming().userId == existing().userId
-        && incoming().diff(existing()).affectedKeys().hasOnly(['patient_id', 'patient_name', 'date', 'doctor', 'notes', 'created_at']);
-      allow delete: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin());
-    }
-
-    function isValidPatient(data) {
-      return data.keys().hasAll(['id', 'name', 'userId'])
-        && (data.userId == request.auth.uid || isAdmin() || isDoctor())
-        && data.id is string && data.id.size() <= 128
-        && data.name is string && data.name.size() <= 128;
-    }
-
-    match /patients/{patientId} {
-      allow read: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin() || isDoctor());
-      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin() || isDoctor());
-      allow create: if isSignedIn() 
-        && isValidId(patientId) 
-        && isValidPatient(incoming());
-      allow update: if isSignedIn()
-        && isValidPatient(incoming())
-        && (existing().userId == request.auth.uid || isAdmin() || isDoctor())
-        && incoming().userId == existing().userId
-        && incoming().diff(existing()).affectedKeys().hasOnly(['name', 'dateOfBirth', 'gender', 'createdAt']);
-      allow delete: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin());
-    }
+    match /auditLogs/{id} { allow read: if admin(); allow write: if false; }
+    match /{document=**} { allow read, write: if false; }
   }
 }

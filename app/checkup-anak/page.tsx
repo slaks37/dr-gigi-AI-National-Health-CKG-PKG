@@ -1,4 +1,5 @@
 'use client';
+import { boxStyle, screeningState } from '../../src/server/analysis-state';
 
 import { useState, useRef, useEffect } from 'react';
 import { Camera, Upload, RefreshCw, FileText, Download, ChevronDown, ChevronUp, AlertCircle, CheckCircle, Activity, X, Trash2, LayoutDashboard, FileJson, ArrowLeft, MessageSquareText, Sun, Moon, Hourglass, Wind, Shield, Sparkles } from 'lucide-react';
@@ -47,7 +48,7 @@ HANYA JIKA GAMBAR VALID (Gigi/Mulut):
 
 4. Penanganan Kondisi Sehat (GIGI SEHAT)
 - Jika TIDAK ditemukan anomali atau penyakit pada SELURUH gigi:
-  - Nyatakan dengan jelas bahwa kondisi gigi "Gigi Sehat" dan "Tidak ditemukan sakit pada seluruh gambar".
+  - Nyatakan dengan jelas bahwa kondisi gigi "Tidak tampak temuan visual; perlu pemeriksaan dokter" dan "Tidak ditemukan sakit pada seluruh gambar".
   - WAJIB tetap memberikan rekomendasi untuk melakukan pemeriksaan rutin (check-up) ke dokter gigi anak setiap 6 bulan sekali dan edukasi sikat gigi.
 
 5. Referensi ICD-10 Lengkap untuk Kedokteran Gigi Anak
@@ -101,7 +102,7 @@ Format JSON yang WAJIB diikuti:
     "action_required": ["Edukasi Sikat Gigi", "Aplikasi Fluoride", "Tambal", "Cabut Gigi Susu", "Check-up Rutin"],
     "is_emergency": false
   },
-  "markdown_report": "### 👤 Data Pasien Anak\n- **Nama:** ...\n- **Umur:** ... Tahun\n\n### 🗣️ Analisis Keluhan (NLP)\n- **Keluhan Orang Tua/Anak:** [Keluhan asli]\n- **Kategori & Interpretasi:** [Hasil analisis NLP AI]\n\n### 📋 Informasi Penyakit (Visual)\n- **Kondisi Terdeteksi:** [Sebutkan semua temuan atau \"Gigi Sehat\"]\n- **Kode ICD-10:** [List Kode ICD-10]\n- **Tingkat Keyakinan AI:** [X]%\n\n### 🔍 Penjelasan Untuk Orang Tua\n[Berikan penjelasan detil untuk setiap temuan dengan bahasa yang ramah anak dan mudah dipahami orang tua. Jika sehat, jelaskan bahwa tidak terlihat masalah visual namun tetap perlu dijaga].\n\n### 💡 Rekomendasi Dokter Gigi Anak\n- **Apa yang harus diperiksa:** [Misal: Pemeriksaan rutin ke dokter gigi anak]\n- **Kemungkinan Tindakan:** [Misal: Aplikasi Fluoride, Fissure Sealant, atau Tambal]\n- **Instruksi Mandiri di Rumah:** [Misal: Orang tua membantu sikat gigi 2x sehari, kurangi susu botol saat tidur, kurangi makanan manis]\n\n---\n*Disclaimer: Hasil ini dihasilkan oleh AI dan bertujuan sebagai skrining awal. Diagnosa final hanya dapat ditegakkan oleh Dokter Gigi melalui pemeriksaan fisik langsung.*"
+  "markdown_report": "### 👤 Data Pasien Anak\n- **Nama:** ...\n- **Umur:** ... Tahun\n\n### 🗣️ Analisis Keluhan (NLP)\n- **Keluhan Orang Tua/Anak:** [Keluhan asli]\n- **Kategori & Interpretasi:** [Hasil analisis NLP AI]\n\n### 📋 Informasi Penyakit (Visual)\n- **Kondisi Terdeteksi:** [Sebutkan semua temuan atau \"Tidak tampak temuan visual; perlu pemeriksaan dokter\"]\n- **Kode ICD-10:** [List Kode ICD-10]\n- **Tingkat Keyakinan AI:** [X]%\n\n### 🔍 Penjelasan Untuk Orang Tua\n[Berikan penjelasan detil untuk setiap temuan dengan bahasa yang ramah anak dan mudah dipahami orang tua. Jika sehat, jelaskan bahwa tidak terlihat masalah visual namun tetap perlu dijaga].\n\n### 💡 Rekomendasi Dokter Gigi Anak\n- **Apa yang harus diperiksa:** [Misal: Pemeriksaan rutin ke dokter gigi anak]\n- **Kemungkinan Tindakan:** [Misal: Aplikasi Fluoride, Fissure Sealant, atau Tambal]\n- **Instruksi Mandiri di Rumah:** [Misal: Orang tua membantu sikat gigi 2x sehari, kurangi susu botol saat tidur, kurangi makanan manis]\n\n---\n*Disclaimer: Hasil ini dihasilkan oleh AI dan bertujuan sebagai skrining awal. Diagnosa final hanya dapat ditegakkan oleh Dokter Gigi melalui pemeriksaan fisik langsung.*"
 }
 
 Catatan untuk lokasi_sakit:
@@ -129,11 +130,19 @@ export default function CheckupAnakPage() {
   const [loadingStep, setLoadingStep] = useState('');
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [result, setResult] = useState<any | null>(null);
+  const [savedRecordId, setSavedRecordId] = useState<string | null>(null);
   const [showJson, setShowJson] = useState(false);
   const [feedbackGiven, setFeedbackGiven] = useState<'yes' | 'no' | null>(null);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+  const mediaItemsRef = useRef<MediaItem[]>([]);
+  useEffect(() => { mediaItemsRef.current = mediaItems; }, [mediaItems]);
+  useEffect(() => () => {
+    mediaStreamRef.current?.getTracks().forEach(track => track.stop());
+    mediaItemsRef.current.forEach(item => { if (item.url.startsWith('blob:')) URL.revokeObjectURL(item.url); });
+  }, []);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
   const reportRef = useRef<HTMLDivElement>(null);
@@ -150,6 +159,8 @@ export default function CheckupAnakPage() {
       }));
       setMediaItems(prev => [...prev, ...newItems]);
       setResult(null);
+    setSavedRecordId(null);
+    setFeedbackGiven(null);
     }
   };
 
@@ -160,10 +171,11 @@ export default function CheckupAnakPage() {
         video: { facingMode: facingMode } 
       });
       if (videoRef.current) {
+        mediaStreamRef.current = stream;
         videoRef.current.srcObject = stream;
       }
     } catch (err) {
-      console.error("Error accessing camera:", err);
+      console.error("Error accessing camera:");
       alert("Tidak dapat mengakses kamera. Pastikan izin kamera diberikan.");
       setIsCameraOpen(false);
     }
@@ -182,10 +194,11 @@ export default function CheckupAnakPage() {
           video: { facingMode: newMode } 
         });
         if (videoRef.current) {
-          videoRef.current.srcObject = stream;
+          mediaStreamRef.current = stream;
+        videoRef.current.srcObject = stream;
         }
       } catch (err) {
-        console.error("Error switching camera:", err);
+        console.error("Error switching camera:");
       }
     }
   };
@@ -219,7 +232,11 @@ export default function CheckupAnakPage() {
   };
 
   const removeMedia = (id: string) => {
-    setMediaItems(prev => prev.filter(item => item.id !== id));
+    setMediaItems(prev => {
+      const item = prev.find(item => item.id === id);
+      if (item?.url.startsWith('blob:')) URL.revokeObjectURL(item.url);
+      return prev.filter(item => item.id !== id);
+    });
   };
 
   const fileToGenerativePart = async (item: MediaItem): Promise<{ data: string; mimeType: string }> => {
@@ -231,7 +248,7 @@ export default function CheckupAnakPage() {
       // Handle backward compatibility or new structure
       const diagnosa = data.json_output.findings && data.json_output.findings.length > 0 
         ? data.json_output.findings.map((f: any) => f.medis).join(', ')
-        : (data.json_output.summary?.status === 'SEHAT' ? 'Gigi Sehat' : 'Tidak Terdeteksi');
+        : (data.json_output.summary?.status === 'SEHAT' ? 'Tidak tampak temuan visual; perlu pemeriksaan dokter' : 'Tidak Terdeteksi');
 
       const icd10 = data.json_output.findings && data.json_output.findings.length > 0
         ? data.json_output.findings.map((f: any) => f.icd10).filter(Boolean).join(', ')
@@ -244,14 +261,16 @@ export default function CheckupAnakPage() {
         type: 'Dental Check-up Anak',
         diagnosa: diagnosa,
         icd10: icd10 || 'Z01.2',
-        confidence: data.json_output.findings?.[0]?.confidence_score || '100%',
+        confidence: 'Belum tervalidasi',
         image_url: image, // Save the first image as thumbnail/reference
         json_output: data.json_output,
         markdown_report: data.markdown_report
       };
-      await saveRecord(newRecord);
+      const id = await saveRecord(newRecord);
+      setSavedRecordId(id);
     } catch (e) {
-      console.error("Failed to save to history:", e);
+      setSavedRecordId(null);
+      setAnalysisError('Hasil belum tersimpan. Periksa akun dan koneksi, lalu coba lagi.');
     }
   };
 
@@ -261,6 +280,8 @@ export default function CheckupAnakPage() {
     setLoading(true);
     setAnalysisError(null);
     setResult(null);
+    setSavedRecordId(null);
+    setFeedbackGiven(null);
     setLoadingStep('Mengompresi dan mengoptimalkan gambar...');
 
     const controller = new AbortController();
@@ -290,8 +311,8 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
       }, controller.signal);
 
       setLoadingStep('Menyusun rekam medis digital...');
-      console.log("Raw response:", responseText);
-      
+
+
       if (!responseText) {
         throw new Error("AI tidak mengembalikan hasil analisis.");
       }
@@ -311,7 +332,7 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
           await saveToHistory(parsedResult, mediaItems[0].url);
         }
       } catch (e) {
-        console.error("Failed to parse JSON:", e);
+        console.error("Failed to parse JSON:");
         setResult({
           markdown_report: responseText || "Error: Format respon tidak dapat dibaca",
           json_output: { status: "error", message: "Gagal mengurai format JSON terstruktur" }
@@ -319,7 +340,7 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
       }
 
     } catch (error: any) {
-      console.error("Analysis failed:", error);
+      console.error("Analysis failed:");
       
       let errorMessage = "Terjadi kesalahan saat menganalisis media. Silakan coba lagi.";
       
@@ -346,9 +367,11 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
   };
 
   const handleFeedback = async (isAccurate: boolean) => {
-    if (!result || !result.id) return;
-    setFeedbackGiven(isAccurate ? 'yes' : 'no');
-    await updateRecord(result.id, { is_accurate: isAccurate });
+    if (!savedRecordId) { setAnalysisError('hasil belum tersimpan. Coba simpan kembali.'); return; }
+    try {
+      await updateRecord(savedRecordId, { is_accurate: isAccurate });
+      setFeedbackGiven(isAccurate ? 'yes' : 'no');
+    } catch { setAnalysisError('Umpan balik gagal disimpan. Silakan coba lagi.'); }
   };
 
   const exportPDF = async () => {
@@ -473,7 +496,7 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
 
       pdf.save(`Laporan-dr-Gigi-AI-Anak-${new Date().toISOString().split('T')[0]}.pdf`);
     } catch (error) {
-      console.error("Failed to export PDF:", error);
+      console.error("Failed to export PDF:");
       alert("Gagal mengunduh PDF. Pastikan gambar sudah termuat sepenuhnya.");
     } finally {
         if (btn) {
@@ -495,27 +518,11 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
   };
 
   // Helper to calculate box style
-  const getBoxStyle = (box: any) => {
-    if (!box || (box.ymin === 0 && box.ymax === 0 && box.xmin === 0 && box.xmax === 0)) return null;
-    // Gemini returns 0-1000 scale
-    const top = (box.ymin / 1000) * 100;
-    const left = (box.xmin / 1000) * 100;
-    const height = ((box.ymax - box.ymin) / 1000) * 100;
-    const width = ((box.xmax - box.xmin) / 1000) * 100;
-    
-    // Mirror the bounding box horizontally because the image is mirrored
-    const mirroredLeft = 100 - (left + width);
-
-    return {
-      top: top + '%',
-      left: mirroredLeft + '%',
-      height: height + '%',
-      width: width + '%'
-    };
-  };
+  const getBoxStyle = boxStyle;
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
+      <div role="status" className="bg-amber-50 border border-amber-300 p-4 m-4 rounded-xl text-amber-900">Analisis foto klinis dinonaktifkan (REQUIRES_REVIEW). Belum tersedia validasi klinis. Foto tidak memastikan kesehatan gigi; lakukan pemeriksaan dokter.</div>
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2 text-slate-600 hover:text-emerald-600 transition-colors">
@@ -591,7 +598,7 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
           {/* Camera Viewfinder */}
           {isCameraOpen && (
             <div className="relative rounded-xl overflow-hidden bg-black aspect-video mb-6">
-              <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover scale-x-[-1]" />
+              <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover " />
               <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-6 items-center">
                 <button 
                   onClick={capturePhoto}
@@ -666,7 +673,7 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
               <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {mediaItems.map((item) => (
                   <div key={item.id} className="relative flex-none w-32 h-32 sm:w-40 sm:h-40 snap-center rounded-lg overflow-hidden border border-slate-200 bg-slate-100 group">
-                    <Image src={item.url} alt="Preview" fill className="object-cover scale-x-[-1]" />
+                    <Image src={item.url} alt="Preview" fill className="object-cover " />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
                     <button 
                       onClick={() => removeMedia(item.id)}
@@ -777,13 +784,13 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
                   
                   // Filter findings for this image index
                   const itemFindings = result.json_output?.findings?.filter((f: any) => {
-                      const fIndex = f.image_index !== undefined ? f.image_index : 0;
+                      const fIndex = f.image_index;
                       return fIndex === index;
                   }) || [];
 
                   // Only show healthy overlay if NO findings for this image AND the overall summary says healthy OR if we are sure this specific image is healthy.
-                  // But simpler: if no findings for this image, show healthy.
-                  const isHealthy = itemFindings.length === 0;
+                  // Missing or invalid output must never imply health.
+                  const isHealthy = screeningState(result?.json_output) === 'NO_VISIBLE_FINDINGS' && itemFindings.length === 0;
 
                   return (
                     <div key={item.id} className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
@@ -799,7 +806,7 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
                               height={0}
                               sizes="100vw"
                               style={{ width: '100%', height: 'auto' }}
-                              className="block scale-x-[-1]" 
+                              className="block"
                               unoptimized
                             />
                             

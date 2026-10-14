@@ -40,7 +40,7 @@ import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import Image from 'next/image';
 import { saveRecord, updateRecord } from '../lib/db';
-import { compressImageToGenerativePart, safeCallGeminiAnalyze } from '../lib/imageUtils';
+import { compressImageToGenerativePart as compressImage, safeCallGeminiAnalyze } from '../lib/imageUtils';
 import { useLanguage } from '../../components/LanguageProvider';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, Cell } from 'recharts';
 import LoginButton from '../../components/LoginButton';
@@ -75,7 +75,7 @@ A. Jika Terdeteksi Foto Tubuh / Full Body (Pemeriksaan Postur & Estimasi Antropo
      3. Perkiraan Indeks Massa Tubuh (IMT): "estimated_bmi" dihitung dari perkiraan BB dan TB (BB / (TB/100)^2).
      4. Kategori Somatotype: "somatotype" ("Ectomorph Ramping" | "Mesomorph Atletis Proporsional" | "Endomorph Berisi").
      5. Analisis Proporsi Tubuh: "body_proportions_detail" (Rasio kepala-ke-tubuh, keselarasan trunkus-ekstremitas).
-     6. Tingkat Kepercayaan Estimasi: "estimation_confidence" (contoh: "88%").
+     6. Tingkat Kepercayaan Estimasi: "estimation_confidence" (contoh: "Belum tervalidasi").
      7. JIKA TINGGI BADAN ATAU BERAT BADAN PASIEN PADA DATA FORMULIR TIDAK DIISI, GUNAKAN ESTIMASI INI UNTUK MENGHITUNG INDEKS MASSA TUBUH (IMT) DAN Z-SCORE GIZI SECARA OTOMATIS!
    - Analisis postur tulang belakang (apakah Normal Simetris, Skoliosis, Kifosis, Lordosis, atau Asimetri Bahu/Pinggul).
    - Tentukan skor keparahan (severity_score) 0-10, estimasi sudut Cobb (cobb_angle_est, misal: '10° Cobb Angle'), dan lokasi kelainan (misal: 'Thoracolumbar').
@@ -117,7 +117,7 @@ Setiap akhir analisis, Anda HARUS menghasilkan JSON dengan format berikut:
       "bmi_category": "Normal / Ideal",
       "somatotype": "Mesomorph Atletis Proporsional",
       "body_proportions_detail": "Rasio kepala terhadap tinggi total tubuh terdeteksi 1:7.4 dengan lebar bahu simetris dan proporsi massa otot proporsional.",
-      "estimation_confidence": "88%"
+      "estimation_confidence": "Belum tervalidasi"
     },
     "face_rppg_analysis": {
       "pulse_rate_bpm": 76,
@@ -205,6 +205,7 @@ export default function AntropometriPage() {
   const [loadingStep, setLoadingStep] = useState('');
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [result, setResult] = useState<any | null>(null);
+  const [savedRecordId, setSavedRecordId] = useState<string | null>(null);
   const [showJson, setShowJson] = useState(false);
   const [feedbackGiven, setFeedbackGiven] = useState<'yes' | 'no' | null>(null);
 
@@ -232,6 +233,13 @@ export default function AntropometriPage() {
   // Camera states
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+  const mediaItemsRef = useRef<MediaItem[]>([]);
+  useEffect(() => { mediaItemsRef.current = mediaItems; }, [mediaItems]);
+  useEffect(() => () => {
+    mediaStreamRef.current?.getTracks().forEach(track => track.stop());
+    mediaItemsRef.current.forEach(item => { if (item.url.startsWith('blob:')) URL.revokeObjectURL(item.url); });
+  }, []);
   const recordedSnapshotsRef = useRef<string[]>([]);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
@@ -291,6 +299,8 @@ export default function AntropometriPage() {
         setMediaItems(newItems);
       }
       setResult(null);
+    setSavedRecordId(null);
+    setFeedbackGiven(null);
     }
   };
 
@@ -301,6 +311,7 @@ export default function AntropometriPage() {
         video: { facingMode: facingMode } 
       });
       if (videoRef.current) {
+        mediaStreamRef.current = stream;
         videoRef.current.srcObject = stream;
       }
       if (autoRecord) {
@@ -309,7 +320,7 @@ export default function AntropometriPage() {
         }, 600);
       }
     } catch (err) {
-      console.error("Error accessing camera:", err);
+      console.error("Error accessing camera:");
       alert("Tidak dapat mengakses kamera. Pastikan izin kamera diberikan.");
       setIsCameraOpen(false);
     }
@@ -327,10 +338,11 @@ export default function AntropometriPage() {
           video: { facingMode: newMode } 
         });
         if (videoRef.current) {
-          videoRef.current.srcObject = stream;
+          mediaStreamRef.current = stream;
+        videoRef.current.srcObject = stream;
         }
       } catch (err) {
-        console.error("Error switching camera:", err);
+        console.error("Error switching camera:");
       }
     }
   };
@@ -361,6 +373,8 @@ export default function AntropometriPage() {
         }
         stopCamera();
         setResult(null);
+    setSavedRecordId(null);
+    setFeedbackGiven(null);
       }
     }
   };
@@ -374,7 +388,8 @@ export default function AntropometriPage() {
           video: { facingMode: facingMode } 
         });
         if (videoRef.current) {
-          videoRef.current.srcObject = stream;
+          mediaStreamRef.current = stream;
+        videoRef.current.srcObject = stream;
         }
       }
 
@@ -419,7 +434,7 @@ export default function AntropometriPage() {
               if (b64) recordedSnapshotsRef.current.push(b64);
             }
           } catch (e) {
-            console.warn("Snapshot capture warning:", e);
+            console.warn("Snapshot capture warning:");
           }
         }
       };
@@ -454,6 +469,8 @@ export default function AntropometriPage() {
         setIsRecording(false);
         stopCamera();
         setResult(null);
+    setSavedRecordId(null);
+    setFeedbackGiven(null);
       };
 
       mediaRecorder.start(200);
@@ -480,7 +497,7 @@ export default function AntropometriPage() {
       }, 5000);
 
     } catch (err) {
-      console.error("Error starting video recording:", err);
+      console.error("Error starting video recording:");
       alert("Gagal merekam video. Pastikan kamera memiliki izin.");
       setIsRecording(false);
     }
@@ -514,11 +531,15 @@ export default function AntropometriPage() {
   };
 
   const removeMedia = (id: string) => {
-    setMediaItems(prev => prev.filter(item => item.id !== id));
+    setMediaItems(prev => {
+      const item = prev.find(item => item.id === id);
+      if (item?.url.startsWith('blob:')) URL.revokeObjectURL(item.url);
+      return prev.filter(item => item.id !== id);
+    });
   };
 
   const compressImageToGenerativePart = async (fileOrUrl: File | string): Promise<{ data: string; mimeType: string }> => {
-    return compressImageToGenerativePart(fileOrUrl, 1000, 0.80);
+    return compressImage(fileOrUrl, 1000, 0.80);
   };
 
   const extractVideoFrames = async (videoFileOrUrl: File | string): Promise<string[]> => {
@@ -605,86 +626,8 @@ export default function AntropometriPage() {
     return [compressed];
   };
 
-  const quickEstimateBiometricsFromPhoto = async (targetItem?: MediaItem) => {
-    const photoItem = targetItem || mediaItems.find(m => m.sessionCategory === 'posture_body' || m.type === 'image') || mediaItems[0];
-    if (!photoItem) {
-      setAnalysisError("Silakan ambil atau unggah foto badan terlebih dahulu untuk memperkirakan tinggi dan berat badan.");
-      return;
-    }
-
-    setIsQuickEstimating(true);
-    setAnalysisError(null);
-    setQuickEstimateNotice(null);
-
-    try {
-      const mediaPart = await compressImageToGenerativePart(photoItem.file || photoItem.url);
-      
-      const prompt = `Lakukan ESTIMASI BIOMETRIK ANTROPOMETRI TINGGI BADAN & BERAT BADAN SECARA COMPUTER VISION DARI FOTO TUBUH INI:
-1. Hitung rasio kraniosomatik (proporsi kepala terhadap tinggi total tubuh, rata-rata 1:7.0 - 1:7.8 pada orang dewasa, postur berdiri/posisi tubuh).
-2. Analisis volume kontur torso, lebar bahu biakromial, lingkar pinggang-panggul, dan ketebalan tungkai/lengan.
-3. Klasifikasikan tipe somatotype: Ectomorph (ramping), Mesomorph (atletis/proporsional), atau Endomorph (padat berisi).
-${patientData.age ? `Pasien diperkirakan berusia sekitar ${patientData.age} tahun.` : ''}
-
-Kembalikan HANYA format JSON valid berikut (tanpa blok teks markdown, tanpa kata pembuka/penutup):
-{
-  "estimated_height_cm": 170,
-  "height_range_cm": "167 - 173 cm",
-  "estimated_weight_kg": 64,
-  "weight_range_kg": "61 - 67 kg",
-  "estimated_bmi": 22.1,
-  "bmi_category": "Normal / Ideal",
-  "somatotype": "Mesomorph Atletis Proporsional",
-  "detail": "Rasio kepala terhadap tinggi tubuh terdeteksi 1:7.4 dengan lebar bahu biakromial simetris dan proporsi massa otot proporsional.",
-  "confidence_score": "88%"
-}`;
-
-      const responseText = await safeCallGeminiAnalyze({
-        systemInstruction: "Anda adalah AI Ahli Antropometri Komputasi Biometrik & Fisik Tubuh. Anda mengestimasi tinggi dan berat badan manusia secara presisi dari foto tubuh menggunakan rasio proporsi sefalosomatik dan kontur tubuh.",
-        prompt,
-        images: [mediaPart]
-      });
-
-      let cleaned = (responseText || '').trim();
-      if (cleaned.startsWith('```json')) {
-        cleaned = cleaned.replace(/^```json\s*/i, '').replace(/\s*```$/, '');
-      } else if (cleaned.startsWith('```')) {
-        cleaned = cleaned.replace(/^```\s*/i, '').replace(/\s*```$/, '');
-      }
-
-      const parsed = JSON.parse(cleaned);
-      const estHeight = Number(parsed.estimated_height_cm) || 168;
-      const estWeight = Number(parsed.estimated_weight_kg) || 62;
-      const calculatedBmi = parsed.estimated_bmi || Math.round((estWeight / Math.pow(estHeight / 100, 2)) * 10) / 10;
-
-      const bioData = {
-        height: estHeight,
-        weight: estWeight,
-        heightRange: parsed.height_range_cm || `${estHeight - 3} - ${estHeight + 3} cm`,
-        weightRange: parsed.weight_range_kg || `${estWeight - 3} - ${estWeight + 3} kg`,
-        bmi: calculatedBmi,
-        bmiCategory: parsed.bmi_category || (calculatedBmi < 18.5 ? 'Underweight' : calculatedBmi < 25 ? 'Normal / Ideal' : 'Overweight'),
-        somatotype: parsed.somatotype || 'Mesomorph Proporsional',
-        confidence: parsed.confidence_score || '88%',
-        detail: parsed.detail || 'Estimasi berbasis rasio proporsi sefalosomatik dan kontur tubuh.'
-      };
-
-      setQuickEstimatedBiometrics(bioData);
-
-      // Otomatis masukkan ke state formulir pasien
-      setPatientData(prev => ({
-        ...prev,
-        height: String(estHeight),
-        weight: String(estWeight)
-      }));
-
-      setQuickEstimateNotice(`✨ Berhasil Memindai Foto! Estimasi Tinggi: ${estHeight} cm (${bioData.heightRange}) • Berat: ${estWeight} kg (${bioData.weightRange}) • IMT: ${calculatedBmi} telah otomatis dimasukkan ke formulir.`);
-
-    } catch (err: any) {
-      console.error("Quick biometric estimate failed:", err);
-      setAnalysisError(err.message || "Gagal memindai estimasi tinggi dan berat badan dari foto. Silakan coba lagi.");
-    } finally {
-      setIsQuickEstimating(false);
-    }
+  const quickEstimateBiometricsFromPhoto = async (_targetItem?: MediaItem) => {
+    setAnalysisError('Estimasi tinggi/berat dari foto dinonaktifkan. Masukkan hasil alat ukur yang benar-benar dilakukan.');
   };
 
   const saveToHistory = async (data: any, image: string) => {
@@ -710,14 +653,16 @@ Kembalikan HANYA format JSON valid berikut (tanpa blok teks markdown, tanpa kata
         type: sessionTitle,
         diagnosa: diagnosa,
         icd10: icd10,
-        confidence: data.json_output.findings?.[0]?.confidence_score || '95%',
+        confidence: 'Belum tervalidasi',
         image_url: image,
         json_output: data.json_output,
         markdown_report: data.markdown_report
       };
-      await saveRecord(newRecord);
+      const id = await saveRecord(newRecord);
+      setSavedRecordId(id);
     } catch (e) {
-      console.error("Failed to save to history:", e);
+      setSavedRecordId(null);
+      setAnalysisError('Hasil belum tersimpan. Periksa akun dan koneksi, lalu coba lagi.');
     }
   };
 
@@ -730,6 +675,8 @@ Kembalikan HANYA format JSON valid berikut (tanpa blok teks markdown, tanpa kata
     setLoading(true);
     setAnalysisError(null);
     setResult(null);
+    setSavedRecordId(null);
+    setFeedbackGiven(null);
     setLoadingStep('Mengoptimalkan media & mengekstrak frame optik...');
 
     const controller = new AbortController();
@@ -810,8 +757,8 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
           const estH = Number(estData.estimated_height_cm);
           const estW = Number(estData.estimated_weight_kg);
           setQuickEstimatedBiometrics({
-            height: estH || 168,
-            weight: estW || 62,
+            height: estH,
+            weight: estW,
             heightRange: estData.height_range_cm,
             weightRange: estData.weight_range_kg,
             bmi: estData.estimated_bmi,
@@ -824,8 +771,8 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
           // Auto-fill height & weight if previously empty
           setPatientData(prev => ({
             ...prev,
-            height: prev.height || (estH ? String(estH) : ''),
-            weight: prev.weight || (estW ? String(estW) : '')
+            height: prev.height,
+            weight: prev.weight
           }));
         }
 
@@ -833,7 +780,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
           await saveToHistory(parsedResult, mediaItems[0].url);
         }
       } catch (e) {
-        console.error("Failed to parse JSON:", e);
+        console.error("Failed to parse JSON:");
         setResult({
           markdown_report: responseText || "Error: Format respon tidak dapat dibaca",
           json_output: { status: "error", message: "Gagal mengurai format JSON terstruktur" }
@@ -841,7 +788,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
       }
 
     } catch (error: any) {
-      console.error("Analysis failed:", error);
+      console.error("Analysis failed:");
       let errorMessage = "Terjadi kesalahan saat menganalisis media. Silakan coba lagi.";
       if (error.name === 'AbortError') {
         errorMessage = "Waktu analisis melebihi batas (timeout 60 detik). Mohon periksa koneksi internet dan coba lagi.";
@@ -865,9 +812,11 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
   };
 
   const handleFeedback = async (isAccurate: boolean) => {
-    if (!result || !result.id) return;
-    setFeedbackGiven(isAccurate ? 'yes' : 'no');
-    await updateRecord(result.id, { is_accurate: isAccurate });
+    if (!savedRecordId) { setAnalysisError('hasil belum tersimpan. Coba simpan kembali.'); return; }
+    try {
+      await updateRecord(savedRecordId, { is_accurate: isAccurate });
+      setFeedbackGiven(isAccurate ? 'yes' : 'no');
+    } catch { setAnalysisError('Umpan balik gagal disimpan. Silakan coba lagi.'); }
   };
 
   const exportPDF = async () => {
@@ -947,7 +896,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
                 pdf.addImage(item.url, 'JPEG', margin, 25, finalWidth, finalHeight);
               }
             } catch (err) {
-              console.warn("Could not append image to PDF:", err);
+              console.warn("Could not append image to PDF:");
             }
           }
         }
@@ -955,7 +904,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
 
       pdf.save(`Laporan-Fisik-rPPG-${new Date().toISOString().split('T')[0]}.pdf`);
     } catch (error) {
-      console.error("Failed to export PDF:", error);
+      console.error("Failed to export PDF:");
       alert("Gagal mengunduh PDF. Pastikan gambar sudah termuat sepenuhnya.");
     } finally {
       if (btn) {
@@ -981,6 +930,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
+      <div role="status" className="bg-amber-50 border border-amber-300 p-4 m-4 rounded-xl text-amber-900">Foto/video tidak mengukur tinggi, berat, vital sign, atau risiko penyakit. Analisis klinis dinonaktifkan (REQUIRES_REVIEW). Isi formulir hanya dengan hasil pengukuran alat.</div>
       {/* Top Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -1031,6 +981,8 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
               onClick={() => {
                 setActiveSession('posture');
                 setResult(null);
+    setSavedRecordId(null);
+    setFeedbackGiven(null);
               }}
               className={`flex items-start gap-3 p-3.5 rounded-xl border text-left transition-all relative overflow-hidden ${
                 activeSession === 'posture'
@@ -1063,6 +1015,8 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
               onClick={() => {
                 setActiveSession('face_rppg');
                 setResult(null);
+    setSavedRecordId(null);
+    setFeedbackGiven(null);
               }}
               className={`flex items-start gap-3 p-3.5 rounded-xl border text-left transition-all relative overflow-hidden ${
                 activeSession === 'face_rppg'
@@ -1095,6 +1049,8 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
               onClick={() => {
                 setActiveSession('dual');
                 setResult(null);
+    setSavedRecordId(null);
+    setFeedbackGiven(null);
               }}
               className={`flex items-start gap-3 p-3.5 rounded-xl border text-left transition-all relative overflow-hidden ${
                 activeSession === 'dual'
@@ -1937,12 +1893,12 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
                     <FaceRppgPulseVisualizer
                       mediaUrl={faceMedia?.url || mediaItems[0]?.url || ''}
                       mediaType={faceMedia?.type || mediaItems[0]?.type || 'video'}
-                      pulseRate={result.json_output?.face_rppg_analysis?.pulse_rate_bpm || (patientData.pulseRate ? Number(patientData.pulseRate) : 76)}
-                      pulseRegularity={result.json_output?.face_rppg_analysis?.pulse_regularity_percent || 92}
-                      faceShape={result.json_output?.face_rppg_analysis?.face_shape || 'Oval Simetris'}
-                      estimatedAge={result.json_output?.face_rppg_analysis?.estimated_biological_age || (patientData.age ? `${patientData.age} Tahun` : '28 Tahun')}
-                      diabetesRisk={result.json_output?.face_rppg_analysis?.diabetes_risk || result.json_output?.risk_category || 'Rendah'}
-                      microvascularNotes={result.json_output?.face_rppg_analysis?.microvascular_observation || result.json_output?.visual_indicators || 'Fluktuasi intensitas mikrovaskular kapiler dahi dan pipi reguler dan stabil.'}
+                      pulseRate={undefined}
+                      pulseRegularity={undefined}
+                      faceShape={undefined}
+                      estimatedAge={undefined}
+                      diabetesRisk={undefined}
+                      microvascularNotes={undefined}
                       findings={result.json_output?.findings || []}
                     />
                   </div>
@@ -2017,7 +1973,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
                       <div className="flex items-center gap-2 text-xs">
                         <span className="bg-white px-3 py-1 rounded-lg border border-emerald-200 text-emerald-800 font-semibold shadow-2xs flex items-center gap-1">
                           <Sparkles size={13} className="text-emerald-600" />
-                          Kepercayaan: {result.json_output?.ai_estimated_anthropometry?.estimation_confidence || quickEstimatedBiometrics?.confidence || "88%"}
+                          Kepercayaan: Belum tervalidasi
                         </span>
                       </div>
                     </div>
@@ -2029,7 +1985,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
                         <div>
                           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Tinggi Badan (TB)</span>
                           <span className="text-2xl sm:text-3xl font-black text-emerald-800 block mt-0.5">
-                            {result.json_output?.ai_estimated_anthropometry?.estimated_height_cm || quickEstimatedBiometrics?.height || patientData.height || 168}
+                            {patientData.height || 'Belum diukur'}
                             <span className="text-sm font-normal text-slate-600 ml-1">cm</span>
                           </span>
                         </div>
@@ -2043,7 +1999,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
                         <div>
                           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Perkiraan Berat (BB)</span>
                           <span className="text-2xl sm:text-3xl font-black text-teal-800 block mt-0.5">
-                            {result.json_output?.ai_estimated_anthropometry?.estimated_weight_kg || quickEstimatedBiometrics?.weight || patientData.weight || 62}
+                            {patientData.weight || 'Belum diukur'}
                             <span className="text-sm font-normal text-slate-600 ml-1">kg</span>
                           </span>
                         </div>
@@ -2057,12 +2013,12 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
                         <div>
                           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Perkiraan IMT</span>
                           <span className="text-2xl sm:text-3xl font-black text-cyan-800 block mt-0.5">
-                            {result.json_output?.ai_estimated_anthropometry?.estimated_bmi || result.json_output?.nutrition_metrics?.imt || quickEstimatedBiometrics?.bmi || 22.0}
+                            {patientData.height && patientData.weight && Number(patientData.height) > 0 && Number(patientData.weight) > 0 ? (Number(patientData.weight) / (Number(patientData.height) / 100) ** 2).toFixed(1) : 'Belum diukur'}
                             <span className="text-xs font-normal text-slate-600 ml-1">kg/m²</span>
                           </span>
                         </div>
                         <span className="text-[11px] font-bold text-emerald-700 mt-1">
-                          {result.json_output?.ai_estimated_anthropometry?.bmi_category || quickEstimatedBiometrics?.bmiCategory || "Normal / Ideal"}
+                          Sumber: dimasukkan manual; perlu verifikasi pengukuran
                         </span>
                       </div>
 
@@ -2127,7 +2083,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
                     <ReactMarkdown>{result.markdown_report}</ReactMarkdown>
                     
                     {/* Status Gizi Z-Score BarChart */}
-                    {result.json_output?.nutrition_metrics && (
+                    {false && result.json_output?.nutrition_metrics && (
                       <div className="mt-8 not-prose border-t pt-6">
                         <h3 className="text-base font-bold text-slate-800 mb-3">Visualisasi Status Gizi & Z-Score (Standar WHO / Permenkes)</h3>
                         <div className="h-64 w-full bg-slate-50 rounded-xl p-4 border border-slate-200">
@@ -2254,7 +2210,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
         patientData={patientData}
         diagnosa={result?.json_output?.findings?.[0]?.medis || result?.json_output?.summary?.pesan || result?.json_output?.posture_analysis?.condition || 'Pemeriksaan Fisik'}
         icd10={result?.json_output?.findings?.[0]?.icd10 || (result?.json_output?.summary?.status === 'NORMAL' ? 'Z00.129' : 'Z00.00')}
-        postureSeverityScore={result?.json_output?.posture_analysis?.severity_score || 0}
+        postureSeverityScore={undefined}
         postureCondition={result?.json_output?.posture_analysis?.condition || 'Normal Simetris'}
       />
 

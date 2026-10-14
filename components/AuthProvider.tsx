@@ -2,9 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, auth, signInWithPopup, googleProvider, signOut as firebaseSignOut, onAuthStateChanged } from '../app/lib/firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '../app/lib/firebase';
-import { syncUserProfileToDb, recordAppUsage } from '../app/lib/db';
+import { syncUserProfileToDb } from '../app/lib/db';
 
 interface AuthContextType {
   user: User | null;
@@ -23,70 +21,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setRole(null);
+      setLoading(true);
       setUser(currentUser);
       if (currentUser) {
-        // Fetch or create user in Firestore
         try {
-          const isSuperAdmin = currentUser.email?.trim().toLowerCase() === 'stefenlaksana.sl@gmail.com';
-          
-          // Optimistically set super admin role
-          if (isSuperAdmin) {
-            setRole('admin');
-          }
-
-          const userRef = doc(db, 'users', currentUser.uid);
-          const userSnap = await getDoc(userRef);
-          
-          if (userSnap.exists()) {
-            let currentRole = userSnap.data().role;
-            if (isSuperAdmin && currentRole !== 'admin') {
-              currentRole = 'admin';
-              try {
-                await setDoc(userRef, { role: 'admin' }, { merge: true });
-              } catch(e) {
-                console.error("Failed to update role:", e);
-              }
-            }
-            if (!isSuperAdmin) setRole(currentRole);
-          } else {
-            // New user, determine default role based on email or default to patient
-            const defaultRole = isSuperAdmin ? 'admin' : 'patient';
-            
-            try {
-              await setDoc(userRef, {
-                uid: currentUser.uid,
-                email: currentUser.email,
-                displayName: currentUser.displayName,
-                role: defaultRole,
-                createdAt: new Date().toISOString()
-              });
-            } catch(e) {
-              console.error("Failed to create user:", e);
-            }
-            const effectiveRole = isSuperAdmin ? 'admin' : (userSnap.exists() ? userSnap.data().role : defaultRole);
-            if (!isSuperAdmin) setRole(effectiveRole);
-
-            // Persist user and session to PostgreSQL Database
-            if (currentUser.email) {
-              syncUserProfileToDb({
-                uid: currentUser.uid,
-                email: currentUser.email,
-                displayName: currentUser.displayName,
-                photoURL: currentUser.photoURL,
-                role: effectiveRole || 'patient',
-              }).catch(console.warn);
-
-              recordAppUsage('auth', 'USER_SESSION_STARTED', {
-                email: currentUser.email,
-                displayName: currentUser.displayName,
-              }).catch(console.warn);
-            }
-          }
-        } catch (error) {
-          console.error("Error setting up user role:", error);
-          // If auth fails and they are super admin, keep admin role. Otherwise fallback to patient
-          const isSuperAdmin = currentUser.email?.trim().toLowerCase() === 'stefenlaksana.sl@gmail.com';
-          setRole(isSuperAdmin ? 'admin' : 'patient');
+          const token = await currentUser.getIdTokenResult(true);
+          if (auth.currentUser?.uid !== currentUser.uid) return;
+          const trustedRole = token.claims.role === 'admin' || token.claims.role === 'doctor' ? token.claims.role : 'patient';
+          setRole(trustedRole);
+          await syncUserProfileToDb({ uid: currentUser.uid });
+        } catch {
+          setRole('patient');
         }
       } else {
         setRole(null);
@@ -114,7 +60,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ user, loading, role, signIn, signOut }}>
-      {children}
+      <React.Fragment key={user?.uid || "guest"}>{children}</React.Fragment>
     </AuthContext.Provider>
   );
 };

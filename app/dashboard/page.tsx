@@ -75,7 +75,7 @@ export default function DashboardPage() {
              setUsers(usersData);
         }
       } catch (e) {
-        console.error("Failed to load records:", e);
+        console.error("Failed to load records:");
       }
     };
 
@@ -133,7 +133,7 @@ export default function DashboardPage() {
       const content = await zip.generateAsync({ type: "blob" });
       saveAs(content, `${language === 'en' ? 'Export_Dental_dr_Gigi_AI_Data' : 'Export_Data_dr_Gigi_AI_Gigi'}_${new Date().toISOString().split('T')[0]}.zip`);
     } catch (error) {
-      console.error("Export failed:", error);
+      console.error("Export failed:");
       alert("Gagal mengekspor data.");
     }
   };
@@ -190,7 +190,7 @@ export default function DashboardPage() {
 
       pdf.save(`${language === 'en' ? 'medical_report' : 'laporan_medis'}_${selectedRecord.patient_id}_${new Date().toISOString().split('T')[0]}.pdf`);
     } catch (error) {
-      console.error("Error generating PDF:", error);
+      console.error("Error generating PDF:");
       alert("Gagal membuat PDF. Pastikan gambar telah dimuat sepenuhnya.");
     }
   };
@@ -289,7 +289,8 @@ export default function DashboardPage() {
       created_at: new Date().toISOString()
     };
 
-    await saveAppointment(appointment);
+    try { await saveAppointment(appointment); }
+    catch { window.alert('Janji temu belum tersimpan. Periksa koneksi dan izin akun, lalu coba lagi.'); return; }
     
     // Generate Google Calendar Link
     const endTime = new Date(appointmentDate.getTime() + 60 * 60 * 1000); // 1 hour later
@@ -307,6 +308,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+      <div role="status" className="bg-amber-50 border border-amber-300 p-4 m-4 rounded-xl">Rekam tersimpan adalah catatan/draf yang belum diverifikasi dokter. Hasil AI dan umpan balik pengguna tidak membuktikan diagnosis atau akurasi klinis. Data SQL lama perlu rekonsiliasi oleh administrator.</div>
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -662,7 +664,7 @@ export default function DashboardPage() {
                                 ICD-10: {selectedRecord.icd10}
                               </span>
                               <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded flex items-center gap-1">
-                                <Activity size={12} /> Confidence: {selectedRecord.confidence}
+                                <Activity size={12} /> Confidence: Belum tervalidasi
                               </span>
                             </div>
                           </div>

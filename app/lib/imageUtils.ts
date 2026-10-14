@@ -1,3 +1,4 @@
+import { authenticatedFetch } from './apiClient';
 /**
  * Image processing & safe AI analysis caller
  * Designed to prevent iOS Safari "The string did not match the expected pattern" errors
@@ -9,159 +10,40 @@ export async function compressImageToGenerativePart(
   maxDimension = 800,
   quality = 0.75
 ): Promise<{ data: string; mimeType: string }> {
-  // If already a base64 data URL
-  if (typeof fileOrUrl === 'string' && fileOrUrl.startsWith('data:')) {
-    const parts = fileOrUrl.split(',');
-    const match = parts[0].match(/:(.*?);/);
-    const mime = match ? match[1] : 'image/jpeg';
-    return { data: parts[1] || '', mimeType: mime };
+  const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+  if (!Number.isFinite(maxDimension) || maxDimension < 1 || maxDimension > 4096 || !Number.isFinite(quality) || quality <= 0 || quality > 1) throw new Error('Parameter kompresi tidak valid.');
+  if (typeof fileOrUrl !== 'string' && (!allowed.includes(fileOrUrl.type) || fileOrUrl.size > 12_000_000 || fileOrUrl.size === 0)) throw new Error('Gunakan JPEG, PNG, atau WebP hingga 12 MB.');
+  if (typeof fileOrUrl === 'string') {
+    if (fileOrUrl.startsWith('data:')) {
+      const match = fileOrUrl.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/]+={0,2})$/);
+      if (!match || match[2].length > 16_000_000) throw new Error('Data gambar tidak valid atau terlalu besar.');
+    } else if (!fileOrUrl.startsWith('blob:')) throw new Error('Gunakan berkas atau URL gambar lokal.');
   }
-
-  // Safe FileReader helper for iOS Safari
-  const readViaFileReader = (file: File): Promise<{ data: string; mimeType: string }> => {
-    return new Promise((resolve) => {
-      try {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const res = (reader.result as string) || '';
-          const commaIdx = res.indexOf(',');
-          const base64 = commaIdx !== -1 ? res.substring(commaIdx + 1) : res;
-          resolve({ data: base64, mimeType: file.type || 'image/jpeg' });
-        };
-        reader.onerror = () => resolve({ data: '', mimeType: 'image/jpeg' });
-        reader.readAsDataURL(file);
-      } catch {
-        resolve({ data: '', mimeType: 'image/jpeg' });
-      }
-    });
-  };
-
-  // Modern browser approach (with strict iOS error guard)
-  if (typeof window !== 'undefined' && 'createImageBitmap' in window && typeof fileOrUrl !== 'string') {
-    try {
-      const bitmap = await createImageBitmap(fileOrUrl);
-      let width = bitmap.width;
-      let height = bitmap.height;
-
-      if (width > maxDimension || height > maxDimension) {
-        if (width > height) {
-          height = Math.round((height * maxDimension) / width);
-          width = maxDimension;
-        } else {
-          width = Math.round((width * maxDimension) / height);
-          height = maxDimension;
-        }
-      }
-
-      const canvas = document.createElement('canvas');
-      canvas.width = Math.max(1, width);
-      canvas.height = Math.max(1, height);
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.drawImage(bitmap, 0, 0, width, height);
-        bitmap.close();
-        const dataUrl = canvas.toDataURL('image/jpeg', quality);
-        const commaIdx = dataUrl.indexOf(',');
-        const base64Data = commaIdx !== -1 ? dataUrl.substring(commaIdx + 1) : '';
-        if (base64Data) {
-          return {
-            data: base64Data,
-            mimeType: 'image/jpeg'
-          };
-        }
-      }
-    } catch (e) {
-      console.warn('createImageBitmap compression skipped, falling back to Image element:', e);
-    }
-  }
-
-  // Traditional HTML Image fallback
-  return new Promise((resolve) => {
-    const isFile = typeof fileOrUrl !== 'string';
-    let objUrl = '';
-    try {
-      objUrl = isFile ? URL.createObjectURL(fileOrUrl) : fileOrUrl;
-    } catch {
-      objUrl = '';
-    }
-
-    if (!objUrl) {
-      if (isFile && fileOrUrl) {
-        readViaFileReader(fileOrUrl as File).then(resolve);
-      } else {
-        resolve({ data: '', mimeType: 'image/jpeg' });
-      }
-      return;
-    }
-
+  // Every input, including data URLs, is decoded before it can bypass compression.
+  return new Promise((resolve, reject) => {
+    const ownedUrl = typeof fileOrUrl !== 'string';
+    const url = ownedUrl ? URL.createObjectURL(fileOrUrl) : fileOrUrl;
     const img = new Image();
-    // CRITICAL for Safari: NEVER set crossOrigin on blob: or data: URLs as it throws DOMException!
-    if (!objUrl.startsWith('blob:') && !objUrl.startsWith('data:') && (objUrl.startsWith('http://') || objUrl.startsWith('https://'))) {
-      img.crossOrigin = 'anonymous';
-    }
-
-    let cleanedUp = false;
-    const cleanup = () => {
-      if (cleanedUp) return;
-      cleanedUp = true;
-      if (isFile && objUrl && objUrl.startsWith('blob:')) {
-        try {
-          URL.revokeObjectURL(objUrl);
-        } catch {}
-      }
-    };
-
+    const cleanup = () => { clearTimeout(timer); if (ownedUrl) URL.revokeObjectURL(url); img.onload = null; img.onerror = null; };
+    const timer = setTimeout(() => { cleanup(); reject(new Error('Gambar tidak dapat dibaca dalam batas waktu.')); }, 10_000);
+    img.onerror = () => { cleanup(); reject(new Error('Berkas gambar rusak atau tidak didukung.')); };
     img.onload = () => {
       try {
-        let width = img.naturalWidth || img.width || 640;
-        let height = img.naturalHeight || img.height || 480;
-
-        if (width > maxDimension || height > maxDimension) {
-          if (width > height) {
-            height = Math.round((height * maxDimension) / width);
-            width = maxDimension;
-          } else {
-            width = Math.round((width * maxDimension) / height);
-            height = maxDimension;
-          }
-        }
-
+        const w = img.naturalWidth, h = img.naturalHeight;
+        if (!w || !h || w * h > 40_000_000) throw new Error('Dimensi gambar tidak didukung.');
+        const scale = Math.min(1, maxDimension / Math.max(w, h));
         const canvas = document.createElement('canvas');
-        canvas.width = Math.max(1, width);
-        canvas.height = Math.max(1, height);
+        canvas.width = Math.max(1, Math.round(w * scale));
+        canvas.height = Math.max(1, Math.round(h * scale));
         const ctx = canvas.getContext('2d');
-        if (!ctx) {
-          cleanup();
-          if (isFile) readViaFileReader(fileOrUrl as File).then(resolve);
-          else resolve({ data: '', mimeType: 'image/jpeg' });
-          return;
-        }
-
-        ctx.drawImage(img, 0, 0, width, height);
-        const dataUrl = canvas.toDataURL('image/jpeg', quality);
-        cleanup();
-
-        const commaIdx = dataUrl.indexOf(',');
-        const base64 = commaIdx !== -1 ? dataUrl.substring(commaIdx + 1) : '';
-        resolve({
-          data: base64,
-          mimeType: 'image/jpeg'
-        });
-      } catch (err) {
-        console.warn('Canvas toDataURL failed, using FileReader:', err);
-        cleanup();
-        if (isFile) readViaFileReader(fileOrUrl as File).then(resolve);
-        else resolve({ data: '', mimeType: 'image/jpeg' });
-      }
+        if (!ctx) throw new Error('Pemrosesan gambar tidak tersedia.');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const data = canvas.toDataURL('image/jpeg', quality).split(',')[1];
+        if (!data) throw new Error('Kompresi gambar gagal.');
+        cleanup(); resolve({ data, mimeType: 'image/jpeg' });
+      } catch (error) { cleanup(); reject(error); }
     };
-
-    img.onerror = () => {
-      cleanup();
-      if (isFile) readViaFileReader(fileOrUrl as File).then(resolve);
-      else resolve({ data: '', mimeType: 'image/jpeg' });
-    };
-
-    img.src = objUrl;
+    img.src = url;
   });
 }
 
@@ -172,7 +54,7 @@ export interface AnalyzePayload {
 }
 
 export async function safeCallGeminiAnalyze(payload: AnalyzePayload, signal?: AbortSignal): Promise<string> {
-  const apiRes = await fetch('/api/gemini/analyze', {
+  const apiRes = await authenticatedFetch('/api/gemini/analyze', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     signal,
@@ -197,7 +79,7 @@ export async function safeCallGeminiAnalyze(payload: AnalyzePayload, signal?: Ab
   try {
     resData = textBody ? JSON.parse(textBody) : null;
   } catch (err) {
-    console.error('JSON parsing failed:', err, 'Raw body was:', textBody.slice(0, 100));
+    console.error('AI response format invalid');
     throw new Error("Respon dari server tidak valid. Silakan coba lagi.");
   }
 

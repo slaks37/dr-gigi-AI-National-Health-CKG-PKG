@@ -33,104 +33,16 @@ const ClinicMap = dynamic(() => import('../../components/ClinicMap'), {
   )
 });
 
-const DEFAULT_MOCK_CLINICS = [
-  {
-    id: '1',
-    name: 'Klinik Pratama Sehat Bersama (Dental Care)',
-    address: 'Jl. Medan Merdeka Barat No. 12, Gambir, Jakarta Pusat',
-    lat: -6.2088,
-    lng: 106.8456,
-    distance: '1.2 km',
-    rating: 4.8,
-    reviews: 142,
-    open: true,
-    openingHoursText: ['Senin - Sabtu: 08.00–20.00', 'Minggu: Tutup'],
-    phone: '(021) 384-4052',
-    tags: ['Dental Clinic', 'Dental', 'BPJS Kesehatan', 'Spesialis Gigi'],
-    isHospital: false,
-    isDental: true,
-    imageUrl: '/template-clinic-1.svg'
-  },
-  {
-    id: '2',
-    name: 'Smile Aesthetic Dental Clinic',
-    address: 'Jl. HOS Cokroaminoto No. 85, Menteng, Jakarta Pusat',
-    lat: -6.1950,
-    lng: 106.8230,
-    distance: '2.5 km',
-    rating: 4.9,
-    reviews: 284,
-    open: true,
-    openingHoursText: ['Senin - Sabtu: 09.00–21.00', 'Minggu: 10.00–18.00'],
-    phone: '+62 811-1067-8899',
-    tags: ['Dental Clinic', 'Dental', 'Estetika Gigi', 'Ortodonti'],
-    isHospital: false,
-    isDental: true,
-    imageUrl: '/template-clinic-2.svg'
-  },
-  {
-    id: '3',
-    name: 'Rumah Sakit Umum Daerah (RSUD) Tarakan - Poli Gigi',
-    address: 'Jl. Kyai Caringin No. 7, Cideng, Gambir, Jakarta Pusat',
-    lat: -6.1820,
-    lng: 106.8280,
-    distance: '3.8 km',
-    rating: 4.7,
-    reviews: 315,
-    open: true,
-    openingHoursText: ['Senin - Jumat: 07.30–21.00', 'Sabtu: 08.00–15.00', 'Minggu: UGD 24 Jam'],
-    phone: '(021) 350-3003',
-    tags: ['Rumah Sakit', 'BPJS', 'Layanan 24 Jam', 'Dental'],
-    isHospital: true,
-    isDental: true,
-    imageUrl: '/template-clinic-3.svg'
-  },
-  {
-    id: '4',
-    name: 'Rumah Sakit Khusus Gigi & Mulut (RSGM) Sehat',
-    address: 'Jl. Salemba Raya No. 4, Kenari, Senen, Jakarta Pusat',
-    lat: -6.1915,
-    lng: 106.8512,
-    distance: '4.1 km',
-    rating: 4.9,
-    reviews: 412,
-    open: true,
-    openingHoursText: ['Senin - Sabtu: 08.00–20.00', 'Minggu: UGD Gigi 24 Jam'],
-    phone: '(021) 314-4158',
-    tags: ['Rumah Sakit', 'Dental Clinic', 'Dental', 'Rujukan Spesialis'],
-    isHospital: true,
-    isDental: true,
-    imageUrl: '/template-clinic-1.svg'
-  },
-  {
-    id: '5',
-    name: 'Dental Specialist Center & Care',
-    address: 'Jl. Panglima Polim No. 34, Kebayoran Baru, Jakarta Selatan',
-    lat: -6.2420,
-    lng: 106.7980,
-    distance: '4.9 km',
-    rating: 4.8,
-    reviews: 198,
-    open: true,
-    openingHoursText: ['Senin - Sabtu: 09.00–20.00'],
-    phone: '+62 812-1999-3003',
-    tags: ['Dental', 'Dental Clinic', 'Bedah Mulut'],
-    isHospital: false,
-    isDental: true,
-    imageUrl: '/template-clinic-2.svg'
-  }
-];
-
 function ClinicsList() {
   const searchParams = useSearchParams();
-  const latStr = searchParams.get('lat');
-  const lngStr = searchParams.get('lng');
-  const initialKeyword = searchParams.get('keyword') || searchParams.get('q') || 'all';
+  const latStr = searchParams?.get('lat');
+  const lngStr = searchParams?.get('lng');
+  const initialKeyword = searchParams?.get('keyword') || searchParams?.get('q') || 'all';
 
   const userLat = latStr ? parseFloat(latStr) : null;
   const userLng = lngStr ? parseFloat(lngStr) : null;
 
-  const [clinics, setClinics] = useState<any[]>(DEFAULT_MOCK_CLINICS);
+  const [clinics, setClinics] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedClinicId, setSelectedClinicId] = useState<string | null>(null);
@@ -140,8 +52,10 @@ function ClinicsList() {
 
   useEffect(() => {
     async function fetchClinics() {
-      if (userLat && userLng) {
+      if (userLat !== null && userLng !== null && Number.isFinite(userLat) && Number.isFinite(userLng)) {
         setLoading(true);
+        setClinics([]);
+        setError(null);
         const res = await getNearbyClinics(userLat, userLng);
         if (res.success && res.clinics && res.clinics.length > 0) {
           setClinics(res.clinics);
@@ -150,6 +64,8 @@ function ClinicsList() {
         }
         setLoading(false);
       } else {
+        setClinics([]);
+        setError("Izinkan lokasi atau berikan koordinat untuk mencari fasilitas dari OpenStreetMap.");
         setLoading(false);
       }
     }
@@ -473,8 +389,8 @@ function ClinicsList() {
                   <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-auto">
                     <div className="flex items-center gap-1">
                       <Star size={16} className="text-amber-500 fill-amber-500" />
-                      <span className="font-bold text-slate-800">{clinic.rating}</span>
-                      <span className="text-xs text-slate-400">({clinic.reviews})</span>
+                      <span className="font-bold text-slate-800">{clinic.rating ?? 'Belum diketahui'}</span>
+                      <span className="text-xs text-slate-400">({clinic.reviews ?? 'Belum diketahui'})</span>
                     </div>
 
                     <div className="flex items-center gap-2">

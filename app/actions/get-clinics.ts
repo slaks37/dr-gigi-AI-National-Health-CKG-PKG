@@ -16,6 +16,7 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 
 export async function getNearbyClinics(lat: number, lng: number, keyword?: string) {
   try {
+    if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) throw new Error('Invalid coordinates');
     // Query OpenStreetMap via Overpass API for dental clinics, dental specialists, and hospitals (rumah sakit) nearby
     const overpassUrl = 'https://overpass-api.de/api/interpreter';
     const overpassQuery = `
@@ -53,32 +54,22 @@ export async function getNearbyClinics(lat: number, lng: number, keyword?: strin
       });
       clearTimeout(timeoutId);
 
-      if (response && response.ok) {
+      if (!response.ok) throw new Error('Facility provider unavailable');
+      if (response.ok) {
         const data = await response.json();
         osmPlaces = data.elements || [];
       }
     } catch {
-      // Overpass API public endpoint can be rate-limited or timed out; quietly fall back to local nearby clinics
       clearTimeout(timeoutId);
+      return { success: false, error: 'Pencarian fasilitas tidak tersedia. Coba lagi.', clinics: [] };
     }
 
     let clinics: any[] = [];
 
-    // Real active Indonesian clinic hotline & official numbers for verified health facilities
-    const REAL_PHONE_NUMBERS = [
-      '(021) 384-4052',      // Puskesmas & Klinik Wilayah Pusat
-      '(021) 314-4158',      // Klinik Pratama & Kimia Farma
-      '(021) 350-3003',      // RSUD / Poliklinik Spesialis Terpadu
-      '+62 811-1067-8899',   // Hotline WhatsApp Layanan Pasien
-      '+62 812-1999-3003',   // Unit Gawat Darurat & Janji Temu
-      '(021) 720-8119',      // Klinik Keluarga & Rawat Jalan
-      '1500-119'             // Hotline Halo Kemenkes RI
-    ];
-
     if (osmPlaces.length > 0) {
-      clinics = osmPlaces.map((el: any, idx: number) => {
-        const itemLat = el.lat || (el.center && el.center.lat) || lat;
-        const itemLng = el.lon || (el.center && el.center.lon) || lng;
+      clinics = osmPlaces.filter((el: any) => Number.isFinite(el.lat ?? el.center?.lat) && Number.isFinite(el.lon ?? el.center?.lon)).map((el: any, idx: number) => {
+        const itemLat = el.lat ?? el.center?.lat;
+        const itemLng = el.lon ?? el.center?.lon;
         const distNum = calculateDistance(lat, lng, itemLat, itemLng);
         
         const tags = el.tags || {};
@@ -87,13 +78,8 @@ export async function getNearbyClinics(lat: number, lng: number, keyword?: strin
         const city = tags['addr:city'] || tags['addr:subdistrict'] || '';
         const address = [street, city].filter(Boolean).join(', ') || tags['addr:full'] || 'Lokasi terdaftar di OpenStreetMap';
         
-        // Ensure real valid phone number is used
-        let phone = tags.phone || tags['contact:phone'] || tags['phone:mobile'];
-        if (!phone || phone === '-' || phone.includes('555-')) {
-          phone = REAL_PHONE_NUMBERS[idx % REAL_PHONE_NUMBERS.length];
-        }
-
-        const openingHours = tags.opening_hours ? [tags.opening_hours] : ['Senin - Sabtu: 08.00–20.00'];
+        const phone = tags.phone || tags['contact:phone'] || '';
+        const openingHours = tags.opening_hours ? [tags.opening_hours] : ['Belum diketahui'];
 
         // Dynamically assign tags based on keywords: "Dental Clinic", "Dental", "Rumah Sakit"
         const lowerName = name.toLowerCase();
@@ -133,21 +119,20 @@ export async function getNearbyClinics(lat: number, lng: number, keyword?: strin
         if (detectedTags.length === 0) {
           detectedTags.push('Faskes Terdaftar', 'Klinik Pratama');
         }
-        if (idx % 2 === 0) {
-          detectedTags.push('BPJS');
-        }
+
 
         return {
-          id: `osm-${el.id}`,
+          id: `osm-${el.type}-${el.id}`,
+          sourceUrl: `https://www.openstreetmap.org/${el.type}/${el.id}`,
           name,
           address,
           lat: itemLat,
           lng: itemLng,
           distanceNum: distNum,
           distance: `${distNum.toFixed(1)} km`,
-          rating: (4.4 + (el.id % 6) * 0.1).toFixed(1),
-          reviews: 24 + (el.id % 95),
-          open: true,
+          rating: null,
+          reviews: null,
+          open: null,
           openingHoursText: openingHours,
           phone,
           tags: Array.from(new Set(detectedTags)),
@@ -158,105 +143,6 @@ export async function getNearbyClinics(lat: number, lng: number, keyword?: strin
       });
 
       // Sort by distance
-      clinics.sort((a, b) => a.distanceNum - b.distanceNum);
-    }
-
-    // If no OSM clinics found or query returned empty, generate fallback clinics near the user's coordinates!
-    if (clinics.length === 0) {
-      const fallbackTemplates = [
-        { 
-          name: 'Klinik Pratama Sehat Bersama (Dental Care)', 
-          offsetLat: 0.008, 
-          offsetLng: 0.005, 
-          rating: 4.8, 
-          reviews: 142, 
-          tags: ['Dental Clinic', 'Dental', 'BPJS Kesehatan', 'Spesialis Gigi'], 
-          phone: '(021) 384-4052',
-          isHospital: false,
-          isDental: true
-        },
-        { 
-          name: 'Smile Aesthetic Dental Clinic', 
-          offsetLat: -0.009, 
-          offsetLng: 0.007, 
-          rating: 4.9, 
-          reviews: 284, 
-          tags: ['Dental Clinic', 'Dental', 'Estetika Gigi & Kawat Gigi'], 
-          phone: '+62 811-1067-8899',
-          isHospital: false,
-          isDental: true
-        },
-        { 
-          name: 'Rumah Sakit Umum Daerah (RSUD) - Poli Gigi & Mulut', 
-          offsetLat: 0.015, 
-          offsetLng: -0.008, 
-          rating: 4.7, 
-          reviews: 315, 
-          tags: ['Rumah Sakit', 'BPJS', 'Layanan 24 Jam', 'Dental'], 
-          phone: '(021) 350-3003',
-          isHospital: true,
-          isDental: true
-        },
-        { 
-          name: 'Rumah Sakit Khusus Gigi & Mulut (RSGM) Sehat', 
-          offsetLat: -0.014, 
-          offsetLng: 0.012, 
-          rating: 4.9, 
-          reviews: 412, 
-          tags: ['Rumah Sakit', 'Dental Clinic', 'Dental', 'Rujukan Spesialis'], 
-          phone: '(021) 314-4158',
-          isHospital: true,
-          isDental: true
-        },
-        { 
-          name: 'Dental Specialist Center & Implant', 
-          offsetLat: 0.006, 
-          offsetLng: -0.015, 
-          rating: 4.8, 
-          reviews: 198, 
-          tags: ['Dental', 'Dental Clinic', 'Bedah Mulut & Konservasi'], 
-          phone: '+62 812-1999-3003',
-          isHospital: false,
-          isDental: true
-        },
-        { 
-          name: 'Klinik Kimia Farma Dental & Laboratorium', 
-          offsetLat: -0.012, 
-          offsetLng: -0.004, 
-          rating: 4.8, 
-          reviews: 186, 
-          tags: ['Dental', 'Klinik Pratama', 'Laboratorium Medis'], 
-          phone: '(021) 720-8119',
-          isHospital: false,
-          isDental: true
-        },
-      ];
-
-      clinics = fallbackTemplates.map((tpl, i) => {
-        const cLat = lat + tpl.offsetLat;
-        const cLng = lng + tpl.offsetLng;
-        const distNum = calculateDistance(lat, lng, cLat, cLng);
-
-        return {
-          id: `fb-${i + 1}`,
-          name: tpl.name,
-          address: `Sekitar koordinat ${cLat.toFixed(4)}, ${cLng.toFixed(4)}`,
-          lat: cLat,
-          lng: cLng,
-          distanceNum: distNum,
-          distance: `${distNum.toFixed(1)} km`,
-          rating: tpl.rating,
-          reviews: tpl.reviews,
-          open: i !== 2,
-          openingHoursText: ['Senin: 08.00–20.00', 'Selasa: 08.00–20.00', 'Rabu: 08.00–20.00', 'Kamis: 08.00–20.00', 'Jumat: 08.00–20.00', 'Sabtu: 08.00–14.00', 'Minggu: Tutup'],
-          phone: tpl.phone,
-          tags: tpl.tags,
-          isHospital: tpl.isHospital,
-          isDental: tpl.isDental,
-          imageUrl: `/template-clinic-${(i % 3) + 1}.svg`
-        };
-      });
-
       clinics.sort((a, b) => a.distanceNum - b.distanceNum);
     }
 

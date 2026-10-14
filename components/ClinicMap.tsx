@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 
+const escapeHtml = (value: string) => value.replace(/[&<>\"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch] || ch));
+
 interface Clinic {
   id: string;
   name: string;
@@ -9,7 +11,7 @@ interface Clinic {
   lat?: number;
   lng?: number;
   distance?: string;
-  rating?: number | string;
+  rating?: number | string | null;
   phone?: string;
 }
 
@@ -99,7 +101,7 @@ export default function ClinicMap({ userLat, userLng, clinics, selectedClinicId,
         const clinicIcon = L.divIcon({
           className: 'custom-clinic-marker',
           html: `<div style="background-color: ${isSelected ? '#047857' : '#059669'}; color: white; padding: 5px 9px; border-radius: 16px; font-weight: bold; font-size: 11px; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 4px; white-space: nowrap;">
-            <span>🦷</span> <span>${clinic.name.slice(0, 16)}${clinic.name.length > 16 ? '...' : ''}</span>
+            <span>🦷</span> <span>${escapeHtml(clinic.name.slice(0, 16))}${clinic.name.length > 16 ? '...' : ''}</span>
           </div>`,
           iconAnchor: [30, 15]
         });
@@ -108,9 +110,9 @@ export default function ClinicMap({ userLat, userLng, clinics, selectedClinicId,
 
         const popupContent = `
           <div style="font-family: sans-serif; padding: 2px; max-width: 220px;">
-            <h4 style="margin: 0 0 4px 0; font-weight: bold; color: #0f172a; font-size: 13px;">${clinic.name}</h4>
-            <p style="margin: 0 0 6px 0; color: #64748b; font-size: 11px;">${clinic.address}</p>
-            ${clinic.distance ? `<p style="margin: 0 0 6px 0; color: #059669; font-weight: bold; font-size: 11px;">📍 ${clinic.distance}</p>` : ''}
+            <h4 style="margin: 0 0 4px 0; font-weight: bold; color: #0f172a; font-size: 13px;">${escapeHtml(clinic.name)}</h4>
+            <p style="margin: 0 0 6px 0; color: #64748b; font-size: 11px;">${escapeHtml(clinic.address)}</p>
+            ${clinic.distance ? `<p style="margin: 0 0 6px 0; color: #059669; font-weight: bold; font-size: 11px;">📍 ${escapeHtml(clinic.distance)}</p>` : ''}
             <a href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${userLat || ''}%2C${userLng || ''}%3B${clinic.lat}%2C${clinic.lng}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #059669; color: white; text-decoration: none; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold;">
               🗺️ Rute OpenStreetMap
             </a>

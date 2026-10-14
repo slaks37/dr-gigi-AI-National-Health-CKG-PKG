@@ -5,3 +5,9 @@ coverage/
 *.log
 .env*
 !.env.example
+
+*.tsbuildinfo
+firestore-debug.log
+ui-debug.log
+playwright-report/
+test-results/

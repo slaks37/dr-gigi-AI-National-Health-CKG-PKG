@@ -1,4 +1,5 @@
 'use client';
+import { authenticatedFetch } from '../lib/apiClient';
 
 import { useState, useRef, useEffect } from 'react';
 import { Send, User, Bot, FileText, Download, ChevronDown, ChevronUp, AlertCircle, RefreshCw, Upload, Camera, MessageSquare, Smile, LayoutDashboard, MapPin } from 'lucide-react';
@@ -105,8 +106,7 @@ export default function ConsultationPage() {
                       ? data.json_output.findings.map((f: any) => f.icd10).join(', ')
                       : '-'));
 
-      const confidence = data.json_output.diagnosa_utama?.confidence_score || 
-                         data.json_output.findings?.[0]?.confidence_score || '100%';
+      const confidence = 'Belum tervalidasi';
 
       const newRecord = {
         id: generateSecureId('rec'),
@@ -122,7 +122,7 @@ export default function ConsultationPage() {
       };
       await saveRecord(newRecord);
     } catch (e) {
-      console.error("Failed to save to history:", e);
+      throw new Error('Riwayat konsultasi belum tersimpan. Periksa koneksi dan izin akun.');
     }
   };
 
@@ -147,7 +147,7 @@ export default function ConsultationPage() {
     setLoading(true);
 
     try {
-      const apiRes = await fetch('/api/gemini/consultation', {
+      const apiRes = await authenticatedFetch('/api/gemini/consultation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -212,7 +212,7 @@ export default function ConsultationPage() {
       }
 
     } catch (error: any) {
-      console.error("Chat error:", error);
+      console.error("Chat error:");
       let errorMessage = "Maaf, terjadi kesalahan koneksi. Silakan coba lagi.";
       
       if (error.message?.includes('429') || error.message?.includes('Resource has been exhausted') || error.message?.toLowerCase().includes('rate limit')) {
@@ -247,7 +247,7 @@ export default function ConsultationPage() {
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save(`${language === 'en' ? 'Consultation-Report' : 'Laporan-Konsultasi'}-${new Date().toISOString().split('T')[0]}.pdf`);
     } catch (error) {
-        console.error("PDF Export Error:", error);
+        console.error("PDF Export Error:");
         alert("Gagal mengunduh PDF.");
     }
   };
@@ -260,6 +260,7 @@ export default function ConsultationPage() {
 
   return (
     <div className="flex flex-col h-screen bg-slate-50 font-sans">
+      <div role="status" className="bg-amber-50 border border-amber-300 p-4 m-4 rounded-xl">Konsultasi AI dinonaktifkan sampai validasi klinis tersedia. Untuk keluhan, hubungi dokter gigi.</div>
       {/* Header */}
       <header className="bg-white border-b border-slate-200 flex-none z-10">
         <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
