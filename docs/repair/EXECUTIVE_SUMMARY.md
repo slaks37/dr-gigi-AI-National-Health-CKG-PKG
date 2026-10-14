@@ -11,7 +11,7 @@ Penyimpanan baru memakai Firestore sebagai sumber utama, melalui API server deng
 ## Verifikasi lokal
 
 - TypeScript, lint dan build berhasil dengan validator aktif.
-- 59 tes unit/API, 11 tes rules/transaksi Firestore dan 4 smoke test Chromium berhasil.
+- 60 tes unit/API, 11 tes rules/transaksi Firestore dan 4 smoke test Chromium berhasil.
 - Audit dependensi produksi: 0 kerentanan yang dilaporkan. Masih terdapat 11 advisory alat pengembangan (4 moderate, 7 high).
 - Integrasi produksi, autentikasi Firebase nyata, restore SQL/backup, benchmark medis, perangkat fisik dan pengiriman SATUSEHAT belum diuji.
 

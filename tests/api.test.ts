@@ -45,7 +45,8 @@ function req(path: string, token?: string, method = 'GET', body?: unknown) {
 beforeEach(() => {
   fake.data.clear(); fake.fail = false; fake.counter = 0;
   fake.verify.mockImplementation(async (token: string) => {
-    if (token === 'invalid') throw new Error('PRIVATE-AUTH-DATA');
+    if (token === 'invalid') throw Object.assign(new Error('PRIVATE-AUTH-DATA'), { code: 'auth/invalid-id-token' });
+    if (token === 'auth-outage') throw new Error('PRIVATE-AUTH-CREDENTIAL');
     return { uid: token, role: token === 'admin' ? 'admin' : token === 'doctor' ? 'doctor' : 'patient', email: `${token}@example.test` };
   });
   fake.data.set('records/b', { id: 'b', userId: 'patient-b', type: 'synthetic', version: 1, assignedClinicianUids: [] });
@@ -59,6 +60,11 @@ describe('API authentication', () => {
   ] as const)('denies anonymous %s %s', async (path, handler, method) => {
     const response = await handler(req(path, undefined, method, method === 'POST' || method === 'PATCH' ? {} : undefined));
     expect(response.status).toBe(401); expect(response.headers.get('cache-control')).toContain('no-store');
+  });
+  it('reports authentication infrastructure outages truthfully without exposing credentials', async () => {
+    const response = await records.GET(req('records', 'auth-outage'));
+    expect(response.status).toBe(503);
+    expect(await response.text()).not.toContain('PRIVATE-AUTH-CREDENTIAL');
   });
   it('rejects invalid token; checks revocation', async () => {
     expect((await records.GET(req('records', 'invalid'))).status).toBe(401);

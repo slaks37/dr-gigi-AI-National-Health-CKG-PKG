@@ -14,7 +14,11 @@ export async function authenticate(req: NextRequest): Promise<Principal> {
     const { adminAuth } = await import('../lib/firebase-admin');
     // Revocation and disabled-account checks are mandatory.
     return principalFromClaims(await adminAuth.verifyIdToken(header.slice(7), true));
-  } catch { throw new ApiError(401, 'Invalid or expired token'); }
+  } catch (error) {
+    const code = error && typeof error === 'object' && 'code' in error ? String(error.code) : '';
+    if (['auth/id-token-expired', 'auth/id-token-revoked', 'auth/invalid-id-token', 'auth/argument-error', 'auth/user-disabled', 'auth/user-not-found'].includes(code)) throw new ApiError(401, 'Invalid or expired token');
+    throw new ApiError(503, 'Authentication service unavailable');
+  }
 }
 export function requireAdmin(p: Principal) {
   if (p.role !== 'admin') throw new ApiError(403, 'Administrator permission required');

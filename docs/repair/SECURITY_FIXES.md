@@ -2,7 +2,7 @@
 
 ## Trust boundaries
 
-`src/server/security.ts` validates Firebase ID tokens with `verifyIdToken(token, true)`, including revocation/disabled-account checks. Missing/invalid tokens return 401. Privileged actions use verified custom claims only, never profile.role, query role, request UID, email allowlists or frontend state. Ordinary authenticated users default to patient; unassigned doctors have no cross-patient access. Admin stats/audit access returns 403 to other roles.
+`src/server/security.ts` validates Firebase ID tokens with `verifyIdToken(token, true)`, including revocation/disabled-account checks. Missing/invalid tokens return 401. Credential or authentication infrastructure outages return 503, rather than falsely telling a valid user their token is invalid. Privileged actions use verified custom claims only, never profile.role, query role, request UID, email allowlists or frontend state. Ordinary authenticated users default to patient; unassigned doctors have no cross-patient access. Admin stats/audit access returns 403 to other roles.
 
 Responses are private/no-store. Unexpected failures return a generic 503; provider/DB errors, NIK, images and raw health reports are excluded from API logs. JSON requires the correct content type and is bounded by actual streamed bytes, nesting depth and node count. Domain payloads reject unrecognized fields and owner/provenance/assignment spoofing.
 

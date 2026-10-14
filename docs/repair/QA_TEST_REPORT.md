@@ -13,7 +13,7 @@ Date: 14 October 2026, Asia/Jakarta. All medical/device identities and measureme
 | Final `npm ci --ignore-scripts` | PASS — clean locked install, 1306 packages installed |
 | `npm run typecheck` | PASS — no TypeScript errors |
 | `npm run lint` | PASS — TSX-aware lint, no reported errors/warnings |
-| `npm test` | PASS — 59 tests across 4 files |
+| `npm test` | PASS — 60 tests across 4 files |
 | `npm run test:rules` | PASS — 11 tests across Firestore rules and actual server transactions in a local demo emulator |
 | `npm run build` | PASS — optimized Next.js build with type/lint enforcement |
 | `npm run test:e2e` | PASS — 4 Chromium smoke tests |
