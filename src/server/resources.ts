@@ -11,6 +11,7 @@ export function validatePayload(value: unknown, kind: 'records' | 'appointments'
   onlyKeys(payload, kind === 'records' ? RECORD_KEYS : APPOINTMENT_KEYS);
   if (typeof payload.type !== 'string' && kind === 'records') throw new ApiError(400, 'Record type required');
   if (kind === 'appointments' && (typeof payload.date !== 'string' || !/^\d{4}-\d{2}-\d{2}(?:T.*)?$/.test(payload.date) || !Number.isFinite(Date.parse(String(payload.date))))) throw new ApiError(400, 'Appointment date required');
+  if (payload.json_output && typeof payload.json_output === 'object' && ['screening','clinician_review','confirmed_icd10'].some(k => k in (payload.json_output as Record<string, unknown>))) throw new ApiError(400, 'Structured screening requires the dedicated server workflow');
   if (payload.id !== undefined) validId(payload.id);
   for (const field of ['patientName', 'patient_name', 'name', 'diagnosa', 'icd10', 'type', 'doctor', 'doctorName', 'notes', 'feedback_notes']) {
     if (payload[field] !== undefined && (typeof payload[field] !== 'string' || String(payload[field]).length > 4000)) throw new ApiError(400, 'Invalid text field');

@@ -47,6 +47,11 @@ service cloud.firestore {
       allow write: if false;
     }
     match /auditLogs/{id} { allow read: if admin(); allow write: if false; }
+    match /clinicalReviews/{id} { allow read, write: if false; }
+    match /datasetEntries/{id} { allow read, write: if false; }
+    match /datasetAnnotations/{id} { allow read, write: if false; }
+    match /datasetLabelReviews/{id} { allow read, write: if false; }
+    match /screeningQuotas/{id} { allow read, write: if false; }
     match /{document=**} { allow read, write: if false; }
   }
 }

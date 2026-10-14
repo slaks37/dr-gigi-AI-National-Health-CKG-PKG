@@ -1,4 +1,5 @@
 'use client';
+import ScreeningWorkflow from '../../components/clinical/ScreeningWorkflow';
 import { boxStyle, screeningState } from '../../src/server/analysis-state';
 
 import { useState, useRef, useEffect } from 'react';
@@ -566,7 +567,7 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
             <div className="flex items-center gap-2">
               <h1 className="font-bold text-lg text-slate-800">{t('checkup.title')}</h1>
               <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-semibold bg-emerald-100 text-emerald-800 rounded-full border border-emerald-200">
-                Agnes AI
+                Skrining terstruktur
               </span>
             </div>
             <div className="flex items-center gap-4">
@@ -580,6 +581,8 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
+        <ScreeningWorkflow context="ADULT" />
+        <details className="rounded-xl border bg-white p-4"><summary className="font-semibold cursor-pointer">Alat foto dan edukasi tambahan — analisis AI belum tersedia</summary>
         {/* Patient Data & NLP Symptoms Section */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
           <h2 className="text-xl font-bold mb-4 text-slate-800">{language === 'en' ? 'Patient Data & Complaints' : 'Data & Keluhan Pasien'}</h2>
@@ -1009,6 +1012,7 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
 
           </div>
         )}
+        </details>
       </main>
     </div>
   );

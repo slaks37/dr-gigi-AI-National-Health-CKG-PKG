@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export type Principal = { uid: string; role: 'patient' | 'doctor' | 'admin'; email?: string };
+export type Principal = { uid: string; role: 'patient' | 'doctor' | 'admin'; email?: string; clinicalReviewer?: boolean; datasetScopes?: string[] };
 export class ApiError extends Error {
   constructor(public status: number, message: string) { super(message); }
 }
-export function principalFromClaims(token: { uid: string; role?: unknown; email?: string }): Principal {
-  return { uid: token.uid, email: token.email, role: token.role === 'admin' || token.role === 'doctor' ? token.role : 'patient' };
+export function principalFromClaims(token: { uid: string; role?: unknown; email?: string; clinicalReviewer?: unknown; datasetScopes?: unknown }): Principal {
+  return { uid: token.uid, email: token.email, clinicalReviewer: token.clinicalReviewer === true, datasetScopes: Array.isArray(token.datasetScopes) ? token.datasetScopes.filter((s):s is string => typeof s === 'string' && /^[A-Za-z0-9_-]{1,64}$/.test(s)).slice(0,10) : [], role: token.role === 'admin' || token.role === 'doctor' ? token.role : 'patient' };
 }
 export async function authenticate(req: NextRequest): Promise<Principal> {
   const header = req.headers.get('authorization');
