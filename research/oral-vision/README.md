@@ -28,7 +28,7 @@ An operator-reviewed manifest must explicitly provide:
 }
 ```
 
-These are raw model labels, never clinician-confirmed findings. IDs 0 and 3 were observed in Roboflow sample output. The UI also lists Cavity and Crack, but their IDs were not independently established; detections for unmapped IDs fail closed until verified against an authorized export. Check class IDs against the actual dataset/model export before using other artifacts. The manifest permissions are operator attestations and do not establish patient consent. The runtime smoke test used a synthetic flat field; it did not evaluate these labels on clinical images.
+These are numeric checkpoint output slots with UNVERIFIED meanings. Hosted Roboflow sample names/IDs do not establish the local checkpoint mapping. No output slot is assumed to mean background. The manifest permissions are operator attestations and do not establish patient consent. Synthetic inference does not evaluate clinical labels.
 
 Run once with a permitted image:
 
@@ -59,6 +59,6 @@ python3 -m unittest discover -s research/oral-vision -p 'test_*.py'
 SONRI_LOCAL_MODEL_TEST=1 npx vitest run tests/local-vision.integration.test.ts
 ```
 
-The second command also requires the three configured paths. Tests use synthetic input only. No training was run; no benchmark or clinical accuracy is implied. ONNX and segmentation require separate parity/alignment verification.
+The second command also requires the three configured paths. Tests use synthetic input only. No training was run; no benchmark or clinical accuracy is implied. Decoded ONNX parity is now verified on synthetic fixtures; segmentation alignment remains unverified.
 
 Checkpoint export has five raw output slots. Hosted sample label IDs are not an authoritative checkpoint mapping; do not infer disease names or a background class. See ../neon-vision/README.md.

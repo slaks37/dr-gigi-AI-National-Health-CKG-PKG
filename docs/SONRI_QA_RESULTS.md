@@ -8,7 +8,7 @@ Executed positive paths: optional checkpoint downloaded and SHA-256 verified; re
 
 Executed failure coverage: anonymous/patient/doctor Model Lab denial; missing runtime returns 503; patient injection of clinician evidence; mismatched performed exams; invalid FDI, duplicate sites, impossible depths, empty interpretations; bad prediction provenance/hash/box/score/unreviewed label; false positive duplicates and class mismatches; unknown symptoms; research adapter clinical unavailability; existing image quality/MIME/corrupt/duplicate/deadline and emergency regression coverage.
 
-Not executed: positive-lesion clinical cohort evaluation, approved oral-region model, masks, model-family comparisons, ONNX parity, hosted staging identity/data flow, clinical approval. Local runtime tests are not clinical validation. First sandbox build failed on Google Fonts DNS; network-enabled build succeeded. First stale-browser download timed out; refreshed session produced real checkpoint. No failure was substituted with fabricated output.
+Not executed: positive-lesion clinical cohort evaluation, approved oral-region model, masks, model-family comparisons, hosted staging identity/data flow, clinical approval. Local runtime tests are not clinical validation. First sandbox build failed on Google Fonts DNS; network-enabled build succeeded. First stale-browser download timed out; refreshed session produced real checkpoint. No failure was substituted with fabricated output.
 
 Final executed results on this implementation:
 
@@ -28,3 +28,9 @@ Final executed results on this implementation:
 | `git diff --check` | Passed |
 
 Manual local browser readback verified all five module cards and unknown initial answers. Screenshots and final report are delivered outside repository under outputs. Hosted CI must be inspected separately after PR creation.
+
+## Cloud research update, 2026-10-16
+
+Neon deployment 1 on an isolated research branch returned HTTP 200 for real synthetic inference. Unauthorized calls returned 401. Native ONNX/PyTorch decoded parity passed four synthetic fixtures; live SONRI adapter parity passed the four-detection fixture (maximum score difference 0.0000031, normalized box difference <0.0000001). Full raw tensor comparison on noise failed query-order alignment; only decoded prediction parity is claimed. RGB resize/normalization comparison passed 1,486,848 values with maximum absolute difference 0.00005556 against PyTorch.
+
+Updated checks: 126 unit/API tests passed, one optional artifact test skipped; three function protocol tests passed separately against the built bundle. TypeScript, ESLint (one module-default style warning) and production build passed. Earlier emulator/browser results above are historical; hosted CI verifies them again for this revision. No clinical dataset or patient image was used. See ../research/neon-vision/README.md for deployment and limitations.
