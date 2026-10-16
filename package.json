@@ -13,7 +13,9 @@
     "test:e2e": "playwright test",
     "check": "npm run typecheck && npm run lint && npm test && npm run build",
     "dataset:inventory": "tsx scripts/dataset-inventory.ts",
-    "dataset:prepare": "tsx scripts/prepare-training.ts"
+    "dataset:prepare": "tsx scripts/prepare-training.ts",
+    "vision:benchmark": "node --import tsx scripts/benchmark-vision.ts",
+    "vision:coverage": "node --import tsx scripts/sonri-coverage.ts"
   },
   "dependencies": {
     "@google/genai": "^1.43.0",

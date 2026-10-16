@@ -1,0 +1,36 @@
+import { describe, it, expect } from 'vitest';
+import { ClinicalEvidenceSchema, evidenceMatchesExaminations } from '../src/clinical-engine/evidence/schema';
+import { MODULES, assessModules } from '../src/clinical-engine/modules/catalog';
+import { SymptomsSchema, ScreeningRequestSchema, ScreeningSchema } from '../src/clinical-engine/types/schema';
+import { screen } from '../src/clinical-engine/core/pipeline';
+import { researchAdapter, reviewedLabels } from '../src/clinical-engine/vision/adapters/research';
+import { evaluateDetections } from '../src/clinical-engine/vision/evaluation/detection';
+import { terminologyCoverage } from '../src/clinical-engine/terminology/coverage';
+const box = { xmin: 100, ymin: 100, xmax: 400, ymax: 400 };
+const raw = { model_id: 'synthetic', model_version: 'test-1', artifact_sha256: 'a'.repeat(64), image_sha256: 'b'.repeat(64), input_modality: 'INTRAORAL_PHOTO', prediction_type: 'BOUNDING_BOX', processing_ms: 5, inference_status: 'SUCCEEDED', readiness: 'EXPERIMENTAL', detections: [{ class_id: 0, raw_label: 'd', score: 0.5, box }] };
+const cohort = { dataset_version: 'synthetic-only', test_manifest_sha256: 'c'.repeat(64), patient_split_verified: true, independent_labels_approved: true, data_use_approved: true, images: ['a', 'negative'], truth: [{ image_id: 'a', label: 'lesion', box }], predictions: [{ image_id: 'a', label: 'lesion', box, score: 0.9 }, { image_id: 'a', label: 'lesion', box, score: 0.8 }, { image_id: 'negative', label: 'lesion', box, score: 0.3 }] };
+describe('five module boundaries', () => {
+    it('covers each existing finding and all fifteen K categories', () => { expect(MODULES).toHaveLength(5); const categories = new Set(MODULES.flatMap(m => [...m.categories])); expect(categories.size).toBe(15); });
+    it('keeps missing answers unknown and reports symptoms without auto promotion', () => { const rows = assessModules([], SymptomsSchema.parse({ gum_bleeding: 'YES' })); expect(rows.find(r => r.module_id === 'PERIODONTAL')?.reported_symptoms).toEqual(['gum_bleeding']); expect(rows.every(r => r.readiness === 'ARCHITECTURE_READY' && r.model_status === 'UNAVAILABLE')).toBe(true); });
+    it('coverage never equates terminology with evaluated models or reviewed clinical rules', () => { const rows = terminologyCoverage(); expect(rows.length).toBeGreaterThan(100); expect(rows.every(r => r.terminology_supported && !r.visual_model_available && !r.model_evaluated && !r.clinically_reviewed)).toBe(true); expect(rows.find(r => r.code === 'K03.6')?.module_ids).toContain('PERIODONTAL'); });
+});
+describe('structured clinician evidence', () => {
+    it('supports backward-compatible stored screenings without structured evidence', async () => { const r = await screen(ScreeningRequestSchema.parse({ screening_id: 'synthetic', context: 'ADULT', patient_age: 30, symptoms: {}, images: [], consent_to_process: true }), 'synthetic'); expect(ScreeningSchema.safeParse(r).success).toBe(true); expect(r.confirmed_icd10).toEqual([]); });
+    it('records unknown dentition without inventing measurements', () => { expect(ClinicalEvidenceSchema.parse({})).toEqual({ dentition: 'UNKNOWN', periodontal_sites: [], sensibility_tests: [], radiographs: [], laboratory: [] }); });
+    it('rejects invalid FDI, impossible measurements, duplicate sites and empty interpretations', () => { const site = { fdi_number: '11', site: 'MB', probing_depth_mm: 2, attachment_loss_mm: null, bleeding_on_probing: 'UNKNOWN' }; expect(ClinicalEvidenceSchema.safeParse({ periodontal_sites: [{ ...site, fdi_number: '99' }] }).success).toBe(false); expect(ClinicalEvidenceSchema.safeParse({ periodontal_sites: [{ ...site, probing_depth_mm: 21 }] }).success).toBe(false); expect(ClinicalEvidenceSchema.safeParse({ periodontal_sites: [site, site] }).success).toBe(false); expect(ClinicalEvidenceSchema.safeParse({ radiographs: [{ modality: 'CBCT', acquired_at: '2026-01-01T00:00:00.000Z', interpretation: '' }] }).success).toBe(false); });
+    it('requires performed examination flags for structured evidence', () => { const e = ClinicalEvidenceSchema.parse({ radiographs: [{ modality: 'BITEWING', acquired_at: '2026-01-01T00:00:00.000Z', interpretation: 'Synthetic fixture' }] }); expect(evidenceMatchesExaminations(e, { periodontal_exam: false, vitality_test: false, radiography: false, histopathology: false })).toBe(false); expect(evidenceMatchesExaminations(e, { periodontal_exam: false, vitality_test: false, radiography: true, histopathology: false })).toBe(true); });
+    it('rejects patient submission of examination evidence', () => { expect(ScreeningRequestSchema.safeParse({ screening_id: 'fake', context: 'ADULT', patient_age: 30, symptoms: {}, images: [], consent_to_process: true, clinical_evidence: { dentition: 'PERMANENT' } }).success).toBe(false); });
+});
+describe('research result contract', () => {
+    const adapter = researchAdapter({ model_id: 'synthetic', version: 'test-1' });
+    it('preserves raw label and score without clinical eligibility', () => { const result = adapter.normalize(raw); expect(result.detections[0].raw_label).toBe('d'); expect(result.detections[0].score).toBe(0.5); expect(adapter.evaluateModelAvailability().available).toBe(false); });
+    it('rejects incorrect hashes, provenance, boxes and NaN scores', () => { expect(() => adapter.normalize({ ...raw, artifact_sha256: 'bad' })).toThrow(); expect(() => adapter.normalize({ ...raw, model_id: 'wrong' })).toThrow(); expect(() => adapter.normalize({ ...raw, detections: [{ ...raw.detections[0], score: NaN }] })).toThrow(); expect(() => adapter.normalize({ ...raw, detections: [{ ...raw.detections[0], box: { ...box, xmax: 1001 } }] })).toThrow(); });
+    it('requires explicit reviewed label mapping', () => { const result = adapter.normalize(raw); expect(() => reviewedLabels(result, {})).toThrow(); expect(reviewedLabels(result, { d: 'OTHER_UNCERTAIN_LESION' })[0].review_required).toBe(true); });
+    it('cannot infer on an image or produce fabricated findings', async () => { expect(await adapter.detectFindings(new Uint8Array(), 0)).toEqual([]); expect(await adapter.detectOralRegion(new Uint8Array())).toEqual({ status: 'UNAVAILABLE' }); });
+});
+describe('threshold evaluation correctness using synthetic boxes only', () => {
+    it('counts duplicate detections and negative-image detections as false positives', () => { const r = evaluateDetections(cohort, 0.25); expect([r.tp, r.fp, r.fn]).toEqual([1, 2, 0]); expect(r.precision).toBeCloseTo(1 / 3); expect(r.recall).toBe(1); expect(r.map50).toBeNull(); });
+    it('wrong class never matches ground truth', () => { const r = evaluateDetections({ ...cohort, predictions: [{ ...cohort.predictions[0], label: 'wrong' }] }, 0.25); expect([r.tp, r.fp, r.fn]).toEqual([0, 1, 1]); });
+    it('reveals recall loss at high threshold', () => { const r = evaluateDetections(cohort, 0.95); expect(r.recall).toBe(0); expect(r.precision).toBeNull(); expect(r.fn).toBe(1); });
+    it('rejects unapproved data, image mismatches and invalid thresholds', () => { expect(() => evaluateDetections({ ...cohort, patient_split_verified: false }, 0.5)).toThrow(); expect(() => evaluateDetections({ ...cohort, images: ['negative'] }, 0.5)).toThrow(); expect(() => evaluateDetections(cohort, NaN)).toThrow(); });
+});

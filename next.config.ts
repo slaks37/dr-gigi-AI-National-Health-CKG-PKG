@@ -3,7 +3,7 @@ import type {NextConfig} from 'next';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   serverExternalPackages: ['heic-decode'],
-  outputFileTracingIncludes: { '/api/screenings': ['./node_modules/heic-decode/**/*', './node_modules/libheif-js/**/*'] },
+  outputFileTracingIncludes: { '/api/vision-lab': ['./research/oral-vision/run_local.py'], '/api/screenings': ['./node_modules/heic-decode/**/*', './node_modules/libheif-js/**/*'] },
   experimental: {
     cpus: 1,
     memoryBasedWorkersCount: true,

@@ -42,3 +42,5 @@ test('review and annotation pages expose readiness truthfully without private so
  await page.goto('/clinical-review');await expect(page.getByRole('heading',{name:'Tinjauan dokter gigi',exact:true})).toBeVisible();await expect(page.getByText('Masuk akun dokter/administrator',{exact:false})).toBeVisible();
  await page.goto('/dataset-review');await expect(page.getByText('kelengkapan total belum disertifikasi',{exact:false})).toBeVisible();await expect(page.getByRole('img')).toHaveCount(0);
 });
+
+test('five modules and Model Lab access limits are visible',async({page,request})=>{await page.goto('/checkup');await expect(page.getByRole('region',{name:'Lima modul SONRI'})).toBeVisible();await expect(page.getByRole('heading',{name:'Bukti klinis dan radiografi',exact:true})).toBeVisible();await page.goto('/admin/vision-lab');await expect(page.getByText('Akses administrator diperlukan.',{exact:true})).toBeVisible();expect((await request.get('/api/vision-lab')).status()).toBe(401);});

@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-16",
+  "root_folders": 34,
+  "descendant_folders": 40,
+  "metadata_file_count": 3521,
+  "mime_counts": {
+    "image/jpeg": 3340,
+    "video/quicktime": 1,
+    "image/heif": 150,
+    "image/png": 30
+  },
+  "pagination_complete": true,
+  "permission": {
+    "type": "anyone",
+    "role": "writer"
+  },
+  "privacy": "Patient-identifying filenames observed; no names retained in report or image contents fetched.",
+  "consent": "UNKNOWN",
+  "training_eligible_verified": 0,
+  "clinical_labels_verified": 0,
+  "weak_folder_hint_counts": {
+    "CARIES": 29,
+    "PERIODONTAL": 4,
+    "MUCOSA": 2,
+    "STRUCTURE": 2,
+    "CLINICAL": 5,
+    "UNMAPPED": 3478
+  },
+  "per_module_permission_verified": 0,
+  "per_module_annotated_verified": 0,
+  "per_module_patient_counts": null,
+  "positive_negative_counts": null
+}

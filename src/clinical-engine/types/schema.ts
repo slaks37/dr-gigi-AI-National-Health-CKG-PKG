@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ClinicalEvidenceSchema } from '../evidence/schema';
 export const ENGINE_VERSION = 'hybrid-research-1.0.0';
 export const Truth = z.enum(['YES', 'NO', 'UNKNOWN']);
 export const symptomKeys = ['pain', 'spontaneous_pain', 'cold_pain', 'heat_pain', 'sweet_pain', 'chewing_pain', 'gum_bleeding', 'gingival_swelling', 'facial_swelling', 'pus_or_drainage', 'fever', 'difficulty_swallowing', 'difficulty_breathing', 'difficulty_opening_mouth', 'recent_extraction', 'recent_trauma', 'persistent_oral_ulcer'] as const;
@@ -39,6 +40,7 @@ export const ScreeningSchema = z.strictObject({
   screening_id: z.string().regex(/^[A-Za-z0-9_-]{1,128}$/), patient_id: z.string().regex(/^[A-Za-z0-9_-]{1,128}$/).nullable(), screening_timestamp: z.string().datetime(),
   engine_version: z.literal(ENGINE_VERSION), model_version: z.string().nullable(), terminology_version: z.string(),
   screening_status: z.enum(['EMERGENCY','INVALID_IMAGE','RETAKE_REQUIRED','NO_ORAL_REGION','LOW_QUALITY','INCONCLUSIVE','NO_VISIBLE_FINDINGS','FINDINGS_PRESENT','REVIEW_REQUIRED','CLINICIAN_CONFIRMED','PROCESSING_ERROR']),
+  clinical_evidence: ClinicalEvidenceSchema.optional(),
   context: z.enum(['ADULT','PEDIATRIC']), patient_age: z.number().int().min(0).max(120).nullable(), symptoms: SymptomsSchema,
   image_quality_results: z.array(QualitySchema).max(4), visual_findings: z.array(FindingSchema).max(200), clinical_suspicions: z.array(CandidateSchema), differential_diagnoses: z.array(z.string()),
   triage_level: TriageSchema.shape.level, triage: TriageSchema, suggested_icd10: z.array(z.string()), confirmed_icd10: z.array(z.string()),
