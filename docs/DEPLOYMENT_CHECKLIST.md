@@ -13,3 +13,7 @@ This branch is a draft review candidate. No production deployment or rules publi
 - Keep SATUSEHAT, devices and clinical model providers gated until separate official-profile/sandbox validation. Obtain explicit deployment approval with rollback plan.
 
 Developer checks do not grant clinical, legal or production approval.
+
+## Neon research CPU, 2026-10-16
+
+The isolated Neon function now runs the exported owner checkpoint with synthetic decoded parity verified. Model Lab can explicitly select cloud with separate image-transfer consent. This does not enable clinical screening, establish label mapping, migrate patient storage or deploy the application to production. See [research runtime and evidence](../research/neon-vision/README.md).

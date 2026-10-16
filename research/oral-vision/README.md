@@ -23,7 +23,7 @@ An operator-reviewed manifest must explicitly provide:
   "artifact_use_approved": true,
   "image_use_approved": true,
   "input_modality": "INTRAORAL_PHOTO",
-  "class_labels": {"0": "Caries", "3": "Tooth"},
+  "class_labels": {"0": "RAW_CLASS_0", "1": "RAW_CLASS_1", "2": "RAW_CLASS_2", "3": "RAW_CLASS_3", "4": "RAW_CLASS_4"},
   "threshold": 0.25
 }
 ```
@@ -60,3 +60,5 @@ SONRI_LOCAL_MODEL_TEST=1 npx vitest run tests/local-vision.integration.test.ts
 ```
 
 The second command also requires the three configured paths. Tests use synthetic input only. No training was run; no benchmark or clinical accuracy is implied. ONNX and segmentation require separate parity/alignment verification.
+
+Checkpoint export has five raw output slots. Hosted sample label IDs are not an authoritative checkpoint mapping; do not infer disease names or a background class. See ../neon-vision/README.md.

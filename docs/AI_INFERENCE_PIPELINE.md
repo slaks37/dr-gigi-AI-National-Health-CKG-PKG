@@ -11,3 +11,7 @@
 General object-detection backbones are candidate tools, not oral diagnostic models. No pretrained clinical weights or synthetic clinical performance claims are included. Optional LLM explanation must consume already validated structure, never revise triage, findings or codes; this implementation does not need an LLM.
 
 Reference: [Torchvision model documentation](https://docs.pytorch.org/vision/stable/models.html). Weight licenses, clinical suitability and calibration need separate review before installation.
+
+## Neon research CPU, 2026-10-16
+
+The isolated Neon function now runs the exported owner checkpoint with synthetic decoded parity verified. Model Lab can explicitly select cloud with separate image-transfer consent. This does not enable clinical screening, establish label mapping, migrate patient storage or deploy the application to production. See [research runtime and evidence](../research/neon-vision/README.md).
