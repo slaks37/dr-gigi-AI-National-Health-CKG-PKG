@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { assertResearchPreviewEnvironment, researchPreviewEnabled, researchPreviewRequestAllowed } from './research-preview';
 
 export type Principal = { uid: string; role: 'patient' | 'doctor' | 'admin'; email?: string; clinicalReviewer?: boolean; datasetScopes?: string[] };
 export class ApiError extends Error {
@@ -76,6 +77,10 @@ export async function readJson(req: NextRequest, maxBytes = 750_000): Promise<Re
 export function api(handler: (req: NextRequest, p: Principal) => Promise<unknown>) {
   return async (req: NextRequest) => {
     try {
+      if (researchPreviewEnabled()) {
+        assertResearchPreviewEnvironment();
+        if (!researchPreviewRequestAllowed(req.method, req.nextUrl.pathname)) throw new ApiError(503, 'Patient and cloud APIs are unavailable on the isolated research Preview');
+      }
       const p = await authenticate(req);
       const result = await handler(req, p);
       const response = result instanceof NextResponse ? result : NextResponse.json(result);
