@@ -1,0 +1,1629 @@
+{
+  "browser": "155.0.8059.80",
+  "device": {
+    "platform": "darwin",
+    "architecture": "arm64",
+    "total_memory_bytes": 8589934592
+  },
+  "automation": "installed desktop Google Chrome, headless, no device emulation",
+  "authorization": "isolated local panel harness stub; production API authorization checked separately",
+  "model_bytes": 121573930,
+  "model_download_ms": null,
+  "model_download_note": "Local file only; no model network download or public artifact hosting",
+  "runs": [
+    {
+      "provider": "webgpu",
+      "fallback_reason": null,
+      "model": {
+        "id": "intraoral-caries-detection-ynpy9-1-rfdetr-large-t1",
+        "version": "dataset-v1-onnx-fp32",
+        "sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+        "bytes": 121573930,
+        "side": 704,
+        "runtime": "1.30.0",
+        "cache": "sonri-research-model-v1"
+      },
+      "fixture": "shapes",
+      "width": 704,
+      "height": 704,
+      "detections": [
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.8578761600294724,
+          "box": {
+            "xmin": 307.21520632505417,
+            "ymin": 285.06121039390564,
+            "xmax": 484.43812876939774,
+            "ymax": 669.5660650730133
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.7752721762887417,
+          "box": {
+            "xmin": 100.97035020589828,
+            "ymin": 285.1452976465225,
+            "xmax": 278.4021869301796,
+            "ymax": 671.4345067739487
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.7435428054097114,
+          "box": {
+            "xmin": 513.1822600960732,
+            "ymin": 284.55694019794464,
+            "xmax": 689.5435079932213,
+            "ymax": 669.9226945638657
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.4208557240891379,
+          "box": {
+            "xmin": 719.1584557294846,
+            "ymin": 284.15292501449585,
+            "xmax": 895.6834822893143,
+            "ymax": 669.8675155639648
+          }
+        }
+      ],
+      "cache_status": "STORED_VERIFIED",
+      "model_read_ms": 94.39999997615814,
+      "model_hash_ms": 86.19999998807907,
+      "initialization_ms": 957.1999999880791,
+      "preprocessing_ms": 104.10000002384186,
+      "inference_ms": 415.2000000476837,
+      "postprocessing_ms": 4.099999964237213,
+      "total_ms": 1833.5,
+      "session_reused": false,
+      "preprocessing_max_absolute_diff": 1.1920928955078125e-7,
+      "rgb_sha256": "ad5fb015c6d928b697da38a0ad55571a7004b9284b437c55009d1c2a0b63a138",
+      "tensor_sha256": "9a4f09a8e58eece88046286039e535b894edfae9a59b2067498769fe42d9a162",
+      "memory": {
+        "js_heap_bytes": null,
+        "peak_memory_bytes": null,
+        "note": "Peak GPU/WASM/process memory cannot be measured by this browser API. JS heap sample only, when available."
+      },
+      "clinical_use": "PROHIBITED",
+      "label_mapping_status": "UNVERIFIED",
+      "parity": {
+        "passed": true,
+        "max_score_diff": 0.0000010662007254302885,
+        "max_normalized_box_diff": 1.341104507446289e-7
+      }
+    },
+    {
+      "provider": "webgpu",
+      "fallback_reason": null,
+      "model": {
+        "id": "intraoral-caries-detection-ynpy9-1-rfdetr-large-t1",
+        "version": "dataset-v1-onnx-fp32",
+        "sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+        "bytes": 121573930,
+        "side": 704,
+        "runtime": "1.30.0",
+        "cache": "sonri-research-model-v1"
+      },
+      "fixture": "shapes",
+      "width": 704,
+      "height": 704,
+      "detections": [
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.8578761600294724,
+          "box": {
+            "xmin": 307.21520632505417,
+            "ymin": 285.06121039390564,
+            "xmax": 484.43812876939774,
+            "ymax": 669.5660650730133
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.7752721762887417,
+          "box": {
+            "xmin": 100.97035020589828,
+            "ymin": 285.1452976465225,
+            "xmax": 278.4021869301796,
+            "ymax": 671.4345067739487
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.7435428054097114,
+          "box": {
+            "xmin": 513.1822600960732,
+            "ymin": 284.55694019794464,
+            "xmax": 689.5435079932213,
+            "ymax": 669.9226945638657
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.4208557240891379,
+          "box": {
+            "xmin": 719.1584557294846,
+            "ymin": 284.15292501449585,
+            "xmax": 895.6834822893143,
+            "ymax": 669.8675155639648
+          }
+        }
+      ],
+      "cache_status": "SESSION_REUSED",
+      "model_read_ms": 0,
+      "model_hash_ms": 0,
+      "initialization_ms": 0,
+      "preprocessing_ms": 46.69999998807907,
+      "inference_ms": 300.7999999523163,
+      "postprocessing_ms": 0.6000000238418579,
+      "total_ms": 362.19999998807907,
+      "session_reused": true,
+      "preprocessing_max_absolute_diff": 1.1920928955078125e-7,
+      "rgb_sha256": "ad5fb015c6d928b697da38a0ad55571a7004b9284b437c55009d1c2a0b63a138",
+      "tensor_sha256": "9a4f09a8e58eece88046286039e535b894edfae9a59b2067498769fe42d9a162",
+      "memory": {
+        "js_heap_bytes": null,
+        "peak_memory_bytes": null,
+        "note": "Peak GPU/WASM/process memory cannot be measured by this browser API. JS heap sample only, when available."
+      },
+      "clinical_use": "PROHIBITED",
+      "label_mapping_status": "UNVERIFIED",
+      "parity": {
+        "passed": true,
+        "max_score_diff": 0.0000010662007254302885,
+        "max_normalized_box_diff": 1.341104507446289e-7
+      }
+    },
+    {
+      "provider": "wasm",
+      "fallback_reason": null,
+      "model": {
+        "id": "intraoral-caries-detection-ynpy9-1-rfdetr-large-t1",
+        "version": "dataset-v1-onnx-fp32",
+        "sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+        "bytes": 121573930,
+        "side": 704,
+        "runtime": "1.30.0",
+        "cache": "sonri-research-model-v1"
+      },
+      "fixture": "shapes",
+      "width": 704,
+      "height": 704,
+      "detections": [
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.8578777878914501,
+          "box": {
+            "xmin": 307.2151839733124,
+            "ymin": 285.0612550973892,
+            "xmax": 484.4381511211395,
+            "ymax": 669.5660799741745
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.7752744193614949,
+          "box": {
+            "xmin": 100.97035765647888,
+            "ymin": 285.1453274488449,
+            "xmax": 278.402179479599,
+            "ymax": 671.4345365762711
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.7435440783800478,
+          "box": {
+            "xmin": 513.1822526454926,
+            "ymin": 284.55689549446106,
+            "xmax": 689.5435154438019,
+            "ymax": 669.9227392673492
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.4208557240891379,
+          "box": {
+            "xmin": 719.1585153341293,
+            "ymin": 284.15289521217346,
+            "xmax": 895.683541893959,
+            "ymax": 669.8675453662872
+          }
+        }
+      ],
+      "cache_status": "STORED_VERIFIED",
+      "model_read_ms": 174.30000001192093,
+      "model_hash_ms": 64.09999996423721,
+      "initialization_ms": 283.7000000476837,
+      "preprocessing_ms": 38.39999997615814,
+      "inference_ms": 3339,
+      "postprocessing_ms": 0.699999988079071,
+      "total_ms": 4078.800000011921,
+      "session_reused": false,
+      "preprocessing_max_absolute_diff": 1.1920928955078125e-7,
+      "rgb_sha256": "ad5fb015c6d928b697da38a0ad55571a7004b9284b437c55009d1c2a0b63a138",
+      "tensor_sha256": "9a4f09a8e58eece88046286039e535b894edfae9a59b2067498769fe42d9a162",
+      "memory": {
+        "js_heap_bytes": null,
+        "peak_memory_bytes": null,
+        "note": "Peak GPU/WASM/process memory cannot be measured by this browser API. JS heap sample only, when available."
+      },
+      "clinical_use": "PROHIBITED",
+      "label_mapping_status": "UNVERIFIED",
+      "parity": {
+        "passed": true,
+        "max_score_diff": 0.000003003651045663247,
+        "max_normalized_box_diff": 8.940696716308594e-8
+      }
+    },
+    {
+      "provider": "wasm",
+      "fallback_reason": null,
+      "model": {
+        "id": "intraoral-caries-detection-ynpy9-1-rfdetr-large-t1",
+        "version": "dataset-v1-onnx-fp32",
+        "sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+        "bytes": 121573930,
+        "side": 704,
+        "runtime": "1.30.0",
+        "cache": "sonri-research-model-v1"
+      },
+      "fixture": "shapes",
+      "width": 704,
+      "height": 704,
+      "detections": [
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.8578777878914501,
+          "box": {
+            "xmin": 307.2151839733124,
+            "ymin": 285.0612550973892,
+            "xmax": 484.4381511211395,
+            "ymax": 669.5660799741745
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.7752744193614949,
+          "box": {
+            "xmin": 100.97035765647888,
+            "ymin": 285.1453274488449,
+            "xmax": 278.402179479599,
+            "ymax": 671.4345365762711
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.7435440783800478,
+          "box": {
+            "xmin": 513.1822526454926,
+            "ymin": 284.55689549446106,
+            "xmax": 689.5435154438019,
+            "ymax": 669.9227392673492
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.4208557240891379,
+          "box": {
+            "xmin": 719.1585153341293,
+            "ymin": 284.15289521217346,
+            "xmax": 895.683541893959,
+            "ymax": 669.8675453662872
+          }
+        }
+      ],
+      "cache_status": "SESSION_REUSED",
+      "model_read_ms": 0,
+      "model_hash_ms": 0,
+      "initialization_ms": 0,
+      "preprocessing_ms": 25.899999976158142,
+      "inference_ms": 3265.300000011921,
+      "postprocessing_ms": 0.6000000238418579,
+      "total_ms": 3300,
+      "session_reused": true,
+      "preprocessing_max_absolute_diff": 1.1920928955078125e-7,
+      "rgb_sha256": "ad5fb015c6d928b697da38a0ad55571a7004b9284b437c55009d1c2a0b63a138",
+      "tensor_sha256": "9a4f09a8e58eece88046286039e535b894edfae9a59b2067498769fe42d9a162",
+      "memory": {
+        "js_heap_bytes": null,
+        "peak_memory_bytes": null,
+        "note": "Peak GPU/WASM/process memory cannot be measured by this browser API. JS heap sample only, when available."
+      },
+      "clinical_use": "PROHIBITED",
+      "label_mapping_status": "UNVERIFIED",
+      "parity": {
+        "passed": true,
+        "max_score_diff": 0.000003003651045663247,
+        "max_normalized_box_diff": 8.940696716308594e-8
+      }
+    },
+    {
+      "provider": "webgpu",
+      "fallback_reason": null,
+      "model": {
+        "id": "intraoral-caries-detection-ynpy9-1-rfdetr-large-t1",
+        "version": "dataset-v1-onnx-fp32",
+        "sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+        "bytes": 121573930,
+        "side": 704,
+        "runtime": "1.30.0",
+        "cache": "sonri-research-model-v1"
+      },
+      "fixture": "flat",
+      "width": 640,
+      "height": 480,
+      "detections": [],
+      "cache_status": "STORED_VERIFIED",
+      "model_read_ms": 284.19999998807907,
+      "model_hash_ms": 113.40000003576279,
+      "initialization_ms": 397.5999999642372,
+      "preprocessing_ms": 37.30000001192093,
+      "inference_ms": 342.39999997615814,
+      "postprocessing_ms": 0.7000000476837158,
+      "total_ms": 1446.4000000357628,
+      "session_reused": false,
+      "preprocessing_max_absolute_diff": 0,
+      "rgb_sha256": "4cbd245b835d59ddcd8736248aef9b11d95eadd49d89bdbb2b35770ecd6d2143",
+      "tensor_sha256": "c9d3d581dcbb841802c2017cf798148510338ade86ae0a1674679df37ae09dfc",
+      "memory": {
+        "js_heap_bytes": null,
+        "peak_memory_bytes": null,
+        "note": "Peak GPU/WASM/process memory cannot be measured by this browser API. JS heap sample only, when available."
+      },
+      "clinical_use": "PROHIBITED",
+      "label_mapping_status": "UNVERIFIED",
+      "parity": {
+        "passed": true,
+        "reference_detections": 0
+      }
+    },
+    {
+      "provider": "webgpu",
+      "fallback_reason": null,
+      "model": {
+        "id": "intraoral-caries-detection-ynpy9-1-rfdetr-large-t1",
+        "version": "dataset-v1-onnx-fp32",
+        "sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+        "bytes": 121573930,
+        "side": 704,
+        "runtime": "1.30.0",
+        "cache": "sonri-research-model-v1"
+      },
+      "fixture": "noise",
+      "width": 640,
+      "height": 480,
+      "detections": [],
+      "cache_status": "SESSION_REUSED",
+      "model_read_ms": 0,
+      "model_hash_ms": 0,
+      "initialization_ms": 0,
+      "preprocessing_ms": 49.200000047683716,
+      "inference_ms": 271.60000002384186,
+      "postprocessing_ms": 0.3999999761581421,
+      "total_ms": 322,
+      "session_reused": true,
+      "preprocessing_max_absolute_diff": 3.5762786865234375e-7,
+      "rgb_sha256": "eae59d5a574de924b28b4694d34691a9747855b9985ca5bb57ca6ea036ebf7cf",
+      "tensor_sha256": "cd7d18b66a8283f49b7e76c728d44cd7a42cb21296ce37d4c78072bfb8490927",
+      "memory": {
+        "js_heap_bytes": null,
+        "peak_memory_bytes": null,
+        "note": "Peak GPU/WASM/process memory cannot be measured by this browser API. JS heap sample only, when available."
+      },
+      "clinical_use": "PROHIBITED",
+      "label_mapping_status": "UNVERIFIED",
+      "parity": {
+        "passed": true,
+        "reference_detections": 0
+      }
+    },
+    {
+      "provider": "webgpu",
+      "fallback_reason": null,
+      "model": {
+        "id": "intraoral-caries-detection-ynpy9-1-rfdetr-large-t1",
+        "version": "dataset-v1-onnx-fp32",
+        "sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+        "bytes": 121573930,
+        "side": 704,
+        "runtime": "1.30.0",
+        "cache": "sonri-research-model-v1"
+      },
+      "fixture": "gradient",
+      "width": 640,
+      "height": 480,
+      "detections": [],
+      "cache_status": "SESSION_REUSED",
+      "model_read_ms": 0,
+      "model_hash_ms": 0,
+      "initialization_ms": 0,
+      "preprocessing_ms": 30.30000001192093,
+      "inference_ms": 271.80000001192093,
+      "postprocessing_ms": 0.30000001192092896,
+      "total_ms": 302.7000000476837,
+      "session_reused": true,
+      "preprocessing_max_absolute_diff": 2.384185791015625e-7,
+      "rgb_sha256": "9a9afc40910de93ad25cd573231e3c2175f90cd00f2dba46f4d349b177a513d4",
+      "tensor_sha256": "97773d4d77bbf0c8c5ea98b81b4b830e91276f17ecefbee78b94079dfd1e1566",
+      "memory": {
+        "js_heap_bytes": null,
+        "peak_memory_bytes": null,
+        "note": "Peak GPU/WASM/process memory cannot be measured by this browser API. JS heap sample only, when available."
+      },
+      "clinical_use": "PROHIBITED",
+      "label_mapping_status": "UNVERIFIED",
+      "parity": {
+        "passed": true,
+        "reference_detections": 0
+      }
+    },
+    {
+      "provider": "wasm",
+      "fallback_reason": null,
+      "model": {
+        "id": "intraoral-caries-detection-ynpy9-1-rfdetr-large-t1",
+        "version": "dataset-v1-onnx-fp32",
+        "sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+        "bytes": 121573930,
+        "side": 704,
+        "runtime": "1.30.0",
+        "cache": "sonri-research-model-v1"
+      },
+      "fixture": "shapes",
+      "width": 704,
+      "height": 704,
+      "detections": [
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.8578777878914501,
+          "box": {
+            "xmin": 307.2151839733124,
+            "ymin": 285.0612550973892,
+            "xmax": 484.4381511211395,
+            "ymax": 669.5660799741745
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.7752744193614949,
+          "box": {
+            "xmin": 100.97035765647888,
+            "ymin": 285.1453274488449,
+            "xmax": 278.402179479599,
+            "ymax": 671.4345365762711
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.7435440783800478,
+          "box": {
+            "xmin": 513.1822526454926,
+            "ymin": 284.55689549446106,
+            "xmax": 689.5435154438019,
+            "ymax": 669.9227392673492
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.4208557240891379,
+          "box": {
+            "xmin": 719.1585153341293,
+            "ymin": 284.15289521217346,
+            "xmax": 895.683541893959,
+            "ymax": 669.8675453662872
+          }
+        }
+      ],
+      "cache_status": "HIT_VERIFIED",
+      "model_read_ms": 39.10000002384186,
+      "model_hash_ms": 59.69999998807907,
+      "initialization_ms": 630.8000000119209,
+      "preprocessing_ms": 36,
+      "inference_ms": 3306.300000011921,
+      "postprocessing_ms": 4,
+      "total_ms": 4083.5,
+      "session_reused": false,
+      "preprocessing_max_absolute_diff": 1.1920928955078125e-7,
+      "rgb_sha256": "ad5fb015c6d928b697da38a0ad55571a7004b9284b437c55009d1c2a0b63a138",
+      "tensor_sha256": "9a4f09a8e58eece88046286039e535b894edfae9a59b2067498769fe42d9a162",
+      "memory": {
+        "js_heap_bytes": null,
+        "peak_memory_bytes": null,
+        "note": "Peak GPU/WASM/process memory cannot be measured by this browser API. JS heap sample only, when available."
+      },
+      "clinical_use": "PROHIBITED",
+      "label_mapping_status": "UNVERIFIED",
+      "parity": {
+        "passed": true,
+        "max_score_diff": 0.000003003651045663247,
+        "max_normalized_box_diff": 8.940696716308594e-8
+      }
+    },
+    {
+      "provider": "webgpu",
+      "fallback_reason": null,
+      "model": {
+        "id": "intraoral-caries-detection-ynpy9-1-rfdetr-large-t1",
+        "version": "dataset-v1-onnx-fp32",
+        "sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+        "bytes": 121573930,
+        "side": 704,
+        "runtime": "1.30.0",
+        "cache": "sonri-research-model-v1"
+      },
+      "fixture": "shapes",
+      "width": 704,
+      "height": 704,
+      "detections": [
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.8578761600294724,
+          "box": {
+            "xmin": 307.21520632505417,
+            "ymin": 285.06121039390564,
+            "xmax": 484.43812876939774,
+            "ymax": 669.5660650730133
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.7752721762887417,
+          "box": {
+            "xmin": 100.97035020589828,
+            "ymin": 285.1452976465225,
+            "xmax": 278.4021869301796,
+            "ymax": 671.4345067739487
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.7435428054097114,
+          "box": {
+            "xmin": 513.1822600960732,
+            "ymin": 284.55694019794464,
+            "xmax": 689.5435079932213,
+            "ymax": 669.9226945638657
+          }
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "score": 0.4208557240891379,
+          "box": {
+            "xmin": 719.1584557294846,
+            "ymin": 284.15292501449585,
+            "xmax": 895.6834822893143,
+            "ymax": 669.8675155639648
+          }
+        }
+      ],
+      "cache_status": "HIT_VERIFIED",
+      "model_read_ms": 25.399999976158142,
+      "model_hash_ms": 58.90000003576279,
+      "initialization_ms": 672.8999999761581,
+      "preprocessing_ms": 30.600000023841858,
+      "inference_ms": 315.89999997615814,
+      "postprocessing_ms": 0.800000011920929,
+      "total_ms": 1111.5,
+      "session_reused": false,
+      "preprocessing_max_absolute_diff": 1.1920928955078125e-7,
+      "rgb_sha256": "ad5fb015c6d928b697da38a0ad55571a7004b9284b437c55009d1c2a0b63a138",
+      "tensor_sha256": "9a4f09a8e58eece88046286039e535b894edfae9a59b2067498769fe42d9a162",
+      "memory": {
+        "js_heap_bytes": null,
+        "peak_memory_bytes": null,
+        "note": "Peak GPU/WASM/process memory cannot be measured by this browser API. JS heap sample only, when available."
+      },
+      "clinical_use": "PROHIBITED",
+      "label_mapping_status": "UNVERIFIED",
+      "parity": {
+        "passed": true,
+        "max_score_diff": 0.0000010662007254302885,
+        "max_normalized_box_diff": 1.341104507446289e-7
+      }
+    }
+  ],
+  "failures": [
+    {
+      "test": "runtime404",
+      "status": "PASSED",
+      "message": "BROWSER_INFERENCE_FAILED"
+    },
+    {
+      "test": "low-memory",
+      "status": "PASSED",
+      "message": "INSUFFICIENT_DEVICE_MEMORY"
+    },
+    {
+      "test": "no-webgpu",
+      "status": "PASSED",
+      "actual_provider": "wasm",
+      "fallback_reason": null
+    },
+    {
+      "test": "gpu-failure",
+      "status": "PASSED",
+      "actual_provider": "wasm",
+      "fallback_reason": "WEBGPU_INITIALIZATION_FAILED"
+    },
+    {
+      "test": "gpu-no-fallback",
+      "status": "PASSED",
+      "message": "WEBGPU_INITIALIZATION_FAILED"
+    },
+    {
+      "test": "corrupt-local-model",
+      "status": "PASSED"
+    },
+    {
+      "test": "corrupt-truncated-cache",
+      "status": "PASSED"
+    },
+    {
+      "test": "browser-interrupted",
+      "status": "PASSED"
+    },
+    {
+      "test": "cancel",
+      "status": "PASSED"
+    }
+  ],
+  "network": [
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/orientation-reference.json"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/orientation-6.jpg"
+    },
+    {
+      "method": "GET",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.wasm"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/flat.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/flat.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/noise.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/noise.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/gradient.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/gradient.png"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.wasm"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.wasm"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.wasm"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/original-runtime.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.wasm"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/ort/1.30.0/original-runtime.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "path": "/browser-ai/worker.js"
+    }
+  ],
+  "mobile": {
+    "android_chrome": "NOT_TESTED",
+    "iphone_safari": "NOT_TESTED",
+    "low_memory_hardware": "NOT_TESTED"
+  },
+  "orientation": {
+    "width": 48,
+    "height": 32,
+    "max_channel_diff": 0,
+    "passed": true
+  },
+  "capabilities": {
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+    "mobile": false,
+    "webgpu": true,
+    "adapter": true,
+    "deviceMemoryGB": 8,
+    "hardwareConcurrency": 8,
+    "secure": true,
+    "wasm": true
+  },
+  "cache_reload": {
+    "verified": true,
+    "model_read_ms": 39.10000002384186,
+    "model_hash_ms": 59.69999998807907
+  },
+  "cache_reload_gpu": {
+    "verified": true,
+    "model_read_ms": 25.399999976158142,
+    "model_hash_ms": 58.90000003576279
+  },
+  "cache_clear": true,
+  "browser_requests": [
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/orientation-reference.json"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/orientation-6.jpg"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.wasm"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/flat.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/flat.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/noise.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/noise.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/gradient.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/gradient.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.wasm"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.wasm"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.wasm"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/original-runtime.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort-wasm-simd-threaded.asyncify.wasm"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/manifest.json"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/research-fixtures/sonri-v1/shapes.png"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/ort.webgpu.bundle.min.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/ort/1.30.0/original-runtime.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/browser-ai/worker.js"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.css"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/harness.mjs"
+    },
+    {
+      "method": "GET",
+      "origin": "http://127.0.0.1:58877",
+      "path": "/browser-ai/worker.js"
+    }
+  ],
+  "no_photo_or_model_uploads": true,
+  "no_cloud_inference": true
+}

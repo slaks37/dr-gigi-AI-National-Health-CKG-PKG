@@ -25,3 +25,11 @@ Verification: 122 unit/API tests, 30 emulator tests, 8 browser tests, 4 Python c
 ## Neon cloud research runtime
 
 Real RF-DETR inference is running on a separate Neon research branch using ONNX Runtime WASM CPU. The local Model Lab configuration selects this runtime with separate cloud transfer consent. Application production deployment is unchanged. Five raw checkpoint output slots remain unmapped; clinical availability remains UNAVAILABLE. [Runtime evidence](../research/neon-vision/README.md).
+
+## Browser AI research update — 2026-10-17
+
+Real ONNX inference now runs in the administrator Browser AI panel using a dedicated Web Worker, explicit WebGPU/WASM selection, owner-selected local model and verified optional model cache. Synthetic-only decoded parity passed on desktop Chrome. Five raw slots remain unmapped; no clinical record input or automatic Neon fallback is enabled. Existing local and Neon reference implementations are unchanged.
+
+Current verification: 136 unit/API tests passed (one optional artifact test skipped in the default suite); nine browser smoke tests passed against the newly started local production build. Nine real synthetic inference runs and nine browser fault cases passed separately in the loopback benchmark harness; EXIF/RGB checks and cache reloads passed. TypeScript and production build passed; ESLint has no errors and retains the existing Neon style warning. The build required network access for existing Google Fonts after sandbox DNS failed. Clean installation completed; production dependency audit was clear. Full dependency audit reported seven high-severity development-tool findings in the existing braces/fast-glob/Firebase/ESLint chain; no breaking automated downgrade was applied.
+
+No mobile physical hardware, live Firebase administrator flow on Vercel Preview, private-weight public hosting or clinical evaluation is claimed. Preview acceptance remains pending and no production deployment/merge occurred. Read [the complete browser runtime report](../research/browser-vision/README.md) and its measured evidence.

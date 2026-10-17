@@ -21,3 +21,9 @@ checkpoints/
 *.pth
 __pycache__/
 *.pyc
+
+# Generated pinned browser runtime; model weights are never public assets.
+public/ort/
+public/browser-ai/
+*.onnx
+*.onnx.data
