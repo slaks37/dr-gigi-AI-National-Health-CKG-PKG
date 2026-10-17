@@ -5,6 +5,7 @@ import { ReviewRequestSchema } from '@/src/clinical-engine/validation/review';
 import { ScreeningSchema, FindingSchema } from '@/src/clinical-engine/types/schema';
 import { lookupCode, validateCodes } from '@/src/clinical-engine/terminology/catalog';
 import { applyReasoning } from '@/src/clinical-engine/core/pipeline';
+import { evidenceMatchesExaminations } from '@/src/clinical-engine/evidence/schema';
 import { FieldValue } from 'firebase-admin/firestore';
 export const POST=api(async(req,p)=>{
  if(p.role!=='doctor'||!p.clinicalReviewer)throw new ApiError(403,'Verified qualified dentist claim required');
@@ -16,7 +17,9 @@ export const POST=api(async(req,p)=>{
   const snap=await tx.get(ref);if(!snap.exists)throw new ApiError(404,'Screening not found');const data=snap.data()!;requireAccess(p,data);
   if(!Array.isArray(data.assignedClinicianUids)||!data.assignedClinicianUids.includes(p.uid)||data.createdBy===p.uid)throw new ApiError(403,'Independent assigned dentist required');
   if(data.version!==input.expected_version)throw new ApiError(409,'Screening changed; reload before review');
+  if(input.structured_evidence&&!evidenceMatchesExaminations(input.structured_evidence,input.examinations))throw new ApiError(400,'Structured evidence does not match performed examinations');
   const result=ScreeningSchema.parse(data.screening);
+  if(input.structured_evidence)result.clinical_evidence=input.structured_evidence;
   if(input.decision==='APPROVED'&&!result.patient_id)throw new ApiError(400,'Verified patient subject linkage required before confirmation');
   if(input.decision==='APPROVED'&&(!input.examinations.clinical_exam||!input.clinical_evidence.length))throw new ApiError(400,'Clinical examination evidence required');
   for(const code of input.confirmed_icd10){const entry=lookupCode(code)!;if((entry.needs_radiography&&!input.examinations.radiography)||(entry.needs_vitality_test&&!input.examinations.vitality_test)||(entry.needs_periodontal_exam&&!input.examinations.periodontal_exam)||(entry.needs_histopathology&&!input.examinations.histopathology))throw new ApiError(400,'Required examination evidence missing');}

@@ -21,10 +21,12 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run typecheck
       - run: npm run lint
+      - run: python3 -m unittest discover -s research/oral-vision -p 'test_*.py'
       - run: npm test
       - run: npm run test:rules
       - run: npm audit --omit=dev --audit-level=high
       - run: npm run build
+      - run: npm run test:server-imports
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
       - uses: actions/upload-artifact@v4

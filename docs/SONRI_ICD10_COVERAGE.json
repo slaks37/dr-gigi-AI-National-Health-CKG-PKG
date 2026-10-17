@@ -1,0 +1,3353 @@
+[
+  {
+    "code": "K00",
+    "official_title": "Disorders of tooth development and eruption",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K00",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K00.0",
+    "official_title": "Anodontia",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K00.0",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K00.1",
+    "official_title": "Supernumerary teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K00.1",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K00.2",
+    "official_title": "Abnormalities of size and form of teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K00.2",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K00.3",
+    "official_title": "Mottled teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K00.3",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K00.4",
+    "official_title": "Disturbances in tooth formation",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K00.4",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K00.5",
+    "official_title": "Hereditary disturbances in tooth structure, not elsewhere classified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K00.5",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K00.6",
+    "official_title": "Disturbances in tooth eruption",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K00.6",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K00.7",
+    "official_title": "Teething syndrome",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K00.7",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K00.8",
+    "official_title": "Other disorders of tooth development",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K00.8",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K00.9",
+    "official_title": "Disorder of tooth development, unspecified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K00.9",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K01",
+    "official_title": "Embedded and impacted teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K01",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K01.0",
+    "official_title": "Embedded teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K01.0",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K01.1",
+    "official_title": "Impacted teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K01.1",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K02",
+    "official_title": "Dental caries",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K02",
+    "module_ids": [
+      "CARIES"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K02.0",
+    "official_title": "Caries limited to enamel",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K02.0",
+    "module_ids": [
+      "CARIES"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K02.1",
+    "official_title": "Caries of dentine",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K02.1",
+    "module_ids": [
+      "CARIES"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K02.2",
+    "official_title": "Caries of cementum",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K02.2",
+    "module_ids": [
+      "CARIES"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K02.3",
+    "official_title": "Arrested dental caries",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K02.3",
+    "module_ids": [
+      "CARIES"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K02.4",
+    "official_title": "Odontoclasia",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K02.4",
+    "module_ids": [
+      "CARIES"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K02.5",
+    "official_title": "Caries with pulp exposure",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K02.5",
+    "module_ids": [
+      "CARIES"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K02.8",
+    "official_title": "Other dental caries",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K02.8",
+    "module_ids": [
+      "CARIES"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K02.9",
+    "official_title": "Dental caries, unspecified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K02.9",
+    "module_ids": [
+      "CARIES"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [
+      "CARIES-001"
+    ],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K03",
+    "official_title": "Other diseases of hard tissues of teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K03",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K03.0",
+    "official_title": "Excessive attrition of teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K03.0",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K03.1",
+    "official_title": "Abrasion of teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K03.1",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K03.2",
+    "official_title": "Erosion of teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K03.2",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K03.3",
+    "official_title": "Pathological resorption of teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K03.3",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K03.4",
+    "official_title": "Hypercementosis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K03.4",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K03.5",
+    "official_title": "Ankylosis of teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K03.5",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K03.6",
+    "official_title": "Deposits [accretions] on teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K03.6",
+    "module_ids": [
+      "PERIODONTAL",
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K03.7",
+    "official_title": "Posteruptive colour changes of dental hard tissues",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K03.7",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K03.8",
+    "official_title": "Other specified diseases of hard tissues of teeth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K03.8",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K03.9",
+    "official_title": "Disease of hard tissues of teeth, unspecified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K03.9",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K04",
+    "official_title": "Diseases of pulp and periapical tissues",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K04",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": true,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K04.0",
+    "official_title": "Pulpitis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K04.0",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": true,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K04.1",
+    "official_title": "Necrosis of pulp",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K04.1",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": true,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K04.2",
+    "official_title": "Pulp degeneration",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K04.2",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": true,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K04.3",
+    "official_title": "Abnormal hard tissue formation in pulp",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K04.3",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": true,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K04.4",
+    "official_title": "Acute apical periodontitis of pulpal origin",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K04.4",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": true,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K04.5",
+    "official_title": "Chronic apical periodontitis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K04.5",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": true,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K04.6",
+    "official_title": "Periapical abscess with sinus",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K04.6",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": true,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K04.7",
+    "official_title": "Periapical abscess without sinus",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K04.7",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": true,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K04.8",
+    "official_title": "Radicular cyst",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K04.8",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": true,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K04.9",
+    "official_title": "Other and unspecified diseases of pulp and periapical tissues",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K04.9",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": true,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K05",
+    "official_title": "Gingivitis and periodontal diseases",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K05",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": true,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K05.0",
+    "official_title": "Acute gingivitis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K05.0",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": true,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K05.1",
+    "official_title": "Chronic gingivitis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K05.1",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": true,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K05.2",
+    "official_title": "Acute periodontitis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K05.2",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": true,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K05.3",
+    "official_title": "Chronic periodontitis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K05.3",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": true,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K05.4",
+    "official_title": "Periodontosis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K05.4",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": true,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K05.5",
+    "official_title": "Other periodontal diseases",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K05.5",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": true,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K05.6",
+    "official_title": "Periodontal disease, unspecified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K05.6",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": true,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K06",
+    "official_title": "Other disorders of gingiva and edentulous alveolar ridge",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K06",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K06.0",
+    "official_title": "Gingival recession",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K06.0",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K06.1",
+    "official_title": "Gingival enlargement",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K06.1",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K06.2",
+    "official_title": "Gingival and edentulous alveolar ridge lesions associated with trauma",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K06.2",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K06.8",
+    "official_title": "Other specified disorders of gingiva and edentulous alveolar ridge",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K06.8",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K06.9",
+    "official_title": "Disorder of gingiva and edentulous alveolar ridge, unspecified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K06.9",
+    "module_ids": [
+      "PERIODONTAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K07",
+    "official_title": "Dentofacial anomalies [including malocclusion]",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K07",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K07.0",
+    "official_title": "Major anomalies of jaw size",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K07.0",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K07.1",
+    "official_title": "Anomalies of jaw-cranial base relationship",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K07.1",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K07.2",
+    "official_title": "Anomalies of dental arch relationship",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K07.2",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K07.3",
+    "official_title": "Anomalies of tooth position",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K07.3",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K07.4",
+    "official_title": "Malocclusion, unspecified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K07.4",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K07.5",
+    "official_title": "Dentofacial functional abnormalities",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K07.5",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K07.6",
+    "official_title": "Temporomandibular joint disorders",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K07.6",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K07.8",
+    "official_title": "Other dentofacial anomalies",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K07.8",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K07.9",
+    "official_title": "Dentofacial anomaly, unspecified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K07.9",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K08",
+    "official_title": "Other disorders of teeth and supporting structures",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K08",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K08.0",
+    "official_title": "Exfoliation of teeth due to systemic causes",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K08.0",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K08.1",
+    "official_title": "Loss of teeth due to accident, extraction or local periodontal disease",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K08.1",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K08.2",
+    "official_title": "Atrophy of edentulous alveolar ridge",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K08.2",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K08.3",
+    "official_title": "Retained dental root",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K08.3",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K08.8",
+    "official_title": "Other specified disorders of teeth and supporting structures",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K08.8",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K08.9",
+    "official_title": "Disorder of teeth and supporting structures, unspecified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K08.9",
+    "module_ids": [
+      "STRUCTURE"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K09",
+    "official_title": "Cysts of oral region, not elsewhere classified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K09",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K09.0",
+    "official_title": "Developmental odontogenic cysts",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K09.0",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K09.1",
+    "official_title": "Developmental (nonodontogenic) cysts of oral region",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K09.1",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K09.2",
+    "official_title": "Other cysts of jaw",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K09.2",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K09.8",
+    "official_title": "Other cysts of oral region, not elsewhere classified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K09.8",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K09.9",
+    "official_title": "Cyst of oral region, unspecified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K09.9",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K10",
+    "official_title": "Other diseases of jaws",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K10",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K10.0",
+    "official_title": "Developmental disorders of jaws",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K10.0",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K10.1",
+    "official_title": "Giant cell granuloma, central",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K10.1",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K10.2",
+    "official_title": "Inflammatory conditions of jaws",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K10.2",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K10.3",
+    "official_title": "Alveolitis of jaws",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K10.3",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K10.8",
+    "official_title": "Other specified diseases of jaws",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K10.8",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K10.9",
+    "official_title": "Disease of jaws, unspecified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K10.9",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": true,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K11",
+    "official_title": "Diseases of salivary glands",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K11",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K11.0",
+    "official_title": "Atrophy of salivary gland",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K11.0",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K11.1",
+    "official_title": "Hypertrophy of salivary gland",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K11.1",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K11.2",
+    "official_title": "Sialoadenitis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K11.2",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K11.3",
+    "official_title": "Abscess of salivary gland",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K11.3",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K11.4",
+    "official_title": "Fistula of salivary gland",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K11.4",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K11.5",
+    "official_title": "Sialolithiasis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K11.5",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K11.6",
+    "official_title": "Mucocele of salivary gland",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K11.6",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K11.7",
+    "official_title": "Disturbances of salivary secretion",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K11.7",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K11.8",
+    "official_title": "Other diseases of salivary glands",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K11.8",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K11.9",
+    "official_title": "Disease of salivary gland, unspecified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K11.9",
+    "module_ids": [
+      "CLINICAL"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K12",
+    "official_title": "Stomatitis and related lesions",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K12",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K12.0",
+    "official_title": "Recurrent oral aphthae",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K12.0",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K12.1",
+    "official_title": "Other forms of stomatitis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K12.1",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K12.2",
+    "official_title": "Cellulitis and abscess of mouth",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K12.2",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K12.3",
+    "official_title": "Oral mucositis (ulcerative)",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K12.3",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K13",
+    "official_title": "Other diseases of lip and oral mucosa",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K13",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K13.0",
+    "official_title": "Diseases of lips",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K13.0",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K13.1",
+    "official_title": "Cheek and lip biting",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K13.1",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K13.2",
+    "official_title": "Leukoplakia and other disturbances of oral epithelium, including tongue",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K13.2",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K13.3",
+    "official_title": "Hairy leukoplakia",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K13.3",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K13.4",
+    "official_title": "Granuloma and granuloma-like lesions of oral mucosa",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K13.4",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K13.5",
+    "official_title": "Oral submucous fibrosis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K13.5",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K13.6",
+    "official_title": "Irritative hyperplasia of oral mucosa",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K13.6",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K13.7",
+    "official_title": "Other and unspecified lesions of oral mucosa",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K13.7",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": true,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K14",
+    "official_title": "Diseases of tongue",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K14",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K14.0",
+    "official_title": "Glossitis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K14.0",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K14.1",
+    "official_title": "Geographic tongue",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K14.1",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K14.2",
+    "official_title": "Median rhomboid glossitis",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K14.2",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K14.3",
+    "official_title": "Hypertrophy of tongue papillae",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K14.3",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K14.4",
+    "official_title": "Atrophy of tongue papillae",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K14.4",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K14.5",
+    "official_title": "Plicated tongue",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K14.5",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K14.6",
+    "official_title": "Glossodynia",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K14.6",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K14.8",
+    "official_title": "Other diseases of tongue",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K14.8",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  },
+  {
+    "code": "K14.9",
+    "official_title": "Disease of tongue, unspecified",
+    "classification_version": "WHO-ICD10-2019-covid-expanded",
+    "source": "https://icd.who.int/browse10/2019/en#/K14.9",
+    "module_ids": [
+      "MUCOSA"
+    ],
+    "terminology_supported": true,
+    "questionnaire_rule_ids": [],
+    "candidate_rule_ids": [],
+    "visual_model_available": false,
+    "model_evaluated": false,
+    "clinically_reviewed": false,
+    "clinician_examination_supported": true,
+    "radiography_ai_supported": false,
+    "radiography_interpretation_supported": true,
+    "required_evidence": [
+      "qualified_clinician_assessment"
+    ],
+    "needs_radiography": false,
+    "needs_vitality_test": false,
+    "needs_periodontal_exam": false,
+    "needs_histopathology": false,
+    "inclusion_exclusion_status": "REFERENCE_REQUIRED",
+    "review_status": "PENDING"
+  }
+]

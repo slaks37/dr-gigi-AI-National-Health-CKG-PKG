@@ -36,7 +36,7 @@ describe('auditable clinical suspicions',()=>{
  it('enamel opacity never forces a single caries code',()=>{expect(reason([finding('ENAMEL_OPACITY')],SymptomsSchema.parse({}),'ADULT')[0].suggested_icd10).toEqual([]);});
  it('gingival inflammation does not confirm periodontitis or acute/chronic subtype',()=>{const r=reason([finding('VISIBLE_GINGIVAL_INFLAMMATION')],SymptomsSchema.parse({gum_bleeding:'YES'}),'ADULT');expect(r.every(c=>c.suggested_icd10.length===0)).toBe(true);expect(r[0].review_required).toBe(true);});
  it('pain cannot confirm a K04 diagnosis',()=>{const r=reason([],SymptomsSchema.parse({pain:'YES',spontaneous_pain:'YES'}),'ADULT');expect(r[0].rule_id).toBe('PULPAL-001');expect(r[0].suggested_icd10).toEqual([]);});
- it('pediatric evidence does not invent ECC or FDI',()=>{const r=reason([finding('VISIBLE_TOOTH_WEAR')],SymptomsSchema.parse({}),'PEDIATRIC');expect(r[0].rule_id).toBe('PEDIATRIC-001');expect(r[0].suggested_icd10).toEqual([]);});
+ it('pediatric evidence does not invent ECC or FDI',()=>{const r=reason([finding('VISIBLE_TOOTH_WEAR')],SymptomsSchema.parse({}),'PEDIATRIC');expect(r.map(c=>c.rule_id)).toEqual(['STRUCTURE-001','PEDIATRIC-001']);expect(r.every(c=>c.suggested_icd10.length===0)).toBe(true);});
  it('same input/version yields identical reasoning',()=>{const f=[finding('VISIBLE_CAVITATION')],s=SymptomsSchema.parse({});expect(reason(f,s,'ADULT')).toEqual(reason(f,s,'ADULT'));});
  it('uncertain cavitation cannot force a caries code',()=>{expect(reason([{...finding('VISIBLE_CAVITATION'),uncertainty:'UNCERTAIN'}],SymptomsSchema.parse({}),'ADULT')).toEqual([]);});
 });

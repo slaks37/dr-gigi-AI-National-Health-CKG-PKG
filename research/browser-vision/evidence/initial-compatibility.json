@@ -1,0 +1,47 @@
+{
+  "browser": "155.0.8059.80",
+  "automation": "installed Google Chrome, headless, native desktop hardware; no mobile emulation",
+  "runs": [
+    {
+      "provider": "webgpu",
+      "success": true,
+      "init_ms": 1435.199999988079,
+      "inference_ms": [
+        1466.5,
+        244.30000001192093
+      ],
+      "total_ms": 3270,
+      "memory": {
+        "usedJSHeapSize": 132168991,
+        "totalJSHeapSize": 137280735
+      }
+    },
+    {
+      "provider": "wasm",
+      "success": true,
+      "init_ms": 705,
+      "inference_ms": [
+        3521,
+        3327.7000000476837
+      ],
+      "total_ms": 7667.5,
+      "memory": {
+        "usedJSHeapSize": 131698083,
+        "totalJSHeapSize": 133482979
+      }
+    }
+  ],
+  "capabilities": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+    "webgpu": true,
+    "adapter": true,
+    "adapterInfo": {
+      "vendor": "apple",
+      "architecture": "metal-3",
+      "device": "",
+      "description": ""
+    },
+    "deviceMemory": 8,
+    "hardwareConcurrency": 8
+  }
+}

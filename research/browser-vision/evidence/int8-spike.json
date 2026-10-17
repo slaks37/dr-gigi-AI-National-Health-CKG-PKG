@@ -1,0 +1,15 @@
+{
+  "variant": "dynamic INT8 MatMul/Gemm weights only",
+  "bytes": 39027388,
+  "sha256": "c3757434add78ad1adc8ba608e3a39d1e303122eaa293e72e48e3b3e2f92f782",
+  "conversion_seconds": 0.8406543330056593,
+  "clinical_use": "PROHIBITED",
+  "browser_test": "NOT_TESTED",
+  "promoted": false,
+  "native_inference_ms": 509.9131659953855,
+  "detections": 4,
+  "reference_count": 4,
+  "max_score_diff": 0.08888787031173706,
+  "decoded_score_parity_passed": false,
+  "decision": "DO_NOT_PROMOTE: no independent labeled evaluation and browser compatibility not established"
+}

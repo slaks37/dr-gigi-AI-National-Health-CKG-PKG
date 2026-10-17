@@ -1,0 +1,12 @@
+{
+  "model_id": "intraoral-caries-detection-ynpy9-1-rfdetr-large-t1",
+  "model_version": "dataset-v1",
+  "artifact_sha256": "9b4f611126aade449a3086cc8277831e309dfab0b6ff751a96c9af94ed69020c",
+  "input_modality": "INTRAORAL_PHOTO",
+  "prediction_type": "BOUNDING_BOX",
+  "image_sha256": "32358ed29554fbc191449a8512ee75d7ae5f22751662ede9922e7ad773b2f926",
+  "processing_ms": 1270.7900420064107,
+  "inference_status": "SUCCEEDED",
+  "readiness": "EXPERIMENTAL",
+  "detections": []
+}

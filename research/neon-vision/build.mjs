@@ -1,0 +1,11 @@
+import { mkdir, copyFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+const [runtimeRoot, fixture, output] = process.argv.slice(2);
+if (!runtimeRoot || !fixture || !output) throw new Error('Use: node build.mjs installed-runtime-root synthetic-fixture.gz private-output');
+await mkdir(output, { recursive: true, mode: 0o700 });
+for (const name of ['ort.wasm.bundle.min.mjs', 'ort-wasm-simd-threaded.mjs']) await copyFile(path.join(runtimeRoot, 'dist', name), path.join(output, name));
+await copyFile(new URL('./index.mjs', import.meta.url), path.join(output, 'index.mjs'));
+await copyFile(fixture, path.join(output, 'fixture.f32.gz'));
+await copyFile(path.join(runtimeRoot, 'LICENSE'), path.join(output, 'ONNXRUNTIME_LICENSE'));
+await writeFile(path.join(output, 'package.json'), JSON.stringify({ type: 'module' }));
+console.log('Cloud function built without model weights, patient files or secrets.');

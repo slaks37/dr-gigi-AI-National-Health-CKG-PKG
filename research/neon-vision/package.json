@@ -1,0 +1,1 @@
+{"name":"sonri-neon-vision","private":true,"type":"module","scripts":{"test":"node --test test.mjs"},"dependencies":{"onnxruntime-web":"1.30.0"}}

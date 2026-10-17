@@ -38,6 +38,8 @@ import * as ai from '../app/api/gemini/analyze/route';
 import * as consultation from '../app/api/gemini/consultation/route';
 import * as iot from '../app/api/iot/ingest/route';
 import * as satusehat from '../app/api/satusehat/sync/route';
+vi.mock('../src/clinical-engine/vision/adapters/local-research',()=>({localResearchConfigured:()=>false,localResearchInference:vi.fn()}));
+import * as visionLab from '../app/api/vision-lab/route';
 import * as preferences from '../app/api/preferences/route';
 function req(path: string, token?: string, method = 'GET', body?: unknown) {
   return new NextRequest(`http://localhost/api/${path}`, { method, headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}), 'Content-Type': 'application/json' }, ...(body !== undefined ? { body: JSON.stringify(body) } : {}) });
@@ -147,3 +149,7 @@ describe('truthful integration status', () => {
     expect((await preferences.POST(req('preferences', 'patient-a', 'POST', { language: 'id', textSize: 'medium', highContrast: false, clientSecret: 'synthetic' }))).status).toBe(400);
   });
 });
+
+describe('restricted Model Lab',()=>{it('denies anonymous and patient model inventory, allows administrator without exposing patient data',async()=>{expect((await visionLab.GET(req('vision-lab'))).status).toBe(401);expect((await visionLab.GET(req('vision-lab','patient-a'))).status).toBe(403);expect((await visionLab.GET(req('vision-lab','doctor'))).status).toBe(403);const response=await visionLab.GET(req('vision-lab','admin'));expect(response.status).toBe(200);expect(response.headers.get('cache-control')).toContain('no-store');const body=await response.json();expect(body.models).toEqual([]);expect(body.modules).toHaveLength(5);expect(body.metrics).toBeNull();expect(JSON.stringify(body)).not.toContain('patient-b');});});
+
+describe('research inference access',()=>{it('denies anonymous, patients and unconfigured runtime',async()=>{expect((await visionLab.POST(req('vision-lab',undefined,'POST',{}))).status).toBe(401);expect((await visionLab.POST(req('vision-lab','patient-a','POST',{}))).status).toBe(403);expect((await visionLab.POST(req('vision-lab','admin','POST',{image:{data:'AAAA',mime_type:'image/png'},image_use_authorized:true}))).status).toBe(503);});});

@@ -1,0 +1,44 @@
+# SONRI Qa Results
+
+Updated 2026-10-16. Research implementation; no clinical or production approval.
+
+Initial baseline: 99 unit tests and TypeScript passed. Implementation verification results are recorded in `SONRI_FINAL_READINESS.md`; refresh this document if additional code changes occur.
+
+Executed positive paths: optional checkpoint downloaded and SHA-256 verified; real CPU model load/predict with synthetic input; TypeScript-to-Python subprocess integration; structured clinician evidence schema and emulator persistence; existing ownership/clinical review/annotation protections; terminology export; synthetic threshold/IoU arithmetic.
+
+Executed failure coverage: anonymous/patient/doctor Model Lab denial; missing runtime returns 503; patient injection of clinician evidence; mismatched performed exams; invalid FDI, duplicate sites, impossible depths, empty interpretations; bad prediction provenance/hash/box/score/unreviewed label; false positive duplicates and class mismatches; unknown symptoms; research adapter clinical unavailability; existing image quality/MIME/corrupt/duplicate/deadline and emergency regression coverage.
+
+Not executed: positive-lesion clinical cohort evaluation, approved oral-region model, masks, model-family comparisons, hosted staging identity/data flow, clinical approval. Local runtime tests are not clinical validation. First sandbox build failed on Google Fonts DNS; network-enabled build succeeded. First stale-browser download timed out; refreshed session produced real checkpoint. No failure was substituted with fabricated output.
+
+Final executed results on this implementation:
+
+| Command | Outcome |
+|---|---|
+| `npm test` | 122 passed; one artifact-dependent test skipped in default suite |
+| `npm run typecheck` | Passed |
+| `npm run lint` | Passed, no warnings/errors |
+| `npm run test:rules` | 30 passed against synthetic Firestore emulator |
+| `npm run test:e2e` | 8 passed against local production build |
+| `python3 -m unittest discover -s research/oral-vision -p 'test_*.py'` | 4 passed |
+| `SONRI_LOCAL_MODEL_TEST=1 ... npx vitest run tests/local-vision.integration.test.ts` | 1 passed with actual checkpoint and synthetic JPEG; optional test executed separately, not merely skipped |
+| `npm run build` | Passed; all 29 routes generated |
+| `npm audit --omit=dev --audit-level=high` | 0 vulnerabilities reported |
+| `npm run vision:coverage -- <output>` | 124-row matrix exported |
+| `npm run vision:benchmark -- <synthetic-input> <output>` | Synthetic threshold report exported; not a model benchmark |
+| `git diff --check` | Passed |
+
+Manual local browser readback verified all five module cards and unknown initial answers. Screenshots and final report are delivered outside repository under outputs. Hosted CI must be inspected separately after PR creation.
+
+## Cloud research update, 2026-10-16
+
+Neon deployment 1 on an isolated research branch returned HTTP 200 for real synthetic inference. Unauthorized calls returned 401. Native ONNX/PyTorch decoded parity passed four synthetic fixtures; live SONRI adapter parity passed the four-detection fixture (maximum score difference 0.0000031, normalized box difference <0.0000001). Full raw tensor comparison on noise failed query-order alignment; only decoded prediction parity is claimed. RGB resize/normalization comparison passed 1,486,848 values with maximum absolute difference 0.00005556 against PyTorch.
+
+Updated checks: 126 unit/API tests passed, one optional artifact test skipped; three function protocol tests passed separately against the built bundle. TypeScript, ESLint (one module-default style warning) and production build passed. Earlier emulator/browser results above are historical; hosted CI verifies them again for this revision. No clinical dataset or patient image was used. See ../research/neon-vision/README.md for deployment and limitations.
+
+## Browser AI research update — 2026-10-17
+
+Real ONNX inference now runs in the administrator Browser AI panel using a dedicated Web Worker, explicit WebGPU/WASM selection, owner-selected local model and verified optional model cache. Synthetic-only decoded parity passed on desktop Chrome. Five raw slots remain unmapped; no clinical record input or automatic Neon fallback is enabled. Existing local and Neon reference implementations are unchanged.
+
+Current verification: 136 unit/API tests passed (one optional artifact test skipped in the default suite); nine browser smoke tests passed against the newly started local production build. Nine real synthetic inference runs and nine browser fault cases passed separately in the loopback benchmark harness; EXIF/RGB checks and cache reloads passed. TypeScript and production build passed; ESLint has no errors and retains the existing Neon style warning. The build required network access for existing Google Fonts after sandbox DNS failed. Clean installation completed; production dependency audit was clear. Full dependency audit reported seven high-severity development-tool findings in the existing braces/fast-glob/Firebase/ESLint chain; no breaking automated downgrade was applied.
+
+No mobile physical hardware, live Firebase administrator flow on Vercel Preview, private-weight public hosting or clinical evaluation is claimed. Preview acceptance remains pending and no production deployment/merge occurred. Read [the complete browser runtime report](../research/browser-vision/README.md) and its measured evidence.
