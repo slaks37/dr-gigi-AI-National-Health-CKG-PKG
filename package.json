@@ -11,6 +11,7 @@
     "test": "vitest run",
     "test:rules": "firebase emulators:exec --only firestore --project demo-drgigi-repair --config firebase.test.json \"vitest run --config vitest.rules.config.mts\"",
     "test:e2e": "playwright test",
+    "test:server-imports": "node --no-experimental-require-module scripts/verify-server-imports.cjs",
     "check": "npm run typecheck && npm run lint && npm test && npm run build",
     "dataset:inventory": "tsx scripts/dataset-inventory.ts",
     "dataset:prepare": "tsx scripts/prepare-training.ts",

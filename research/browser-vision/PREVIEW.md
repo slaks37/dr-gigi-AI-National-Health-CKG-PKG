@@ -26,6 +26,8 @@ The owner-requested account was verified by its existing Firebase UID, matching 
 
 ## Acceptance evidence and remaining gates
 
+The first keyless Preview exposed a hosted-only initialization failure: `jwks-rsa` synchronously requires ESM-only `jose` through Firebase Admin. Vercel's instrumented CommonJS loader returned `ERR_REQUIRE_ESM`, including on `/api/auth/sync`. The failure was independently reproduced by importing the built routes with Node's `--no-experimental-require-module`. `transpilePackages` now bundles `firebase-admin`, `jwks-rsa` and `jose`; no cryptographic dependency is downgraded and no verification is removed. CI executes `npm run test:server-imports` after build to retain this runtime constraint as a regression check. Hosted verification is still required after any such packaging change.
+
 The original commit's first true Preview served its Worker and all ten runtime/manifest assets over HTTPS with SHA256 matching the generated local build. That is static delivery evidence, not a new model benchmark. Its first Google login failed with `auth/unauthorized-domain`. Only the stable Preview alias was then appended to Firebase authorizedDomains, preserving the 24 previous domains. The keyless patch must still be verified in the deployed Preview with a real administrator before acceptance.
 
 Physical Android Chrome and iPhone Safari are available according to the owner, but results remain NOT_TESTED until actual-device JSON and observations are received. The existing panel exports `sonri-browser-benchmark.json`. Record model/OS/browser, cold and reused-session timings, cache reload, stop/clear, failures and unmeasurable peak memory as null. No responsive emulation may replace hardware evidence.

@@ -3,6 +3,9 @@ import type {NextConfig} from 'next';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   serverExternalPackages: ['heic-decode'],
+  // Vercel's instrumented CommonJS loader cannot require jose's ESM entry.
+  // Bundle the Firebase verification dependency chain without downgrading JWT libraries.
+  transpilePackages: ['firebase-admin', 'jwks-rsa', 'jose'],
   outputFileTracingIncludes: { '/api/vision-lab': ['./research/oral-vision/run_local.py'], '/api/screenings': ['./node_modules/heic-decode/**/*', './node_modules/libheif-js/**/*'] },
   experimental: {
     cpus: 1,
