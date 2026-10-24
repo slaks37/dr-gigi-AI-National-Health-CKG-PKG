@@ -38,10 +38,16 @@ async function check(name, path, status, token, method = 'GET', body) {
 }
 async function snapshot() {
   const collections = {};
+  const canonical = value => {
+    if (value && typeof value.toJSON === 'function') return canonical(value.toJSON());
+    if (Array.isArray(value)) return value.map(canonical);
+    if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, child]) => [key, canonical(child)]));
+    return value;
+  };
   // Canonical sorted snapshots include consent, examination/review provenance and audit continuity.
   for (const name of ['records', 'patients', 'auditLogs', 'clinicalReviews', 'examinationRevisions', 'consentRecords']) {
     const docs = await db.collection(name).orderBy('__name__').get();
-    collections[name] = { count: docs.size, sha256: createHash('sha256').update(JSON.stringify(docs.docs.map(d => [d.id, d.data()]))).digest('hex') };
+    collections[name] = { count: docs.size, sha256: createHash('sha256').update(JSON.stringify(canonical(docs.docs.map(d => [d.id, d.data()])))).digest('hex') };
   }
   return collections;
 }

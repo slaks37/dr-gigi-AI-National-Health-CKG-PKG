@@ -3,6 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 export SONRI_APP_PORT=3012 GCLOUD_PROJECT=demo-sonri-workflow
+export COMPOSE_PARALLEL_LIMIT=1
 export FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9098 FIRESTORE_EMULATOR_HOST=127.0.0.1:8088
 # A random ephemeral shared container token. Never enable shell tracing here.
 export SONRI_INFERENCE_TOKEN="${SONRI_INFERENCE_TOKEN:-$(openssl rand -hex 32)}"
@@ -13,7 +14,8 @@ cleanup() {
   result=$?
   if [[ $result -ne 0 ]]; then
     "${compose[@]}" ps > ops/staging/evidence/failed-services.txt || true
-    # Emulator logs may include synthetic sign-in tokens: never upload raw logs.
+    # Raw emulator logs may include synthetic sign-in tokens: redact error-only lines.
+    "${compose[@]}" logs --no-log-prefix firebase app inference | node ops/staging/diagnostic.mjs || true
   fi
   rm -f "$private_log"
   "${compose[@]}" down --volumes --remove-orphans >/dev/null 2>&1 || true
