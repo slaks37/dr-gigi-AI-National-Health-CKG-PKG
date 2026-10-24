@@ -10,9 +10,10 @@ RUN npm ci --ignore-scripts && \
     mkdir -p /state && chown node:node /state
 COPY firestore.rules ./firestore.rules
 COPY ops/staging/firebase.json ./ops/staging/firebase.json
+COPY ops/staging/firebase-entrypoint.sh ./ops/staging/firebase-entrypoint.sh
 ENV PATH=/app/node_modules/.bin:$PATH
 USER node
 WORKDIR /tmp
 EXPOSE 8088 9098
 HEALTHCHECK --interval=5s --timeout=3s --start-period=45s CMD node -e "Promise.all([fetch('http://127.0.0.1:9098/emulator/v1/projects/demo-sonri-workflow/config'),fetch('http://127.0.0.1:8088/')]).then(rs=>{if(rs.some(r=>!r.ok))process.exit(1)}).catch(()=>process.exit(1))"
-CMD ["firebase", "emulators:start", "--only", "auth,firestore", "--project", "demo-sonri-workflow", "--config", "/app/ops/staging/firebase.json", "--import", "/state/snapshot"]
+CMD ["sh", "/app/ops/staging/firebase-entrypoint.sh"]
