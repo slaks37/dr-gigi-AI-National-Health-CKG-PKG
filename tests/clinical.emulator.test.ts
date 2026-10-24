@@ -9,6 +9,10 @@ import * as assignment from '../app/api/clinical-assignment/route';
 import * as datasetImport from '../app/api/dataset/import/route';
 import * as annotate from '../app/api/dataset/annotations/route';
 import * as labelReview from '../app/api/dataset/review/route';
+import * as exams from '../app/api/encounter-exam/route';
+import * as reports from '../app/api/clinical-report/route';
+import * as clinicalFhir from '../app/api/clinical-fhir/route';
+import * as clinicalCatalog from '../app/api/clinical-catalog/route';
 import * as records from '../app/api/records/route';
 import { DatasetEntrySchema } from '../src/dataset/schema';
 const request=(path:string,uid?:string,method='GET',body?:unknown)=>new NextRequest(`http://localhost/api/${path}`,{method,headers:{...(uid?{Authorization:`Bearer ${uid}`} :{}),'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
@@ -19,11 +23,11 @@ beforeAll(()=>{
 });
 beforeEach(async()=>{
  if(process.env.GCLOUD_PROJECT!=='demo-drgigi-repair'||process.env.FIRESTORE_EMULATOR_HOST!=='127.0.0.1:8088')throw new Error('Synthetic emulator required');
- for(const name of ['records','auditLogs','screeningQuotas','clinicalReviews','datasetEntries','datasetAnnotations','datasetLabelReviews','patients']){const docs=await store().collection(name).get();await Promise.all(docs.docs.map(d=>d.ref.delete()));}
+ for(const name of ['records','auditLogs','screeningQuotas','clinicalReviews','datasetEntries','datasetAnnotations','datasetLabelReviews','patients','examinationRevisions','consentRecords']){const docs=await store().collection(name).get();await Promise.all(docs.docs.map(d=>d.ref.delete()));}
 });
 afterAll(()=>vi.restoreAllMocks());
 describe('structured screening security and persistence',()=>{
- it.each([['screenings',screenings.POST],['clinical-review',review.POST],['clinical-assignment',assignment.POST],['dataset/import',datasetImport.POST],['dataset/annotations',annotate.POST],['dataset/review',labelReview.POST]] as const)('denies anonymous %s',async(path,handler)=>{expect((await handler(request(path,undefined,'POST',{}))).status).toBe(401);});
+ it.each([['screenings',screenings.POST],['clinical-review',review.POST],['clinical-assignment',assignment.POST],['dataset/import',datasetImport.POST],['dataset/annotations',annotate.POST],['dataset/review',labelReview.POST],['clinical-fhir',clinicalFhir.POST]] as const)('denies anonymous %s',async(path,handler)=>{expect((await handler(request(path,undefined,'POST',{}))).status).toBe(401);});
  it('stores deterministic screening, preserves unknowns, and forbids cross-patient retrieval',async()=>{
   const response=await screenings.POST(request('screenings','synthetic-patient','POST',input()));expect(response.status).toBe(200);const saved=await response.json();expect(saved.persistence).toBe('CONFIRMED');expect(saved.screening.symptoms.pain).toBe('UNKNOWN');expect(saved.screening.confirmed_icd10).toEqual([]);
   expect((await screenings.GET(request('screenings?id=synthetic-screen','other-patient'))).status).toBe(403);
@@ -85,5 +89,80 @@ describe('dataset annotations with metadata provenance and independent label rev
   const response=await labelReview.POST(request('dataset/review','other-doctor','POST',body));expect(response.status).toBe(200);
   const a=(await store().collection('datasetAnnotations').doc('synthetic-ann').get()).data()!;expect(a.disagreement).toBe(true);expect(a.verification_status).toBe('APPROVED');
   expect((await store().collection('datasetEntries').doc(image).get()).data()?.independent_review_status).toBe('APPROVED');
+ });
+});
+
+
+describe('encounter examination, odontogram and reports',()=>{
+ const examination={dentition:'PERMANENT',orientation_known:true,medical_history:'Synthetic only',medications_allergies:'None reported',extraoral:'Exam fixture',mucosa:'Exam fixture',periodontal:'Not assessed',clinical_notes:'Synthetic direct exam',teeth:[{fdi:'16',status:'FINDING',surfaces:['OCCLUSAL'],observation:'Synthetic visible cavitation'}],consent_confirmed:true,consent_version:'sonri-exam-consent-1'};
+ async function setup(){await screenings.POST(request('screenings','synthetic-patient','POST',input()));await assignment.POST(request('clinical-assignment','synthetic-admin','POST',{screening_id:'synthetic-screen',clinician_uid:'synthetic-doctor',expected_version:1,action:'ASSIGN'}));}
+ it('persists structured examination with atomic consent, revision and report',async()=>{
+  await setup(); const body={screening_id:'synthetic-screen',expected_version:2,examination};
+  const result=await exams.POST(request('encounter-exam','synthetic-doctor','POST',body));expect(result.status).toBe(200);expect((await result.json()).version).toBe(3);
+  expect((await store().collection('examinationRevisions').get()).size).toBe(1);expect((await store().collection('consentRecords').get()).size).toBe(1);
+  const report=await reports.GET(request('clinical-report?id=synthetic-screen','synthetic-patient'));expect(report.status).toBe(200);const r=(await report.json()).report;expect(r.examination.teeth[0].fdi).toBe('16');expect(r.confirmed_diagnoses).toEqual([]);
+  expect((await exams.POST(request('encounter-exam','synthetic-doctor','POST',body))).status).toBe(409);
+ });
+ it('denies role and patient-boundary bypass and rejects invented FDI orientation',async()=>{
+  await setup();const body={screening_id:'synthetic-screen',expected_version:2,examination};
+  for(const uid of ['synthetic-patient','synthetic-admin','unqualified-doctor','other-doctor'])expect((await exams.POST(request('encounter-exam',uid,'POST',body))).status).toBe(403);
+  expect((await exams.POST(request('encounter-exam','synthetic-doctor','POST',{...body,examination:{...examination,orientation_known:false}}))).status).toBe(400);
+  expect((await reports.GET(request('clinical-report?id=synthetic-screen','other-patient'))).status).toBe(403);
+ });
+ it('escapes report content instead of executing patient text',async()=>{
+  await setup();await exams.POST(request('encounter-exam','synthetic-doctor','POST',{screening_id:'synthetic-screen',expected_version:2,examination:{...examination,clinical_notes:'<script>alert(1)</script>'}}));
+  const result=await reports.GET(request('clinical-report?id=synthetic-screen&format=html','synthetic-patient'));expect(result.headers.get('content-security-policy')).toContain("default-src 'none'");const html=await result.text();expect(html).not.toContain('<script>');expect(html).toContain('&lt;script&gt;');
+ });
+});
+
+
+describe('versioned terminology and clinician-only FHIR preview API',()=>{
+ const identifiers={patientIhsId:'synthetic-patient-ihs',organizationIhsId:'synthetic-org-ihs',practitionerIhsId:'synthetic-doctor-ihs',encounterIhsId:'synthetic-encounter-ihs'};
+ async function setup(){
+  await screenings.POST(request('screenings','synthetic-patient','POST',input()));
+  await assignment.POST(request('clinical-assignment','synthetic-admin','POST',{screening_id:'synthetic-screen',clinician_uid:'synthetic-doctor',expected_version:1,action:'ASSIGN'}));
+ }
+ it('catalog requires authentication and exposes only the verified 2010 edition',async()=>{
+  expect((await clinicalCatalog.GET(request('clinical-catalog'))).status).toBe(401);
+  const response=await clinicalCatalog.GET(request('clinical-catalog?category=K14','synthetic-patient'));
+  expect(response.status).toBe(200);const body=await response.json();expect(body.terminology.version).toBe('WHO-ICD10-2010');expect(body.entries.every((entry:{clinical_category:string})=>entry.clinical_category==='K14')).toBe(true);
+  expect((await clinicalCatalog.GET(request('clinical-catalog?code=K02.5','synthetic-patient'))).status).toBe(404);
+  expect((await clinicalCatalog.GET(request('clinical-catalog?category=K99','synthetic-patient'))).status).toBe(400);
+ });
+ it('denies unconfirmed, unauthorized, stale and fabricated diagnosis payloads before emitting a draft',async()=>{
+  await setup();const payload={mode:'preview',screening_id:'synthetic-screen',expected_version:2,identifiers};
+  for(const uid of ['synthetic-patient','other-doctor','unqualified-doctor'])expect((await clinicalFhir.POST(request('clinical-fhir',uid,'POST',payload))).status).toBe(403);
+  expect((await clinicalFhir.POST(request('clinical-fhir','synthetic-doctor','POST',payload))).status).toBe(400);
+  const approved=await review.POST(request('clinical-review','synthetic-doctor','POST',{screening_id:'synthetic-screen',expected_version:2,decision:'APPROVED',note:'Synthetic approved direct exam',findings:[],confirmed_icd10:['K02.9'],clinical_evidence:['Synthetic direct exam'],examinations:{clinical_exam:true,radiography:false,vitality_test:false,periodontal_exam:false,histopathology:false},orientation_known:false,anatomical_context_known:false}));expect(approved.status).toBe(200);
+  expect((await clinicalFhir.POST(request('clinical-fhir','synthetic-doctor','POST',payload))).status).toBe(409);
+  expect((await clinicalFhir.POST(request('clinical-fhir','synthetic-doctor','POST',{...payload,expected_version:3,confirmed_icd10:['K04.1']}))).status).toBe(400);
+  const draft=await clinicalFhir.POST(request('clinical-fhir','synthetic-doctor','POST',{...payload,expected_version:3}));expect(draft.status).toBe(200);
+  const result=await draft.json();expect(result.status).toBe('DRAFT');expect(result.submitted).toBe(false);expect(result.fhir_bundle.type).toBe('collection');
+  expect(result.fhir_bundle.entry[0].resource.code.coding[0]).toMatchObject({code:'K02.9',version:'2010'});
+  const stored=(await store().collection('records').doc('synthetic-screen').get()).data()!;expect(stored.satusehatSynced).toBe(false);expect(stored.version).toBe(3);
+  expect((await store().collection('auditLogs').where('action','==','CLINICAL_FHIR_PREVIEW').get()).size).toBe(1);
+ });
+});
+
+describe('approved encounter freeze and FHIR preview immutability',()=>{
+ it('keeps approved odontogram frozen and reads its current confirmed version into a local draft',async()=>{
+  await screenings.POST(request('screenings','synthetic-patient','POST',input()));
+  await assignment.POST(request('clinical-assignment','synthetic-admin','POST',{screening_id:'synthetic-screen',clinician_uid:'synthetic-doctor',expected_version:1,action:'ASSIGN'}));
+  const examination={dentition:'PERMANENT',orientation_known:true,medical_history:'Synthetic fixture only',medications_allergies:'Synthetic fixture only',extraoral:'Synthetic direct examination',mucosa:'Synthetic direct examination',periodontal:'Not assessed',clinical_notes:'Synthetic original exam',teeth:[{fdi:'16',status:'FINDING',surfaces:['OCCLUSAL'],observation:'Synthetic observable test fixture'}],consent_confirmed:true,consent_version:'sonri-exam-consent-1'};
+  expect((await exams.POST(request('encounter-exam','synthetic-doctor','POST',{screening_id:'synthetic-screen',expected_version:2,examination}))).status).toBe(200);
+  expect((await review.POST(request('clinical-review','synthetic-doctor','POST',{screening_id:'synthetic-screen',expected_version:3,decision:'APPROVED',note:'Synthetic reviewed fixture only',findings:[],confirmed_icd10:['K02.9'],clinical_evidence:['Synthetic direct clinical exam'],examinations:{clinical_exam:true,radiography:false,vitality_test:false,periodontal_exam:false,histopathology:false},orientation_known:true,anatomical_context_known:true}))).status).toBe(200);
+  const record=store().collection('records').doc('synthetic-screen');const before=(await record.get()).data()!;
+  expect((await exams.POST(request('encounter-exam','synthetic-doctor','POST',{screening_id:'synthetic-screen',expected_version:4,examination:{...examination,clinical_notes:'Must not overwrite approved evidence'}}))).status).toBe(409);
+  const payload={mode:'preview',screening_id:'synthetic-screen',expected_version:4,identifiers:{patientIhsId:'synthetic-patient-ihs',organizationIhsId:'synthetic-org-ihs',practitionerIhsId:'synthetic-doctor-ihs',encounterIhsId:'synthetic-encounter-ihs'}};
+  expect((await clinicalFhir.POST(request('clinical-fhir','synthetic-doctor','POST',{...payload,expected_version:3}))).status).toBe(409);
+  const response=await clinicalFhir.POST(request('clinical-fhir','synthetic-doctor','POST',payload));expect(response.status).toBe(200);const body=await response.json();
+  expect(body.submitted).toBe(false);expect(body.fhir_bundle.type).toBe('collection');
+  const observation=body.fhir_bundle.entry.find((item:{resource:{resourceType:string}})=>item.resource.resourceType==='Observation');expect(observation.resource.bodySite.text).toBe('FDI 16');
+  expect((await record.get()).data()).toEqual(before);expect((await store().collection('examinationRevisions').get()).size).toBe(1);
+  // A different writer cannot be falsely attributed to the reviewer's supplied Practitioner IHS ID.
+  await record.update({'examination.author_uid':'other-doctor'});
+  const mismatch=await clinicalFhir.POST(request('clinical-fhir','synthetic-doctor','POST',payload));const mismatchBody=await mismatch.json();
+  expect(mismatchBody.fhir_bundle.entry.some((item:{resource:{resourceType:string}})=>item.resource.resourceType==='Observation')).toBe(false);
+  expect(mismatchBody.limitations.join(' ')).toContain('penulis berbeda');
  });
 });

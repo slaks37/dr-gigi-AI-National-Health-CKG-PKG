@@ -59,7 +59,7 @@ export default function Home() {
             <span className="font-bold text-xl tracking-tight text-slate-800">{t('common.appName')}</span>
           </div>
           <div className="flex items-center gap-4">
-            <LoginButton />
+            <Link href="/sonri" className="text-sm font-semibold text-emerald-700">Ruang SONRI</Link><LoginButton />
             <button onClick={() => setShowSettings(!showSettings)} className="p-2 rounded-full hover:bg-slate-100 transition-colors">
               <Settings size={20} />
             </button>

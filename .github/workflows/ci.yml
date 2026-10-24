@@ -27,6 +27,8 @@ jobs:
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - name: Synthetic authenticated clinical workflow (separate .next-workflow output)
+        run: npm run test:workflow
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
@@ -34,3 +36,33 @@ jobs:
           path: |
             playwright-report/
             test-results/
+
+  inference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            services/inference/requirements.txt
+            services/inference/requirements-test.txt
+            services/inference/constraints.lock.txt
+      - run: python -m pip install -c constraints.lock.txt -r requirements-test.txt
+        working-directory: services/inference
+      - run: python -m pytest -q
+        working-directory: services/inference
+      - name: Verify default deployment has no enabled checkpoint
+        run: |
+          python - <<'PYTHON'
+          import json
+          from pathlib import Path
+          config = json.loads(Path('services/inference/registry.example.json').read_text())
+          assert not any(model.get('enabled') for model in config['models'])
+          PYTHON
+      - name: Validate Compose structure without printing resolved secrets
+        run: docker compose config --quiet
+        env:
+          SONRI_INFERENCE_TOKEN: synthetic-ci-token-never-used-for-any-deployment-0001

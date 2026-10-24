@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "models": [
+    {
+      "id": "intraoral-yolo",
+      "enabled": false,
+      "version": "daath-yolo11m-7d5f7dcf616f",
+      "checkpoint": "/models/daath-best.pt",
+      "sha256": "7d5f7dcf616f1febbbb28f2552f9d8a2c3e31e90b3c5b03bf26114502dea621d",
+      "source": "Eeman1113/dental_study@f02596a0227b9eaf767b955cd67196236111a3d5",
+      "license": "AGPL-3.0 per source; commercial obligations require review",
+      "license_acknowledged": false,
+      "trusted_checkpoint": false,
+      "class_names": {"0": "d", "1": "D"},
+      "class_mapping_verified": false,
+      "input_size": 640,
+      "output_format": "ultralytics"
+    }
+  ]
+}

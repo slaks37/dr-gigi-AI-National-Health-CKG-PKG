@@ -1,29 +1,59 @@
-# dr Gigi AI — repair candidate
+# SONRI AI
 
-This branch contains a security/clinical-safety repair and is not approved for production rollout. Clinical AI, rPPG/posture predictions, device ingestion and SATUSEHAT submission are deliberately disabled pending validation. Firestore is authoritative; legacy SQL/role reconciliation is required before release. No production data migration was executed.
+Integrated dental and oral examination research application, built on the existing Dr Gigi Next.js/Firebase foundation. Firestore remains authoritative; no production data migration is included.
 
-Use Node 24 and npm (the reconciled `package-lock.json` is authoritative). The historical `bun.lock` is retained but has not been regenerated/tested; do not use it as a frozen install for this branch.
+The application separates observed findings, suspected/differential diagnoses and clinician-confirmed diagnoses. It includes the WHO ICD-10 2010 K00–K14 reference catalog used for SATUSEHAT compatibility: 15 categories and 108 terminal codes. Terminology coverage does not establish AI diagnostic capability. Clinical rules, model performance, regulatory/privacy approval and production activation remain pending.
+
+## Use the application
+
+| Route | Purpose |
+| --- | --- |
+| `/sonri` | Integrated examination workspace and terminology scope |
+| `/login` | Email or Google sign-in using operator-provisioned Firebase accounts |
+| `/checkup`, `/checkup-anak` | Adult/child profile, consent, symptoms, bounded image checks and triage |
+| `/clinical-review` | Administrator assignment; qualified assigned dentist examination, FDI odontogram, evidence and diagnosis confirmation |
+| `/examinations` | Authorized examination history and downloadable HTML report, printable to PDF |
+| `/model-lab` | Administrator-only model inventory, synthetic-image research inference and raw annotations |
+
+A trusted `clinicalReviewer` claim and case assignment are required for dentist confirmation. Browser profile changes cannot grant clinical privileges. Research model outputs cannot confirm ICD-10 codes; no detection does not establish health. Source patient images are not retained by this examination flow or saved in browser localStorage.
+
+## Local development
+
+Use Node 24, npm and the committed `package-lock.json`. Configure an authorized Firebase development/staging project consistently for the browser and Firebase Admin; server credentials use Application Default Credentials. Keep secrets in a private local environment or secret manager. See [.env.example](.env.example) and the [operations playbook](docs/operations/STAGING_PLAYBOOK.md).
 
 ```sh
 npm ci --ignore-scripts
+npm run dev
+```
+
+Open `http://localhost:3000/sonri`. Without valid identity-provider/Admin configuration, protected account and database operations remain unavailable. Do not use real patients to test configuration.
+
+The separate [FastAPI inference service](services/inference/README.md) runs with Python 3.12 and its own model-specific dependencies. The app uses `SONRI_INFERENCE_URL` and `SONRI_INFERENCE_TOKEN`; the worker uses `INFERENCE_API_TOKEN`, `SONRI_MODEL_REGISTRY` and `SONRI_MODEL_ROOT`. The two token values must match and contain at least 32 characters. Checkpoints stay outside Git and container images. All models are disabled by default; missing weights, rights or compatible exports produce explicit unavailable states. CBCT volume execution and automatic FDI numbering remain unavailable.
+
+## Verification
+
+Java 21 is required for the synthetic Firebase emulator tests. Run the authenticated workflow last because it uses a separate `.next-workflow` output and Auth/Firestore emulators.
+
+```sh
 npm run typecheck
 npm run lint
 npm test
-npm run test:rules    # Requires Java 21; demo emulator and synthetic identities only
+npm run test:rules
+npm audit --omit=dev
 npm run build
 npx playwright install chromium
 npm run test:e2e
-npm audit --omit=dev
+npm run test:workflow
 ```
 
-Read [the executive summary](docs/repair/EXECUTIVE_SUMMARY.md), [actual QA results](docs/repair/QA_TEST_REPORT.md) and [deployment/migration prerequisites](docs/repair/DEPLOYMENT_CHECKLIST.md). Never deploy production or update production rules without explicit approval. Do not enable gated clinical features merely by adding credentials.
+`test:workflow` exercises synthetic patient login → screening → administrator assignment → dentist examination/odontogram → confirmation → report through local Auth and Firestore. It does not establish hosted identity-provider or clinical performance. Python boundary tests and real pretrained synthetic smoke evidence are documented in the [inference service](services/inference/README.md). The [source audit](docs/consolidation/REPOSITORY_AUDIT.md) covers all ten requested repositories and records verified checkpoint hashes, source licenses and precise blockers.
 
-## Experimental hybrid screening implementation
+## Deployment status and gates
 
-Adult/pediatric screening now starts with a tri-state symptom questionnaire and deterministic emergency triage, followed by bounded local image checks and independent clinical review. The oral model registry is empty; the system does not fabricate detections or diagnose from an LLM photo prompt. Source images are not retained.
+[Docker/Compose and staging instructions](docs/operations/STAGING_PLAYBOOK.md) keep Next.js separate from ML workers, mount models read-only and leave inference private. Docker is absent on the current execution host, so a container build has not been verified here. Full hosted Firebase/database/inference staging is not configured; independent clinical dataset benchmarks have not run.
 
-See [architecture](docs/SYSTEM_ARCHITECTURE.md), [dataset audit](docs/DATASET_AUDIT.md), [clinical limitations](docs/CLINICAL_LIMITATIONS.md) and [release gates](docs/DEPLOYMENT_CHECKLIST.md). This branch depends on the security repair and remains unapproved for production clinical use.
+The existing Vercel project `sonri-browser-ai-research` is a research Preview target. Its `SONRI_RESEARCH_PREVIEW=1` configuration blocks protected account/clinical-storage API workflows. A rendered Preview is not operational clinical staging. Keep that flag enabled until authorized isolated identity, storage and inference configuration and complete hosted acceptance are established. SATUSEHAT submission, remote generative clinical diagnosis and production patient use remain disabled.
 
-`npm run dataset:inventory` performs optional authorized read-only metadata discovery. Configure `SONRI_ROOT_FOLDER_ID`, `GOOGLE_DRIVE_READONLY_ACCESS_TOKEN` and `DATASET_PRIVATE_OUTPUT` securely; output must be outside this repository. Never commit patient source data.
+Production requires independent clinical validation, clinician-approved scope and thresholds, applicable clearance, verified privacy/security controls, operational oversight and explicit release authorization. Never enable gated medical capabilities merely by adding credentials.
 
-`npm run dataset:prepare -- manifest.json annotations.json options.json /secure/private/output` exports a gated frozen COCO manifest only after documented permissions, independent review, quality and leakage checks. It does not train a model.
+Authorized dataset tools remain available: `npm run dataset:inventory` retrieves metadata only; `npm run dataset:prepare -- manifest.json annotations.json options.json /secure/private/output` exports a frozen COCO manifest after permission, quality, independent review and leakage gates. Neither command trains a model. Keep patient source data and private exports outside this repository.

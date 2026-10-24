@@ -10,6 +10,7 @@ export function principalFromClaims(token: { uid: string; role?: unknown; email?
 export async function authenticate(req: NextRequest): Promise<Principal> {
   const header = req.headers.get('authorization');
   if (!header?.startsWith('Bearer ') || header.length > 8192) throw new ApiError(401, 'Authentication required');
+  if (process.env.SONRI_RESEARCH_PREVIEW === '1') throw new ApiError(503, 'Research preview: clinical storage and account workflows are disabled');
   try {
     const { adminAuth } = await import('../lib/firebase-admin');
     // Revocation and disabled-account checks are mandatory.

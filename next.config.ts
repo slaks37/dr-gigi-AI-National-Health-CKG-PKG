@@ -2,6 +2,8 @@ import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  output: 'standalone',
+  distDir: process.env.SONRI_TEST_BUILD === '1' ? '.next-workflow' : '.next',
   serverExternalPackages: ['heic-decode'],
   outputFileTracingIncludes: { '/api/screenings': ['./node_modules/heic-decode/**/*', './node_modules/libheif-js/**/*'] },
   experimental: {

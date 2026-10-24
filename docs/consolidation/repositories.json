@@ -1,0 +1,1115 @@
+{
+  "schema_version": "sonri.repository-audit.v1",
+  "audited_on": "2026-10-24",
+  "timezone": "Asia/Jakarta",
+  "method": "Read-only authenticated GitHub metadata, complete recursive trees and selected source text pinned to commit; external license metadata only. No patient datasets or new model archives downloaded. No source modules blindly merged.",
+  "scope": "All ten repositories named in mission. This is provenance inspection, not clinical validation.",
+  "repositories": [
+    {
+      "repository": "slaks37/dr-gigi-AI-National-Health-CKG-PKG",
+      "source_url": "https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG",
+      "commit": "e02f602811e4d36a3ac32fe18e5e455018c6938f",
+      "commit_date": "2026-10-14T13:48:02Z",
+      "default_branch": "main",
+      "fork_upstream": null,
+      "tree_complete": true,
+      "file_count": 145,
+      "function": "Application foundation: Next.js 15/React 19, Firebase authentication, Firestore ownership and clinician assignment/review, deterministic triage, image normalization, dataset governance and clinical rules.",
+      "reusable_components": [
+        "Firebase claim-based authorization and Firestore transactions",
+        "Patient/record and clinician review flows",
+        "Image quality/HEIC normalization",
+        "Structured clinical reasoning, versioned terminology and dataset eligibility gates"
+      ],
+      "architecture": "Next.js server routes and client UI; no installed vision model at baseline; OralVision adapter defaults to unavailableVision.",
+      "modalities": [
+        "INTRAORAL_PHOTO_WORKFLOW",
+        "CLINICAL_EXAMINATION"
+      ],
+      "checkpoints": [],
+      "dependencies": [
+        "Node >=22 <25",
+        "Next.js ^15.5.27",
+        "React 19.2.4",
+        "Firebase ^12.12.1",
+        "firebase-admin ^14.3.0",
+        "sharp ^0.35.5"
+      ],
+      "labels": "Structured visual finding ontology in src/clinical-engine/types/labels.ts; model registry empty at audited baseline.",
+      "dataset": {
+        "source": "Existing private SONRI research sources configured by operators; no dataset downloaded in this audit.",
+        "license": "Not established by application repository",
+        "permission": "Consent and independent review required; no training eligibility inferred."
+      },
+      "code_license": "No LICENSE file or recognized GitHub license found; existing owner-authorized application foundation. No broader grant inferred.",
+      "model_license": "No installed clinical checkpoint at baseline",
+      "test_evidence": "Vitest API/security/image/dataset/clinical tests, Firestore emulator rules tests and Playwright e2e source present. Execution for this feature is reported separately in QA evidence; this audit does not assert they passed.",
+      "integration_risks": [
+        "Do not regress trusted role claims/ownership/assigned clinician checks",
+        "Keep Firestore authoritative; Drizzle/SQL code does not authorize migration",
+        "No detector, clinical rule approval, or authorized SATUSEHAT runtime at baseline"
+      ],
+      "decision": "RETAIN_AS_FOUNDATION",
+      "evidence_paths": [
+        "package.json",
+        "src/clinical-engine/vision/registry.ts",
+        "src/clinical-engine/vision/interface.ts",
+        "src/clinical-engine/core/pipeline.ts",
+        "docs/DATABASE_ARCHITECTURE.md",
+        "firestore.rules"
+      ],
+      "evidence": [
+        {
+          "path": "package.json",
+          "url": "https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/blob/e02f602811e4d36a3ac32fe18e5e455018c6938f/package.json"
+        },
+        {
+          "path": "src/clinical-engine/vision/registry.ts",
+          "url": "https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/blob/e02f602811e4d36a3ac32fe18e5e455018c6938f/src/clinical-engine/vision/registry.ts"
+        },
+        {
+          "path": "src/clinical-engine/vision/interface.ts",
+          "url": "https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/blob/e02f602811e4d36a3ac32fe18e5e455018c6938f/src/clinical-engine/vision/interface.ts"
+        },
+        {
+          "path": "src/clinical-engine/core/pipeline.ts",
+          "url": "https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/blob/e02f602811e4d36a3ac32fe18e5e455018c6938f/src/clinical-engine/core/pipeline.ts"
+        },
+        {
+          "path": "docs/DATABASE_ARCHITECTURE.md",
+          "url": "https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/blob/e02f602811e4d36a3ac32fe18e5e455018c6938f/docs/DATABASE_ARCHITECTURE.md"
+        },
+        {
+          "path": "firestore.rules",
+          "url": "https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/blob/e02f602811e4d36a3ac32fe18e5e455018c6938f/firestore.rules"
+        }
+      ],
+      "clinical_validation": "NOT_ESTABLISHED",
+      "runtime_execution_in_repository_audit": false
+    },
+    {
+      "repository": "slaks37/Sonri-untuk-Negeri",
+      "source_url": "https://github.com/slaks37/Sonri-untuk-Negeri",
+      "commit": "b43c2fe614a1ba96da0094ed6271398bd7479a8d",
+      "commit_date": "2026-05-03T14:16:52Z",
+      "default_branch": "main",
+      "fork_upstream": null,
+      "tree_complete": true,
+      "file_count": 35,
+      "function": "Earlier dental screening and growth/consultation Next.js frontend using client-side generative AI and Firebase.",
+      "reusable_components": [
+        "UI copy and navigation ideas after ownership/license review",
+        "Growth/clinic presentation ideas"
+      ],
+      "architecture": "Next.js 15.4 frontend; client OpenAI gpt-4o-mini call in checkup page; not a specialized dental vision checkpoint.",
+      "modalities": [
+        "INTRAORAL_PHOTO_TO_EXTERNAL_LLM",
+        "QUESTIONNAIRE"
+      ],
+      "checkpoints": [],
+      "dependencies": [
+        "Next.js ^15.4.9",
+        "React ^19.2.1",
+        "Firebase ^12.12.1",
+        "openai ^6.35.0",
+        "@google/genai ^1.43.0"
+      ],
+      "labels": "Prompt-generated broad oral conditions/ICD text and boxes; no validated class ontology or local model.",
+      "dataset": {
+        "source": "User uploads",
+        "license": "No training dataset/license documented",
+        "permission": "No clinical/training permission established by source."
+      },
+      "code_license": "No LICENSE file or recognized GitHub license found",
+      "model_license": "External provider terms; no local checkpoint rights established",
+      "test_evidence": "No test suite or test script found in complete 35-file tree; README is deployment scaffold.",
+      "integration_risks": [
+        "Exposed hard-coded browser API credential in checkup source: owner must revoke/rotate; credential deliberately not reproduced",
+        "Generative output cannot be treated as observed finding/diagnosis",
+        "Earlier Firestore role handling must not replace repaired trusted-claim controls"
+      ],
+      "decision": "REFERENCE_UI_ONLY_DO_NOT_MERGE_INFERENCE",
+      "evidence_paths": [
+        "README.md",
+        "package.json",
+        "app/checkup/page.tsx",
+        "firestore.rules"
+      ],
+      "evidence": [
+        {
+          "path": "README.md",
+          "url": "https://github.com/slaks37/Sonri-untuk-Negeri/blob/b43c2fe614a1ba96da0094ed6271398bd7479a8d/README.md"
+        },
+        {
+          "path": "package.json",
+          "url": "https://github.com/slaks37/Sonri-untuk-Negeri/blob/b43c2fe614a1ba96da0094ed6271398bd7479a8d/package.json"
+        },
+        {
+          "path": "app/checkup/page.tsx",
+          "url": "https://github.com/slaks37/Sonri-untuk-Negeri/blob/b43c2fe614a1ba96da0094ed6271398bd7479a8d/app/checkup/page.tsx"
+        },
+        {
+          "path": "firestore.rules",
+          "url": "https://github.com/slaks37/Sonri-untuk-Negeri/blob/b43c2fe614a1ba96da0094ed6271398bd7479a8d/firestore.rules"
+        }
+      ],
+      "clinical_validation": "NOT_ESTABLISHED",
+      "runtime_execution_in_repository_audit": false
+    },
+    {
+      "repository": "slaks37/2.0-Sonry-Oral",
+      "source_url": "https://github.com/slaks37/2.0-Sonry-Oral",
+      "commit": "214b87b4c977530fd5aedaba7622a3f84def3644",
+      "commit_date": "2026-10-14T04:36:33Z",
+      "default_branch": "main",
+      "fork_upstream": null,
+      "tree_complete": true,
+      "file_count": 41,
+      "function": "React/Vite oral screening prototype, Express generative-image endpoints and PostgreSQL/in-memory record prototype.",
+      "reusable_components": [
+        "Camera/annotation presentation patterns",
+        "Questionnaire and report layout concepts after review"
+      ],
+      "architecture": "React 19/Vite 6 frontend, Express 5 server; Gemini 2.5/2.0/1.5 Flash fallback; optional Neon SQL. No dedicated computer-vision weights.",
+      "modalities": [
+        "INTRAORAL_PHOTO_TO_EXTERNAL_LLM",
+        "QUESTIONNAIRE"
+      ],
+      "checkpoints": [],
+      "dependencies": [
+        "Vite ^6.2.0",
+        "React ^19.2.0",
+        "Express ^5.3.0",
+        "@google/genai ^1.22.0",
+        "@neondatabase/serverless ^1.2.0"
+      ],
+      "labels": "Generative diseaseName and report text; no trusted ontology tied to a checkpoint.",
+      "dataset": {
+        "source": "User uploads/record payloads",
+        "license": "No training dataset/license documented",
+        "permission": "No lawful external patient transfer or training permission established by source."
+      },
+      "code_license": "No LICENSE file or recognized GitHub license found",
+      "model_license": "External Gemini provider terms; no checkpoint license",
+      "test_evidence": "No automated tests found in complete 41-file tree; lint script is TypeScript compile.",
+      "integration_risks": [
+        "Express record handlers shown without request identity/owner checks",
+        "Client record save falls back to localStorage, including patient record content",
+        "Server DB failure falls back to memory; not durable patient storage",
+        "Raw-image generative endpoints need external transfer authorization"
+      ],
+      "decision": "REFERENCE_UI_ONLY_DO_NOT_IMPORT_STORAGE_OR_INFERENCE",
+      "evidence_paths": [
+        "package.json",
+        "api/index.ts",
+        "services/apiService.ts",
+        "services/geminiService.ts"
+      ],
+      "evidence": [
+        {
+          "path": "package.json",
+          "url": "https://github.com/slaks37/2.0-Sonry-Oral/blob/214b87b4c977530fd5aedaba7622a3f84def3644/package.json"
+        },
+        {
+          "path": "api/index.ts",
+          "url": "https://github.com/slaks37/2.0-Sonry-Oral/blob/214b87b4c977530fd5aedaba7622a3f84def3644/api/index.ts"
+        },
+        {
+          "path": "services/apiService.ts",
+          "url": "https://github.com/slaks37/2.0-Sonry-Oral/blob/214b87b4c977530fd5aedaba7622a3f84def3644/services/apiService.ts"
+        },
+        {
+          "path": "services/geminiService.ts",
+          "url": "https://github.com/slaks37/2.0-Sonry-Oral/blob/214b87b4c977530fd5aedaba7622a3f84def3644/services/geminiService.ts"
+        }
+      ],
+      "clinical_validation": "NOT_ESTABLISHED",
+      "runtime_execution_in_repository_audit": false
+    },
+    {
+      "repository": "slaks37/rf-detr",
+      "source_url": "https://github.com/slaks37/rf-detr",
+      "commit": "a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3",
+      "commit_date": "2026-10-15T19:23:55Z",
+      "default_branch": "develop",
+      "fork_upstream": "roboflow/rf-detr",
+      "tree_complete": true,
+      "file_count": 534,
+      "function": "General object detection, instance segmentation and keypoint framework. Useful as optional dental research adapter only with separate dental weights.",
+      "reusable_components": [
+        "Released RFDETRLarge runtime",
+        "Canonical postprocessing and export with pinned version",
+        "Weight integrity conventions and upstream tests"
+      ],
+      "architecture": "Transformer detector with DINOv2 backbone for Large; some newer variants use other backbones. Not inherently a dental model.",
+      "modalities": [
+        "RGB_2D_IMAGES",
+        "INTRAORAL_PHOTO_ONLY_WITH_DENTAL_CHECKPOINT"
+      ],
+      "checkpoints": [
+        "https://repo.roboflow.com/rfdetr/rf-detr-large.pth",
+        "Owner-local sonri-rfdetr-large-v1.pt (separate custom model; not in this GitHub fork)",
+        "Owner-local sonri-rfdetr-large-v1.onnx (export; not in this fork)"
+      ],
+      "dependencies": [
+        "Audited source pyproject: Python >=3.10",
+        "torch >=2.2.0",
+        "torchvision >=0.17.0",
+        "transformers >=5.1.0,<6.0.0",
+        "Runtime used for old local owner artifact was separate released rfdetr==1.11.2; compatibility with fork HEAD not assumed"
+      ],
+      "labels": "Generic source checkpoints use benchmark labels. Owner checkpoint has five output slots without class_names/id2label; RAW_CLASS_0..4 semantics UNVERIFIED.",
+      "dataset": {
+        "source": "Source framework benchmarks COCO/RF100-VL; owner dental checkpoint provenance separate.",
+        "license": "Benchmark-specific and owner dental dataset permissions separate from code",
+        "permission": "No SONRI patient consent/training authorization inferred from Apache source."
+      },
+      "code_license": "Apache-2.0 LICENSE verified",
+      "model_license": "Apache-designated source models separate from PML-1.0 Plus variants; owner artifact license attestation must be reviewed separately.",
+      "test_evidence": "220 files under tests/ and 16 workflow files in audited tree; inference/export/legacy tests present. Upstream suite and current CI not executed in this audit. Generic benchmark claims are not SONRI performance.",
+      "integration_risks": [
+        "Do not install Plus/PML variants by accident",
+        "Fork HEAD and existing released runtime APIs differ; pin tested runtime",
+        "Owner numeric classes cannot become clinical labels or ICD diagnoses",
+        "Do not auto-download backbones or upload images at runtime"
+      ],
+      "decision": "OPTIONAL_RESEARCH_ADAPTER_PIN_RELEASE_AND_HASH",
+      "evidence_paths": [
+        "LICENSE",
+        "README.md",
+        "pyproject.toml",
+        "src/rfdetr/assets/model_weights.py",
+        "tests/legacy/README.md"
+      ],
+      "evidence": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/slaks37/rf-detr/blob/a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3/LICENSE"
+        },
+        {
+          "path": "README.md",
+          "url": "https://github.com/slaks37/rf-detr/blob/a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3/README.md"
+        },
+        {
+          "path": "pyproject.toml",
+          "url": "https://github.com/slaks37/rf-detr/blob/a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3/pyproject.toml"
+        },
+        {
+          "path": "src/rfdetr/assets/model_weights.py",
+          "url": "https://github.com/slaks37/rf-detr/blob/a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3/src/rfdetr/assets/model_weights.py"
+        },
+        {
+          "path": "tests/legacy/README.md",
+          "url": "https://github.com/slaks37/rf-detr/blob/a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3/tests/legacy/README.md"
+        }
+      ],
+      "clinical_validation": "NOT_ESTABLISHED",
+      "runtime_execution_in_repository_audit": false
+    },
+    {
+      "repository": "slaks37/Tooth-and-Cavity-Instance-Segmentation",
+      "source_url": "https://github.com/slaks37/Tooth-and-Cavity-Instance-Segmentation",
+      "commit": "de639e2b608fb0701738e9e8d650ebcae2976eb2",
+      "commit_date": "2025-03-03T18:02:58Z",
+      "default_branch": "main",
+      "fork_upstream": "benjamin-ahlbrecht/Tooth-and-Cavity-Instance-Segmentation",
+      "tree_complete": true,
+      "file_count": 9,
+      "function": "Dental instance-segmentation training/metrics/visualization scaffold, not a complete ready-to-run pretrained clinical model.",
+      "reusable_components": [
+        "COCO mask geometry ideas",
+        "Evaluation/visualization patterns after MIT attribution"
+      ],
+      "architecture": "Torchvision Mask R-CNN with ResNet50 backbone and custom dental head.",
+      "modalities": [
+        "INTRAORAL_PHOTO"
+      ],
+      "checkpoints": [
+        "Trainer produces models/model_checkpoint_epoch_<n>.pth; no dental .pth/.pt/.onnx file or release asset in audited fork. Generic torchvision weights are not dental weights."
+      ],
+      "dependencies": [
+        "torch",
+        "torchvision",
+        "pycocotools",
+        "numpy",
+        "pandas",
+        "matplotlib; all unpinned requirements"
+      ],
+      "labels": "README: teeth, cavities, caries and cracks. Exact class IDs must come from COCO annotation/model metadata.",
+      "dataset": {
+        "source": "https://universe.roboflow.com/arab-academy-vf9su/dental-7yegp",
+        "license": "Not specified by repository; Roboflow dataset use/redistribution permission unverified",
+        "permission": "No dataset downloaded or eligibility inferred."
+      },
+      "code_license": "MIT LICENSE verified",
+      "model_license": "Dental checkpoint absent; permission unverified",
+      "test_evidence": "README reports mAP/precision/recall/F1; these are author-reported and were not reproduced. No automated test suite found; notebook/trainer is not independent validation.",
+      "integration_risks": [
+        "No usable dental checkpoint",
+        "Unpinned old torchvision APIs and custom head/metadata compatibility",
+        "Dataset/model permission distinct from MIT code"
+      ],
+      "decision": "UNAVAILABLE_MISSING_DENTAL_WEIGHTS",
+      "evidence_paths": [
+        "LICENSE",
+        "README.md",
+        "requirements.txt",
+        "src/mask_rcnn_model.py"
+      ],
+      "evidence": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/slaks37/Tooth-and-Cavity-Instance-Segmentation/blob/de639e2b608fb0701738e9e8d650ebcae2976eb2/LICENSE"
+        },
+        {
+          "path": "README.md",
+          "url": "https://github.com/slaks37/Tooth-and-Cavity-Instance-Segmentation/blob/de639e2b608fb0701738e9e8d650ebcae2976eb2/README.md"
+        },
+        {
+          "path": "requirements.txt",
+          "url": "https://github.com/slaks37/Tooth-and-Cavity-Instance-Segmentation/blob/de639e2b608fb0701738e9e8d650ebcae2976eb2/requirements.txt"
+        },
+        {
+          "path": "src/mask_rcnn_model.py",
+          "url": "https://github.com/slaks37/Tooth-and-Cavity-Instance-Segmentation/blob/de639e2b608fb0701738e9e8d650ebcae2976eb2/src/mask_rcnn_model.py"
+        }
+      ],
+      "clinical_validation": "NOT_ESTABLISHED",
+      "runtime_execution_in_repository_audit": false
+    },
+    {
+      "repository": "slaks37/dental_study",
+      "source_url": "https://github.com/slaks37/dental_study",
+      "commit": "f02596a0227b9eaf767b955cd67196236111a3d5",
+      "commit_date": "2026-07-27T13:40:53Z",
+      "default_branch": "main",
+      "fork_upstream": "Eeman1113/dental_study",
+      "tree_complete": true,
+      "file_count": 19499,
+      "function": "Daath two-stage caries research: YOLO candidate lesions plus optional MedGemma crop reasoning/veto.",
+      "reusable_components": [
+        "Existing YOLO checkpoint for research-only real-inference smoke",
+        "Patient grouping/evaluation ideas after verification; never copy image data"
+      ],
+      "architecture": "YOLO11m best.pt; optional LoRA MedGemma 1.5 4B/Ollama GGUF. Do not import MedGemma into screening runtime.",
+      "modalities": [
+        "INTRAORAL_PHOTO_MANDIBULAR_OCCLUSAL",
+        "INTRAORAL_PHOTO_MAXILLARY_OCCLUSAL"
+      ],
+      "checkpoints": [
+        "https://media.githubusercontent.com/media/slaks37/dental_study/f02596a0227b9eaf767b955cd67196236111a3d5/best.pt",
+        "https://huggingface.co/sdvzdfgfngdfgh/caries-medgemma-gguf"
+      ],
+      "dependencies": [
+        "Ultralytics YOLO; standalone adapter should pin tested package",
+        "README broader two-stage setup: Python >=3.11, torch>=2.11, transformers>=5.5, peft>=0.19, Ollama>=0.32",
+        "Do not require full VLM stack for YOLO-only inference"
+      ],
+      "labels": "Checkpoint raw labels 0=d and 1=D; clinical semantics remain UNVERIFIED. README refers to caries lesions but this does not validate label-to-ICD equivalence.",
+      "dataset": {
+        "source": "https://zenodo.org/records/14827784",
+        "license": "CC-BY-4.0 verified via official record API",
+        "permission": "Public dataset terms do not establish SONRI patient consent or transfer permission. Upstream patient-safe split assertion not independently accepted."
+      },
+      "code_license": "README asserts MIT; no LICENSE file in full tree",
+      "model_license": "README states YOLO weights AGPL-3.0; MedGemma subject to HAI-DEF terms and no clinical use assertion. License review required before redistribution/service deployment.",
+      "test_evidence": "Evaluation/training scripts and author-reported 332-image metrics exist, not independently reproduced here. README admits VLM whole-image negative-template collapse and decreased recall when vetoing YOLO detections.",
+      "integration_risks": [
+        "AGPL obligations and missing code license notice",
+        "d/D ontology unverified; no automated ICD mapping",
+        "Generalization limited to declared occlusal views",
+        "Patient-group leakage audit and independent negatives/false-negative analysis required",
+        "PyTorch serialized artifacts require controlled safe loading; no blanket unrestricted-pickle fallback"
+      ],
+      "decision": "RESEARCH_YOLO_AVAILABLE_BY_HASH_CLINICAL_DISABLED",
+      "evidence_paths": [
+        "README.md",
+        "best.pt",
+        "best_m4.pt",
+        "yolo11s.pt",
+        "prepare_data.py",
+        "train_yolo.py"
+      ],
+      "evidence": [
+        {
+          "path": "README.md",
+          "url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/README.md"
+        },
+        {
+          "path": "best.pt",
+          "url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/best.pt"
+        },
+        {
+          "path": "best_m4.pt",
+          "url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/best_m4.pt"
+        },
+        {
+          "path": "yolo11s.pt",
+          "url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/yolo11s.pt"
+        },
+        {
+          "path": "prepare_data.py",
+          "url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/prepare_data.py"
+        },
+        {
+          "path": "train_yolo.py",
+          "url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/train_yolo.py"
+        }
+      ],
+      "clinical_validation": "NOT_ESTABLISHED",
+      "runtime_execution_in_repository_audit": false
+    },
+    {
+      "repository": "slaks37/ToothSeg-sonri",
+      "source_url": "https://github.com/slaks37/ToothSeg-sonri",
+      "commit": "b29d1017fa124f89645fa56f98649e3f3f43bdb0",
+      "commit_date": "2026-05-27T10:05:46Z",
+      "default_branch": "main",
+      "fork_upstream": "MIC-DKFZ/ToothSeg",
+      "tree_complete": true,
+      "file_count": 133,
+      "function": "CBCT tooth instance segmentation and numbering with semantic/instance branches and self-correction.",
+      "reusable_components": [
+        "nnU-Net worker boundary",
+        "Spatial resampling, border-core conversion and min-cost tooth label assignment concepts",
+        "Instance/numbering evaluation scripts"
+      ],
+      "architecture": "Dual-branch nnU-Net; semantic spacing 0.3 mm and instance border-core spacing 0.2 mm, restoration to original geometry and self-correction.",
+      "modalities": [
+        "CBCT_3D_VOLUME"
+      ],
+      "checkpoints": [
+        "https://zenodo.org/records/14893540",
+        "ToothSeg.zip -> nnUNet_results/Dataset121_ToothFairy2_Teeth and Dataset123_ToothFairy2fixed_teeth_spacing02_brd3px"
+      ],
+      "dependencies": [
+        "Python >=3.9",
+        "nnunetv2",
+        "torch>=2.0.0",
+        "numpy",
+        "acvl_utils from unpinned Git URL; freeze a reproducible compatible environment before running"
+      ],
+      "labels": "Tooth instances and semantic tooth identities. Validate checkpoint dataset.json mapping before emitting FDI codes; no disease-diagnosis model.",
+      "dataset": {
+        "source": "ToothFairy2 https://ditto.ing.unimore.it/toothfairy2/; in-house dataset explicitly not releasable",
+        "license": "Dataset terms not inherited from code/checkpoint licenses; verify ToothFairy2 access agreement separately",
+        "permission": "No volumes downloaded; no authorized de-identified CBCT fixture available in this audit."
+      },
+      "code_license": "Apache-2.0 LICENSE verified",
+      "model_license": "Official Zenodo checkpoint record API: CC-BY-4.0",
+      "test_evidence": "Evaluation scripts for instances and tooth labels present; no tests/ or workflows/ suite found. No checkpoint download, CBCT inference or Dice/numbering metric measured here.",
+      "integration_risks": [
+        "Checkpoint archive 920,019,129 bytes not installed; published MD5 only, compute SHA256 after authorized download",
+        "Need both branches plus plans/dataset metadata and exact spatial preprocessing",
+        "Requires a dedicated 3D worker, bounded voxel/memory/GPU budget",
+        "2D JPEG cannot validate this pathway"
+      ],
+      "decision": "UNAVAILABLE_NOT_INSTALLED_NO_AUTHORIZED_VOLUME",
+      "evidence_paths": [
+        "LICENSE",
+        "README.md",
+        "pyproject.toml",
+        "scripts/inference_generel.sh",
+        "scripts/inference_toothfairy2.sh"
+      ],
+      "evidence": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/LICENSE"
+        },
+        {
+          "path": "README.md",
+          "url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/README.md"
+        },
+        {
+          "path": "pyproject.toml",
+          "url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/pyproject.toml"
+        },
+        {
+          "path": "scripts/inference_generel.sh",
+          "url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/scripts/inference_generel.sh"
+        },
+        {
+          "path": "scripts/inference_toothfairy2.sh",
+          "url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/scripts/inference_toothfairy2.sh"
+        }
+      ],
+      "clinical_validation": "NOT_ESTABLISHED",
+      "runtime_execution_in_repository_audit": false
+    },
+    {
+      "repository": "slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri",
+      "source_url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri",
+      "commit": "0127fd30c5f3ea19cf2fc15c7353b539b4181631",
+      "commit_date": "2026-07-09T18:10:53Z",
+      "default_branch": "main",
+      "fork_upstream": "Anasbme/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification",
+      "tree_complete": true,
+      "file_count": 9,
+      "function": "Panoramic multistage tooth/implant detection, CEJ/apex keypoints, jaw/tooth segmentation and geometric alveolar bone loss.",
+      "reusable_components": [
+        "Documented landmark geometry and clinician-correction design after rights review"
+      ],
+      "architecture": "YOLOv8 tooth/maxilla detection and pose, ResNet18 U-Net masks, geometric bone-loss ratios.",
+      "modalities": [
+        "PANORAMIC_RADIOGRAPH"
+      ],
+      "checkpoints": [
+        "runs/teeth_det_fold_<n>.pt",
+        "runs/maxilla_det.pt",
+        "runs/keypoint_fold_<n>.pt",
+        "runs/resnet18_Unet_teeth_fold_<n>.pt",
+        "runs/resnet18_Unet_mandible_fold_<n>.pt",
+        "runs/resnet18_Unet_maxilla_fold_<n>.pt; all referenced, none included in complete fork tree/releases"
+      ],
+      "dependencies": [
+        "torch>=2.0",
+        "torchvision>=0.15",
+        "ultralytics>=8",
+        "segmentation-models-pytorch>=0.3.3",
+        "numpy>=1.24,<2",
+        "pywin32>=306 (Windows-specific unconditional requirement)"
+      ],
+      "labels": "README T11-T48, implants, LCEJ/RCEJ/LRAP/RRAP and bone-loss geometry; exact checkpoint class order unavailable.",
+      "dataset": {
+        "source": "Not established by repository",
+        "license": "No dataset license established",
+        "permission": "No benchmark/clinical reuse permission verified."
+      },
+      "code_license": "No LICENSE file or recognized GitHub license found",
+      "model_license": "Weights absent; no license or download grant established; Ultralytics component obligations separate",
+      "test_evidence": "TestUnet_batch_seg.py is a segmentation runner, not an automated regression suite. README accuracy and millimeter claims not independently reproduced.",
+      "integration_risks": [
+        "Six missing compatible checkpoint families",
+        "No code/model/data license evidence",
+        "Source uses torch.load(weights_only=False): do not copy unrestricted deserialization",
+        "No calibration/pixel-spacing authority for millimeter claims",
+        "Platform-specific and broad dependencies; geometry cannot replace periodontal examination"
+      ],
+      "decision": "UNAVAILABLE_MISSING_WEIGHTS_AND_LICENSE",
+      "evidence_paths": [
+        "README.md",
+        "requirements.txt",
+        "teeth_det_seg.py",
+        "TestUnet_batch_seg.py"
+      ],
+      "evidence": [
+        {
+          "path": "README.md",
+          "url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri/blob/0127fd30c5f3ea19cf2fc15c7353b539b4181631/README.md"
+        },
+        {
+          "path": "requirements.txt",
+          "url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri/blob/0127fd30c5f3ea19cf2fc15c7353b539b4181631/requirements.txt"
+        },
+        {
+          "path": "teeth_det_seg.py",
+          "url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri/blob/0127fd30c5f3ea19cf2fc15c7353b539b4181631/teeth_det_seg.py"
+        },
+        {
+          "path": "TestUnet_batch_seg.py",
+          "url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri/blob/0127fd30c5f3ea19cf2fc15c7353b539b4181631/TestUnet_batch_seg.py"
+        }
+      ],
+      "clinical_validation": "NOT_ESTABLISHED",
+      "runtime_execution_in_repository_audit": false
+    },
+    {
+      "repository": "slaks37/DENTEXsonri",
+      "source_url": "https://github.com/slaks37/DENTEXsonri",
+      "commit": "a33bc4cd24ae864c679e8ee0a156354b2b6bd858",
+      "commit_date": "2026-06-08T13:51:16Z",
+      "default_branch": "main",
+      "fork_upstream": "ibrahimethemhamamci/DENTEX",
+      "tree_complete": true,
+      "file_count": 979,
+      "function": "Panoramic dataset challenge, hierarchical tooth enumeration/abnormality detection baseline and evaluation containers.",
+      "reusable_components": [
+        "Hierarchical quadrant/tooth enumeration contract",
+        "Grand Challenge-style evaluation output schema after licensing review"
+      ],
+      "architecture": "HierarchicalDet / DiffusionDet with Swin backbone and bundled detectron2; hierarchical quadrant, tooth and abnormality heads.",
+      "modalities": [
+        "PANORAMIC_RADIOGRAPH"
+      ],
+      "checkpoints": [
+        "HierarchialDet-FinalPhase-Docker/process.py expects /opt/app/pretrained_model/model_final.pth; Docker COPY pretrained_model references directory absent from fork tree. No checkpoint/release assets."
+      ],
+      "dependencies": [
+        "Vendored detectron2",
+        "PyTorch/CUDA build compatibility not pinned here",
+        "Python 3.8 Dockerfile conflicts with requirements generated under Python 3.10",
+        "evalutils 0.4.2, SimpleITK 2.2.1, numpy 1.24.3"
+      ],
+      "labels": "Quadrant, enumeration and four source abnormality categories: caries, deep caries, periapical lesions, impacted teeth. Source categories do not independently confirm WHO diagnoses.",
+      "dataset": {
+        "source": "https://huggingface.co/datasets/ibrahimhamamci/DENTEX",
+        "license": "README CC-BY-NC-SA-4.0 dataset; commercial use requires separate permission",
+        "permission": "No images downloaded; permitted clinical/commercial use not established."
+      },
+      "code_license": "README asserts MIT for rest of repo, but no LICENSE file found; vendored dependencies require notices",
+      "model_license": "Missing checkpoint; no separate weight license established",
+      "test_evidence": "Evaluation.py and Docker test.sh scripts present; no successful container execution or independent metrics reproduced. Source text has inconsistent FDI quadrant example, so numbering must be validated separately.",
+      "integration_risks": [
+        "Missing model_final.pth; Docker cannot build ready inference artifact as-is",
+        "Noncommercial dataset condition needs scope decision",
+        "Old bundled detectron2/runtime cannot be merged into main app",
+        "Checkpoint head mapping/FDI laterality and image orientation must be tested"
+      ],
+      "decision": "UNAVAILABLE_MISSING_CHECKPOINT",
+      "evidence_paths": [
+        "README.md",
+        "HierarchialDet-FinalPhase-Docker/process.py",
+        "HierarchialDet-FinalPhase-Docker/Dockerfile",
+        "HierarchialDet-FinalPhase-Docker/requirements.txt"
+      ],
+      "evidence": [
+        {
+          "path": "README.md",
+          "url": "https://github.com/slaks37/DENTEXsonri/blob/a33bc4cd24ae864c679e8ee0a156354b2b6bd858/README.md"
+        },
+        {
+          "path": "HierarchialDet-FinalPhase-Docker/process.py",
+          "url": "https://github.com/slaks37/DENTEXsonri/blob/a33bc4cd24ae864c679e8ee0a156354b2b6bd858/HierarchialDet-FinalPhase-Docker/process.py"
+        },
+        {
+          "path": "HierarchialDet-FinalPhase-Docker/Dockerfile",
+          "url": "https://github.com/slaks37/DENTEXsonri/blob/a33bc4cd24ae864c679e8ee0a156354b2b6bd858/HierarchialDet-FinalPhase-Docker/Dockerfile"
+        },
+        {
+          "path": "HierarchialDet-FinalPhase-Docker/requirements.txt",
+          "url": "https://github.com/slaks37/DENTEXsonri/blob/a33bc4cd24ae864c679e8ee0a156354b2b6bd858/HierarchialDet-FinalPhase-Docker/requirements.txt"
+        }
+      ],
+      "clinical_validation": "NOT_ESTABLISHED",
+      "runtime_execution_in_repository_audit": false
+    },
+    {
+      "repository": "slaks37/Oral-Disease-detector-sonri",
+      "source_url": "https://github.com/slaks37/Oral-Disease-detector-sonri",
+      "commit": "9f96216e6daf5db71408285899a923b8fe0a59e3",
+      "commit_date": "2026-07-16T13:36:59Z",
+      "default_branch": "main",
+      "fork_upstream": "Abdelhameed-Nasr/Oral-Disease-detector",
+      "tree_complete": true,
+      "file_count": 14,
+      "function": "Streamlit six-class oral image classifier prototype with EfficientNetB0 deployment.",
+      "reusable_components": [
+        "Class order and 224x224 preprocessing contract as candidates after license verification",
+        "Explicit no-healthy-class limitation"
+      ],
+      "architecture": "TensorFlow/Keras EfficientNetB0 fine-tuned classifier; README also compares custom CNN/ResNet50.",
+      "modalities": [
+        "INTRAORAL_PHOTO"
+      ],
+      "checkpoints": [
+        "Expected local best_pretrained_EfficientNetB0_model.h5 absent from full tree",
+        "README points to https://www.kaggle.com/models/abdelhameednasr/oral-disease-trained-model; exact framework/version/hash not verified"
+      ],
+      "dependencies": [
+        "tensorflow",
+        "streamlit",
+        "numpy",
+        "pillow; all unpinned requirements"
+      ],
+      "labels": [
+        "Calculus",
+        "Caries",
+        "Gingivitis",
+        "Hypodontia",
+        "Mouth_Ulcer",
+        "Tooth_Discoloration"
+      ],
+      "dataset": {
+        "source": "https://www.kaggle.com/datasets/salmansajid05/oral-diseases",
+        "license": "Public Kaggle API current version 3 explicitly licenseName Unknown",
+        "permission": "Mixed hospital/web sources; permissions and patient-level splits unverified. Do not download/use for training until rights are established."
+      },
+      "code_license": "No LICENSE file or recognized GitHub license found",
+      "model_license": "Kaggle model version/terms unavailable; exact public metadata endpoint attempted returned 404. This does not prove model globally absent.",
+      "test_evidence": "README author-reported EfficientNetB0 accuracy 0.8251 and class imbalance; not reproduced. No automated test suite found.",
+      "integration_risks": [
+        "No healthy/background class: unrelated/healthy image is forced toward a disease label",
+        "Model hash/version/source license and pretrained dataset permission missing",
+        "Image-level source split does not establish patient-level independence",
+        "Softmax score is not a calibrated clinical probability; hypodontia cannot be confirmed from one photograph"
+      ],
+      "decision": "UNAVAILABLE_MISSING_WEIGHTS_AND_PERMISSION",
+      "evidence_paths": [
+        "README.md",
+        "app.py",
+        "class_names.json",
+        "requirements.txt"
+      ],
+      "evidence": [
+        {
+          "path": "README.md",
+          "url": "https://github.com/slaks37/Oral-Disease-detector-sonri/blob/9f96216e6daf5db71408285899a923b8fe0a59e3/README.md"
+        },
+        {
+          "path": "app.py",
+          "url": "https://github.com/slaks37/Oral-Disease-detector-sonri/blob/9f96216e6daf5db71408285899a923b8fe0a59e3/app.py"
+        },
+        {
+          "path": "class_names.json",
+          "url": "https://github.com/slaks37/Oral-Disease-detector-sonri/blob/9f96216e6daf5db71408285899a923b8fe0a59e3/class_names.json"
+        },
+        {
+          "path": "requirements.txt",
+          "url": "https://github.com/slaks37/Oral-Disease-detector-sonri/blob/9f96216e6daf5db71408285899a923b8fe0a59e3/requirements.txt"
+        }
+      ],
+      "clinical_validation": "NOT_ESTABLISHED",
+      "runtime_execution_in_repository_audit": false
+    }
+  ],
+  "external_evidence": [
+    {
+      "url": "https://zenodo.org/api/records/14893540",
+      "record": "14893540",
+      "kind": "MODEL_CHECKPOINT_METADATA",
+      "license": "CC-BY-4.0",
+      "asset": "ToothSeg.zip",
+      "bytes": 920019129,
+      "published_checksum": {
+        "algorithm": "md5",
+        "value": "5d8dd061cce9529943567aeba3271143"
+      },
+      "downloaded": false
+    },
+    {
+      "url": "https://zenodo.org/api/records/14827784",
+      "record": "14827784",
+      "kind": "DATASET_METADATA",
+      "license": "CC-BY-4.0",
+      "downloaded": false
+    },
+    {
+      "url": "https://www.kaggle.com/api/v1/datasets/view/salmansajid05/oral-diseases",
+      "kind": "DATASET_METADATA",
+      "version": 3,
+      "license": "Unknown",
+      "downloaded": false
+    },
+    {
+      "url": "https://www.kaggle.com/api/v1/models/view/abdelhameednasr/oral-disease-trained-model",
+      "kind": "MODEL_METADATA_ATTEMPT",
+      "http_status": 404,
+      "interpretation": "Exact endpoint unavailable; existence/rights of other variations unverified."
+    }
+  ],
+  "source_evidence": [
+    {
+      "repository": "slaks37/dr-gigi-AI-National-Health-CKG-PKG",
+      "commit": "e02f602811e4d36a3ac32fe18e5e455018c6938f",
+      "path": "docs/DATABASE_ARCHITECTURE.md",
+      "git_blob_sha": "04dbe1e0d523f89578bea2a4215703240ad53b6f",
+      "source_url": "https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/blob/e02f602811e4d36a3ac32fe18e5e455018c6938f/docs/DATABASE_ARCHITECTURE.md",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/Sonri-untuk-Negeri",
+      "commit": "b43c2fe614a1ba96da0094ed6271398bd7479a8d",
+      "path": "README.md",
+      "git_blob_sha": "f8cbaeef730193da3362593748b9fb225b33e25f",
+      "source_url": "https://github.com/slaks37/Sonri-untuk-Negeri/blob/b43c2fe614a1ba96da0094ed6271398bd7479a8d/README.md",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/Sonri-untuk-Negeri",
+      "commit": "b43c2fe614a1ba96da0094ed6271398bd7479a8d",
+      "path": "package.json",
+      "git_blob_sha": "e9c0b285febe4f41fb32227dd8cde0b3afccf610",
+      "source_url": "https://github.com/slaks37/Sonri-untuk-Negeri/blob/b43c2fe614a1ba96da0094ed6271398bd7479a8d/package.json",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/Sonri-untuk-Negeri",
+      "commit": "b43c2fe614a1ba96da0094ed6271398bd7479a8d",
+      "path": "app/checkup/page.tsx",
+      "git_blob_sha": "65534c5807b802b8568c10c9c1b9e33561787d2c",
+      "source_url": "https://github.com/slaks37/Sonri-untuk-Negeri/blob/b43c2fe614a1ba96da0094ed6271398bd7479a8d/app/checkup/page.tsx",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/Sonri-untuk-Negeri",
+      "commit": "b43c2fe614a1ba96da0094ed6271398bd7479a8d",
+      "path": "firestore.rules",
+      "git_blob_sha": "b1bd05d5f40a8781c830bcb202cd592df649f413",
+      "source_url": "https://github.com/slaks37/Sonri-untuk-Negeri/blob/b43c2fe614a1ba96da0094ed6271398bd7479a8d/firestore.rules",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/2.0-Sonry-Oral",
+      "commit": "214b87b4c977530fd5aedaba7622a3f84def3644",
+      "path": "package.json",
+      "git_blob_sha": "490b0b8548fbd368b02daf664b2a9685ae362ac2",
+      "source_url": "https://github.com/slaks37/2.0-Sonry-Oral/blob/214b87b4c977530fd5aedaba7622a3f84def3644/package.json",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/2.0-Sonry-Oral",
+      "commit": "214b87b4c977530fd5aedaba7622a3f84def3644",
+      "path": "services/geminiService.ts",
+      "git_blob_sha": "ef7d3a42e4c812de7783cc4ed4f2c4737afb9f3c",
+      "source_url": "https://github.com/slaks37/2.0-Sonry-Oral/blob/214b87b4c977530fd5aedaba7622a3f84def3644/services/geminiService.ts",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/2.0-Sonry-Oral",
+      "commit": "214b87b4c977530fd5aedaba7622a3f84def3644",
+      "path": "services/apiService.ts",
+      "git_blob_sha": "27834985b09d34fd8e9ffed0e1fddc23cc682cda",
+      "source_url": "https://github.com/slaks37/2.0-Sonry-Oral/blob/214b87b4c977530fd5aedaba7622a3f84def3644/services/apiService.ts",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/2.0-Sonry-Oral",
+      "commit": "214b87b4c977530fd5aedaba7622a3f84def3644",
+      "path": "api/index.ts",
+      "git_blob_sha": "15bfb3dd4d3b152438ffad5ecba0d8c77e4fe87d",
+      "source_url": "https://github.com/slaks37/2.0-Sonry-Oral/blob/214b87b4c977530fd5aedaba7622a3f84def3644/api/index.ts",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/rf-detr",
+      "commit": "a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3",
+      "path": "README.md",
+      "git_blob_sha": "d6665ed6790672dcb1911b4cd12715db6b0056e8",
+      "source_url": "https://github.com/slaks37/rf-detr/blob/a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3/README.md",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/rf-detr",
+      "commit": "a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3",
+      "path": "pyproject.toml",
+      "git_blob_sha": "d74d451b9b0eb7d3d987e2b98b23c03032bc8bc0",
+      "source_url": "https://github.com/slaks37/rf-detr/blob/a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3/pyproject.toml",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/rf-detr",
+      "commit": "a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3",
+      "path": "tests/legacy/README.md",
+      "git_blob_sha": "96564f2e2945cf6c7fec1d3d2292040d6267a0b6",
+      "source_url": "https://github.com/slaks37/rf-detr/blob/a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3/tests/legacy/README.md",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/rf-detr",
+      "commit": "a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3",
+      "path": "LICENSE",
+      "git_blob_sha": "56db37c53b61c7976042682a83d85383a6bf6007",
+      "source_url": "https://github.com/slaks37/rf-detr/blob/a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3/LICENSE",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/rf-detr",
+      "commit": "a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3",
+      "path": "src/rfdetr/assets/model_weights.py",
+      "git_blob_sha": "a0796a4e77bf0b0a11e7e1fd1ee4d6b63a1af7b7",
+      "source_url": "https://github.com/slaks37/rf-detr/blob/a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3/src/rfdetr/assets/model_weights.py",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/Tooth-and-Cavity-Instance-Segmentation",
+      "commit": "de639e2b608fb0701738e9e8d650ebcae2976eb2",
+      "path": "README.md",
+      "git_blob_sha": "fe84f0e5be2a2f0a0e3f7ae19fda2f151e524df4",
+      "source_url": "https://github.com/slaks37/Tooth-and-Cavity-Instance-Segmentation/blob/de639e2b608fb0701738e9e8d650ebcae2976eb2/README.md",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/Tooth-and-Cavity-Instance-Segmentation",
+      "commit": "de639e2b608fb0701738e9e8d650ebcae2976eb2",
+      "path": "requirements.txt",
+      "git_blob_sha": "be9dafc40ad94210bb08b10ec1e85f0766786e93",
+      "source_url": "https://github.com/slaks37/Tooth-and-Cavity-Instance-Segmentation/blob/de639e2b608fb0701738e9e8d650ebcae2976eb2/requirements.txt",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/Tooth-and-Cavity-Instance-Segmentation",
+      "commit": "de639e2b608fb0701738e9e8d650ebcae2976eb2",
+      "path": "src/mask_rcnn_model.py",
+      "git_blob_sha": "a9fef50baee12f2d87873299b7a4cbbb1a5c09bb",
+      "source_url": "https://github.com/slaks37/Tooth-and-Cavity-Instance-Segmentation/blob/de639e2b608fb0701738e9e8d650ebcae2976eb2/src/mask_rcnn_model.py",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/dental_study",
+      "commit": "f02596a0227b9eaf767b955cd67196236111a3d5",
+      "path": "README.md",
+      "git_blob_sha": "3c5a0d44ced20203a2ea3701abf1d475520bef8f",
+      "source_url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/README.md",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/dental_study",
+      "commit": "f02596a0227b9eaf767b955cd67196236111a3d5",
+      "path": "best.pt",
+      "git_blob_sha": "33118a56049c6716f4e1891b39f54fbd9abae141",
+      "source_url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/best.pt",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/dental_study",
+      "commit": "f02596a0227b9eaf767b955cd67196236111a3d5",
+      "path": "best_m4.pt",
+      "git_blob_sha": "ff8a8bbe875c164b412db5ced54075bdbe41aea7",
+      "source_url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/best_m4.pt",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/dental_study",
+      "commit": "f02596a0227b9eaf767b955cd67196236111a3d5",
+      "path": "yolo11s.pt",
+      "git_blob_sha": "6f3d8e781e218c31878a24cbf8be2f62963499fd",
+      "source_url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/yolo11s.pt",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/dental_study",
+      "commit": "f02596a0227b9eaf767b955cd67196236111a3d5",
+      "path": "prepare_data.py",
+      "git_blob_sha": "d2464c4318d9fe2de97e551c8870e3557f907b8d",
+      "source_url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/prepare_data.py",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/dental_study",
+      "commit": "f02596a0227b9eaf767b955cd67196236111a3d5",
+      "path": "train_yolo.py",
+      "git_blob_sha": "76b918630dbd4cc493a1d3df486438819eb3c2ac",
+      "source_url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/train_yolo.py",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/ToothSeg-sonri",
+      "commit": "b29d1017fa124f89645fa56f98649e3f3f43bdb0",
+      "path": "README.md",
+      "git_blob_sha": "f254d82bfb5b8942513ed3c92bc2eed21ac65a69",
+      "source_url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/README.md",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/ToothSeg-sonri",
+      "commit": "b29d1017fa124f89645fa56f98649e3f3f43bdb0",
+      "path": "pyproject.toml",
+      "git_blob_sha": "2928792445e45b53b595365e42d53d647abac242",
+      "source_url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/pyproject.toml",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/ToothSeg-sonri",
+      "commit": "b29d1017fa124f89645fa56f98649e3f3f43bdb0",
+      "path": "scripts/inference_generel.sh",
+      "git_blob_sha": "52c30da32d0b19241a7ff324b28eb5724fcc5a39",
+      "source_url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/scripts/inference_generel.sh",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/ToothSeg-sonri",
+      "commit": "b29d1017fa124f89645fa56f98649e3f3f43bdb0",
+      "path": "scripts/inference_toothfairy2.sh",
+      "git_blob_sha": "f30c362fb306fea0de7c5b14791d6c9b125a7eab",
+      "source_url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/scripts/inference_toothfairy2.sh",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri",
+      "commit": "0127fd30c5f3ea19cf2fc15c7353b539b4181631",
+      "path": "README.md",
+      "git_blob_sha": "62389ae93bd6aa56f7a8c85d7e2fa6751fb3403e",
+      "source_url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri/blob/0127fd30c5f3ea19cf2fc15c7353b539b4181631/README.md",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri",
+      "commit": "0127fd30c5f3ea19cf2fc15c7353b539b4181631",
+      "path": "requirements.txt",
+      "git_blob_sha": "5740d6754a3b1fdaa4f41e2a59738b4f942f5526",
+      "source_url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri/blob/0127fd30c5f3ea19cf2fc15c7353b539b4181631/requirements.txt",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri",
+      "commit": "0127fd30c5f3ea19cf2fc15c7353b539b4181631",
+      "path": "TestUnet_batch_seg.py",
+      "git_blob_sha": "f55756f89d8e2eb99996faa527687a84986b4f78",
+      "source_url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri/blob/0127fd30c5f3ea19cf2fc15c7353b539b4181631/TestUnet_batch_seg.py",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri",
+      "commit": "0127fd30c5f3ea19cf2fc15c7353b539b4181631",
+      "path": "teeth_det_seg.py",
+      "git_blob_sha": "0923b9331a2841761b6fb03bdb41261db6641286",
+      "source_url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri/blob/0127fd30c5f3ea19cf2fc15c7353b539b4181631/teeth_det_seg.py",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/DENTEXsonri",
+      "commit": "a33bc4cd24ae864c679e8ee0a156354b2b6bd858",
+      "path": "README.md",
+      "git_blob_sha": "812f949007be799b72bba131b13bef1fe6cae751",
+      "source_url": "https://github.com/slaks37/DENTEXsonri/blob/a33bc4cd24ae864c679e8ee0a156354b2b6bd858/README.md",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/DENTEXsonri",
+      "commit": "a33bc4cd24ae864c679e8ee0a156354b2b6bd858",
+      "path": "HierarchialDet-FinalPhase-Docker/requirements.txt",
+      "git_blob_sha": "946b67edc30ecb480367bd887b19ba94e846779f",
+      "source_url": "https://github.com/slaks37/DENTEXsonri/blob/a33bc4cd24ae864c679e8ee0a156354b2b6bd858/HierarchialDet-FinalPhase-Docker/requirements.txt",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/DENTEXsonri",
+      "commit": "a33bc4cd24ae864c679e8ee0a156354b2b6bd858",
+      "path": "HierarchialDet-FinalPhase-Docker/process.py",
+      "git_blob_sha": "f4ff1084b52b996e9e50ab03c3447faf4f7cd778",
+      "source_url": "https://github.com/slaks37/DENTEXsonri/blob/a33bc4cd24ae864c679e8ee0a156354b2b6bd858/HierarchialDet-FinalPhase-Docker/process.py",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/DENTEXsonri",
+      "commit": "a33bc4cd24ae864c679e8ee0a156354b2b6bd858",
+      "path": "HierarchialDet-FinalPhase-Docker/Dockerfile",
+      "git_blob_sha": "a91a98cc654b700ef69acda6f93d2e097f4a0ada",
+      "source_url": "https://github.com/slaks37/DENTEXsonri/blob/a33bc4cd24ae864c679e8ee0a156354b2b6bd858/HierarchialDet-FinalPhase-Docker/Dockerfile",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/Oral-Disease-detector-sonri",
+      "commit": "9f96216e6daf5db71408285899a923b8fe0a59e3",
+      "path": "README.md",
+      "git_blob_sha": "2abac8aebb84c6de6bb0ed96d1d1da2a79cdb068",
+      "source_url": "https://github.com/slaks37/Oral-Disease-detector-sonri/blob/9f96216e6daf5db71408285899a923b8fe0a59e3/README.md",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/Oral-Disease-detector-sonri",
+      "commit": "9f96216e6daf5db71408285899a923b8fe0a59e3",
+      "path": "requirements.txt",
+      "git_blob_sha": "62f68180dbf026e17863c3048985fb5dc8c3858a",
+      "source_url": "https://github.com/slaks37/Oral-Disease-detector-sonri/blob/9f96216e6daf5db71408285899a923b8fe0a59e3/requirements.txt",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/Oral-Disease-detector-sonri",
+      "commit": "9f96216e6daf5db71408285899a923b8fe0a59e3",
+      "path": "app.py",
+      "git_blob_sha": "060ba91ad2e0cbd092e2ddbc27b9c9c16b7cc76f",
+      "source_url": "https://github.com/slaks37/Oral-Disease-detector-sonri/blob/9f96216e6daf5db71408285899a923b8fe0a59e3/app.py",
+      "content_retained_in_git": false
+    },
+    {
+      "repository": "slaks37/Oral-Disease-detector-sonri",
+      "commit": "9f96216e6daf5db71408285899a923b8fe0a59e3",
+      "path": "class_names.json",
+      "git_blob_sha": "7c95707052b47fb1c77f2c88c61217614038a942",
+      "source_url": "https://github.com/slaks37/Oral-Disease-detector-sonri/blob/9f96216e6daf5db71408285899a923b8fe0a59e3/class_names.json",
+      "content_retained_in_git": false
+    }
+  ]
+}

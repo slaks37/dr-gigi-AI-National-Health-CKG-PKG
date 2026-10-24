@@ -41,7 +41,7 @@ describe('auditable clinical suspicions',()=>{
  it('uncertain cavitation cannot force a caries code',()=>{expect(reason([{...finding('VISIBLE_CAVITATION'),uncertainty:'UNCERTAIN'}],SymptomsSchema.parse({}),'ADULT')).toEqual([]);});
 });
 describe('WHO versioned terminology',()=>{
- it('records official titles and corrected cementum meaning',()=>{expect(ICD_CATALOG).toHaveLength(124);expect(lookupCode('K02.2')?.official_title).toBe('Caries of cementum');expect(lookupCode('K08.3')?.official_title).toBe('Retained dental root');});
+ it('records official titles and corrected cementum meaning',()=>{expect(ICD_CATALOG).toHaveLength(123);expect(lookupCode('K02.2')?.official_title).toBe('Caries of cementum');expect(lookupCode('K08.3')?.official_title).toBe('Retained dental root');});
  it('rejects malformed or CM-only codes and unverified broad groups as diagnosis codes',()=>{expect(validateCodes(['K0.2.3'])).toBe(false);expect(validateCodes(['K02.51'])).toBe(false);expect(validateCodes(['K05'])).toBe(false);expect(validateCodes(['K02.9'])).toBe(true);});
  it('flags suspect folder labels without bulk relabeling',()=>{for(const label of ['Karies Arrested K0.2.3','Sisa Akar K04.8','Avulsi kecelakaan K08.1','Abses Mandibula K12.2']){const r=auditSourceLabel(label);expect(r.warnings.length).toBeGreaterThan(0);expect(r.clinician_verified_label).toBeNull();expect(r.candidate_icd10).toBeNull();}});
 });

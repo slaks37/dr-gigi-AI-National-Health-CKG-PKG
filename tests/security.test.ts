@@ -57,6 +57,11 @@ describe('FHIR preview', () => {
     expect(draft.entry[0].resource.status).toBe('preliminary');
     expect(draft.entry[0].resource.subject.reference).toBe('Patient/patient-ihs');
   });
+  it('requires explicit timezone and normalizes measured times to UTC', () => {
+    expect(buildDraft({ ...data, measuredAt: '2026-01-01T07:00:00+07:00' }).entry[0].resource.effectiveDateTime).toBe('2026-01-01T00:00:00.000Z');
+    expect(() => buildDraft({ ...data, measuredAt: '2026-01-01T07:00:00' })).toThrow();
+    expect(() => buildDraft({ ...data, measuredAt: '2026-02-30T07:00:00Z' })).toThrow();
+  });
   it('rejects NIK resource IDs, guessed measurements and fabricated diagnosis codes', () => {
     expect(() => buildDraft({ ...data, patientIhsId: '1111111111111111' })).toThrow();
     expect(() => buildDraft({ ...data, measurements: { height_cm: { value: 170, source: 'estimated' } } })).toThrow();

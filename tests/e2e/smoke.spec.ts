@@ -7,12 +7,22 @@ test('settings reports real integration readiness without fake credentials', asy
   await expect(page.getByText('drgigi_live_sec_88491028471928')).toHaveCount(0);
 });
 test('anonymous medical APIs cannot be read or written', async ({ request }) => {
-  for (const url of ['/api/records?role=admin', '/api/activity', '/api/stats', '/api/iot/ingest']) {
+  for (const url of ['/api/records?role=admin', '/api/activity', '/api/stats', '/api/iot/ingest', '/api/models', '/api/clinical-catalog', '/api/encounter-exam?id=synthetic', '/api/clinical-report?id=synthetic']) {
     const response = await request.get(url); expect(response.status()).toBe(401);
   }
-  for (const url of ['/api/records', '/api/satusehat/sync', '/api/gemini/analyze']) {
+  for (const url of ['/api/records', '/api/satusehat/sync', '/api/gemini/analyze', '/api/encounter-exam', '/api/model-lab', '/api/clinical-fhir']) {
     const response = await request.post(url, { data: { role: 'admin', userUid: 'synthetic' } }); expect(response.status()).toBe(401);
   }
+});
+test('SONRI workspace is usable at mobile width and retains research gates', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/sonri');
+  await expect(page.getByRole('heading', { name: 'Bukti klinis, keputusan dokter.' })).toBeVisible();
+  await expect(page.getByRole('link', { name: '03 Ruang dokter', exact: false })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.goto('/model-lab');
+  await expect(page.getByText('Masuk sebagai administrator', { exact: false })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Jalankan inferensi penelitian' })).toHaveCount(0);
 });
 test('clinics show no fabricated results without coordinates', async ({ page }) => {
   await page.goto('/clinics');

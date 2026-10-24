@@ -31,6 +31,8 @@ export const QualitySchema = z.strictObject({
 export type ImageQuality = z.infer<typeof QualitySchema>;
 export const CandidateSchema = z.strictObject({
   rule_id: z.string(), rule_version: z.string(), candidate: z.string(), explanation: z.string(), required_examinations: z.array(z.string()), suggested_icd10: z.array(z.string()), review_required: z.literal(true), status: z.literal('UNCONFIRMED'), references: z.array(z.string().url()),
+  evidence_refs: z.array(z.strictObject({ kind: z.enum(['FINDING','SYMPTOM','CONTEXT']), id: z.string(), value: z.string() })).default([]),
+  missing_evidence: z.array(z.string()).default([]), differential_diagnoses: z.array(z.string()).default([]),
 });
 export type Candidate = z.infer<typeof CandidateSchema>;
 export const TriageSchema = z.strictObject({ level: z.enum(['EMERGENCY','URGENT','PROMPT_REVIEW','ROUTINE_REVIEW','INCONCLUSIVE']), reasons: z.array(z.string()), recommendation: z.string(), references: z.array(z.string().url()), rule_version: z.literal('triage-research-1'), clinical_approval: z.literal('PENDING') });
