@@ -1,0 +1,42 @@
+name: Synthetic Docker staging acceptance
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - Dockerfile
+      - compose.yaml
+      - package*.json
+      - next.config.ts
+      - firestore.rules
+      - app/**
+      - src/**
+      - services/inference/**
+      - ops/staging/**
+      - tests/workflow/**
+      - .github/workflows/container-staging.yml
+permissions:
+  contents: read
+concurrency:
+  group: sonri-container-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  synthetic-container-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - name: Build and exercise isolated Docker Compose stack
+        run: bash ops/staging/run.sh
+      - name: Publish sanitized synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-container-staging-evidence
+          path: ops/staging/evidence/
+          retention-days: 14

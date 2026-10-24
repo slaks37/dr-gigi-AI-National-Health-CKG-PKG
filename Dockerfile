@@ -7,6 +7,10 @@ RUN npm ci --ignore-scripts
 
 FROM dependencies AS build
 ENV NEXT_TELEMETRY_DISABLED=1
+# Only the explicit emulator acceptance image sets this public build-time flag.
+# Production/research Preview builds retain the original Firebase configuration.
+ARG NEXT_PUBLIC_SONRI_EMULATORS=false
+ENV NEXT_PUBLIC_SONRI_EMULATORS=${NEXT_PUBLIC_SONRI_EMULATORS}
 COPY . .
 RUN npm run build
 
