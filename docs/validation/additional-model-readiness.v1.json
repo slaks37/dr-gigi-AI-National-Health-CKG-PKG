@@ -1,0 +1,397 @@
+{
+  "schema_version": "sonri.additional-model-readiness.v1",
+  "refreshed_on": "2026-10-24",
+  "timezone": "Asia/Jakarta",
+  "method": "Read-only current-head GitHub complete trees, releases and pinned source; public Kaggle/Zenodo metadata and publisher dataset pages. One authorized CC BY 4.0 Keras v1 checkpoint downloaded privately, archive inspected and HDF5 attributes parsed as data. No medical images, TensorFlow model loading or inference.",
+  "evidence_scope": "SOURCE_PUBLISHER_AND_STATIC_ARTIFACT_METADATA",
+  "models": [
+    {
+      "model_id": "DENTEXsonri",
+      "source": {
+        "repository": "slaks37/DENTEXsonri",
+        "commit": "a33bc4cd24ae864c679e8ee0a156354b2b6bd858",
+        "commit_date": "2026-06-08T13:51:16Z",
+        "tree_complete": true,
+        "files_count": 979,
+        "github_license": null,
+        "license_paths": [],
+        "checkpoint_paths": [],
+        "release_count": 0,
+        "release_assets": [],
+        "sources": [
+          {
+            "path": "README.md",
+            "git_blob_sha": "812f949007be799b72bba131b13bef1fe6cae751",
+            "url": "https://github.com/slaks37/DENTEXsonri/blob/a33bc4cd24ae864c679e8ee0a156354b2b6bd858/README.md"
+          },
+          {
+            "path": "HierarchialDet-FinalPhase-Docker/process.py",
+            "git_blob_sha": "f4ff1084b52b996e9e50ab03c3447faf4f7cd778",
+            "url": "https://github.com/slaks37/DENTEXsonri/blob/a33bc4cd24ae864c679e8ee0a156354b2b6bd858/HierarchialDet-FinalPhase-Docker/process.py"
+          },
+          {
+            "path": "HierarchialDet-FinalPhase-Docker/Dockerfile",
+            "git_blob_sha": "a91a98cc654b700ef69acda6f93d2e097f4a0ada",
+            "url": "https://github.com/slaks37/DENTEXsonri/blob/a33bc4cd24ae864c679e8ee0a156354b2b6bd858/HierarchialDet-FinalPhase-Docker/Dockerfile"
+          }
+        ]
+      },
+      "availability": "UNAVAILABLE",
+      "checkpoint_installed": false,
+      "checkpoint_sha256": null,
+      "checkpoint_class_binding": "UNVERIFIED",
+      "runtime_execution": "NOT_RUN",
+      "real_dataset_evaluation": "NOT_RUN",
+      "clinical_validation": "NOT_ESTABLISHED",
+      "clinical_use_prohibited": true,
+      "worker_isolation_required": true,
+      "modality": "PANORAMIC_RADIOGRAPH",
+      "source_input_contract": {
+        "transport": "SimpleITK .mha challenge input",
+        "source_slice": "image_array[:,:,k,:]",
+        "validated_dimensions": null,
+        "orientation_verified": false
+      },
+      "source_output_heads": [
+        "quadrant",
+        "enumeration",
+        "abnormality"
+      ],
+      "source_abnormalities": [
+        "caries",
+        "deep caries",
+        "periapical lesions",
+        "impacted teeth"
+      ],
+      "source_class_status": "SOURCE_DECLARED_CHECKPOINT_UNVERIFIED",
+      "checkpoint": {
+        "expected_path": "/opt/app/pretrained_model/model_final.pth",
+        "publisher_checksum": null,
+        "model_license": "UNVERIFIED_MISSING_ARTIFACT"
+      },
+      "code_license": "README_MIT_DECLARATION_WITHOUT_LICENSE_FILE",
+      "dataset": {
+        "source": "https://huggingface.co/datasets/ibrahimhamamci/DENTEX",
+        "license_declaration": "CC-BY-NC-SA-4.0",
+        "patient_grouping_verified": false,
+        "independent_clinician_reference_verified": false
+      },
+      "blockers": [
+        "Missing model_final.pth and pretrained_model Docker COPY source",
+        "No hash, checkpoint head-order binding or independent weight license",
+        "Code/vendored dependency notices need review",
+        "Container dependencies and input dimensions untested",
+        "Patient-independent split/training membership and FDI orientation unverified"
+      ]
+    },
+    {
+      "model_id": "Oral-Disease-detector-sonri",
+      "source": {
+        "repository": "slaks37/Oral-Disease-detector-sonri",
+        "commit": "9f96216e6daf5db71408285899a923b8fe0a59e3",
+        "commit_date": "2026-07-16T13:36:59Z",
+        "tree_complete": true,
+        "files_count": 14,
+        "github_license": null,
+        "license_paths": [],
+        "checkpoint_paths": [],
+        "release_count": 0,
+        "release_assets": [],
+        "sources": [
+          {
+            "path": "app.py",
+            "git_blob_sha": "060ba91ad2e0cbd092e2ddbc27b9c9c16b7cc76f",
+            "url": "https://github.com/slaks37/Oral-Disease-detector-sonri/blob/9f96216e6daf5db71408285899a923b8fe0a59e3/app.py"
+          },
+          {
+            "path": "class_names.json",
+            "git_blob_sha": "7c95707052b47fb1c77f2c88c61217614038a942",
+            "url": "https://github.com/slaks37/Oral-Disease-detector-sonri/blob/9f96216e6daf5db71408285899a923b8fe0a59e3/class_names.json"
+          },
+          {
+            "path": "README.md",
+            "git_blob_sha": "2abac8aebb84c6de6bb0ed96d1d1da2a79cdb068",
+            "url": "https://github.com/slaks37/Oral-Disease-detector-sonri/blob/9f96216e6daf5db71408285899a923b8fe0a59e3/README.md"
+          },
+          {
+            "path": "requirements.txt",
+            "git_blob_sha": "62f68180dbf026e17863c3048985fb5dc8c3858a",
+            "url": "https://github.com/slaks37/Oral-Disease-detector-sonri/blob/9f96216e6daf5db71408285899a923b8fe0a59e3/requirements.txt"
+          }
+        ]
+      },
+      "availability": "UNAVAILABLE",
+      "checkpoint_installed": false,
+      "checkpoint_sha256": "4d4735b624affe6c6fda4b9033eee02bd728b4b188b59e6c5ceb200ebb1073c3",
+      "checkpoint_class_binding": "UNVERIFIED",
+      "runtime_execution": "NOT_RUN",
+      "real_dataset_evaluation": "NOT_RUN",
+      "clinical_validation": "NOT_ESTABLISHED",
+      "clinical_use_prohibited": true,
+      "worker_isolation_required": true,
+      "modality": "INTRAORAL_PHOTO",
+      "source_input_contract": {
+        "shape": [
+          1,
+          224,
+          224,
+          3
+        ],
+        "layout": "NHWC",
+        "dtype": "float32",
+        "color": "RGB",
+        "source_scale": "0-255",
+        "normalization_in_checkpoint": "Static HDF5 graph contains Rescaling(1/255), Normalization and second channel-wise Rescaling; named preprocess_input Lambda still requires explicit runtime review"
+      },
+      "source_class_names": [
+        "Calculus",
+        "Caries",
+        "Gingivitis",
+        "Hypodontia",
+        "Mouth_Ulcer",
+        "Tooth_Discoloration"
+      ],
+      "source_class_status": "SOURCE_DECLARED_CHECKPOINT_UNVERIFIED",
+      "code_license": "UNVERIFIED_NO_LICENSE_FILE",
+      "checkpoint": {
+        "source": "https://www.kaggle.com/models/abdelhameednasr/oral-disease-trained-model/Keras/default/1",
+        "metadata_url": "https://www.kaggle.com/api/v1/models/list?search=oral-disease-trained-model",
+        "framework": "keras",
+        "slug": "default",
+        "version": 1,
+        "version_id": 937620,
+        "uncompressed_bytes": 49339888,
+        "model_license_declaration": "Attribution 4.0 International (CC BY 4.0)",
+        "publisher_checksum": null,
+        "downloaded": true,
+        "checkpoint_bytes": 49339888,
+        "sha256_observed": "4d4735b624affe6c6fda4b9033eee02bd728b4b188b59e6c5ceb200ebb1073c3",
+        "archive_bytes": 44871325,
+        "archive_sha256_observed": "e805c059878ca123dd3f41cc8d9d314032ffec5ee97b423e918078f6ba7a2ae0",
+        "checksum_status": "LOCALLY_OBSERVED_NOT_PUBLISHER_ATTESTED",
+        "inspection_evidence": "additional-model-oral-hdf5-inspection.json",
+        "worker_installed": false
+      },
+      "dataset": {
+        "source": "https://www.kaggle.com/datasets/salmansajid05/oral-diseases",
+        "metadata": {
+          "url": "https://www.kaggle.com/api/v1/datasets/list?search=salmansajid05%2Foral-diseases",
+          "results": [
+            {
+              "ref": "salmansajid05/oral-diseases",
+              "licenseName": "Unknown",
+              "currentVersionNumber": 3,
+              "title": "Oral Diseases "
+            }
+          ]
+        },
+        "rights_status": "UNRESOLVED_UNKNOWN_LICENSE",
+        "patient_grouping_verified": false,
+        "independent_clinician_reference_verified": false
+      },
+      "blockers": [
+        "Legacy HDF5 graph has named Lambda preprocess_input; safe compatible export/runtime has not been established. Keras safe_mode does not protect legacy HDF5 format",
+        "Source code license absent",
+        "Underlying dataset license Unknown and patient grouping/training membership unverified",
+        "No TensorFlow runtime installation, model deserialization or real inference",
+        "Six outputs are statically verified, but source class order is not attested against exact weights",
+        "No healthy/background class or validated abstention"
+      ],
+      "checkpoint_available_locally": true,
+      "artifact_inspection": "DOWNLOADED_STATICALLY_INSPECTED_NOT_OPERATIONAL"
+    },
+    {
+      "model_id": "ToothSeg-sonri",
+      "source": {
+        "repository": "slaks37/ToothSeg-sonri",
+        "commit": "b29d1017fa124f89645fa56f98649e3f3f43bdb0",
+        "commit_date": "2026-05-27T10:05:46Z",
+        "tree_complete": true,
+        "files_count": 133,
+        "github_license": {
+          "key": "apache-2.0",
+          "name": "Apache License 2.0",
+          "spdx_id": "Apache-2.0",
+          "url": "https://api.github.com/licenses/apache-2.0",
+          "node_id": "MDc6TGljZW5zZTI="
+        },
+        "license_paths": [
+          "LICENSE"
+        ],
+        "checkpoint_paths": [],
+        "release_count": 0,
+        "release_assets": [],
+        "sources": [
+          {
+            "path": "README.md",
+            "git_blob_sha": "f254d82bfb5b8942513ed3c92bc2eed21ac65a69",
+            "url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/README.md"
+          },
+          {
+            "path": "LICENSE",
+            "git_blob_sha": "22cec44e10017e4cf7cf234307de08660362eccd",
+            "url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/LICENSE"
+          },
+          {
+            "path": "scripts/inference_toothfairy2.sh",
+            "git_blob_sha": "f30c362fb306fea0de7c5b14791d6c9b125a7eab",
+            "url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/scripts/inference_toothfairy2.sh"
+          },
+          {
+            "path": "scripts/inference_generel.sh",
+            "git_blob_sha": "52c30da32d0b19241a7ff324b28eb5724fcc5a39",
+            "url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/scripts/inference_generel.sh"
+          },
+          {
+            "path": "pyproject.toml",
+            "git_blob_sha": "2928792445e45b53b595365e42d53d647abac242",
+            "url": "https://github.com/slaks37/ToothSeg-sonri/blob/b29d1017fa124f89645fa56f98649e3f3f43bdb0/pyproject.toml"
+          }
+        ]
+      },
+      "availability": "UNAVAILABLE",
+      "checkpoint_installed": false,
+      "checkpoint_sha256": null,
+      "checkpoint_class_binding": "UNVERIFIED",
+      "runtime_execution": "NOT_RUN",
+      "real_dataset_evaluation": "NOT_RUN",
+      "clinical_validation": "NOT_ESTABLISHED",
+      "clinical_use_prohibited": true,
+      "worker_isolation_required": true,
+      "modality": "CBCT_3D_VOLUME",
+      "source_input_contract": {
+        "semantic_spacing_mm": [
+          0.3,
+          0.3,
+          0.3
+        ],
+        "border_core_spacing_mm": [
+          0.2,
+          0.2,
+          0.2
+        ],
+        "dataset_ids": [
+          "Dataset121_ToothFairy2_Teeth",
+          "Dataset123_ToothFairy2fixed_teeth_spacing02_brd3px"
+        ],
+        "original_geometry_restoration_required": true,
+        "checkpoint_plans_and_dataset_json_required": true
+      },
+      "source_class_status": "TOOTH_IDENTITY_DATASET_JSON_BINDING_UNVERIFIED",
+      "code_license": "Apache-2.0",
+      "checkpoint": {
+        "source": "https://zenodo.org/records/14893540",
+        "metadata_url": "https://zenodo.org/api/records/14893540",
+        "version": "v1",
+        "name": "ToothSeg.zip",
+        "bytes": 920019129,
+        "publisher_checksum": "md5:5d8dd061cce9529943567aeba3271143",
+        "model_license_declaration": "CC-BY-4.0",
+        "downloaded": false
+      },
+      "dataset": {
+        "source": "https://ditto.ing.unimore.it/toothfairy2/",
+        "access": "ACCOUNT_REQUIRED",
+        "license_status": "SEPARATE_TERMS_NOT_VERIFIED",
+        "known_overlap": "ToothFairy2 Set A overlaps earlier ToothFairy data per publisher",
+        "patient_grouping_verified": false,
+        "independent_clinician_reference_verified": false
+      },
+      "blockers": [
+        "Bundle not installed: no local SHA256 or metadata binding",
+        "Need both branch plans/checkpoints/dataset.json and safe isolated 3D environment",
+        "No authorized independent holdout CBCT volume",
+        "Fold-specific training membership and prior ToothFairy overlap unresolved",
+        "No real inference or geometry/identity validation"
+      ]
+    },
+    {
+      "model_id": "YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri",
+      "source": {
+        "repository": "slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri",
+        "commit": "0127fd30c5f3ea19cf2fc15c7353b539b4181631",
+        "commit_date": "2026-07-09T18:10:53Z",
+        "tree_complete": true,
+        "files_count": 9,
+        "github_license": null,
+        "license_paths": [],
+        "checkpoint_paths": [],
+        "release_count": 0,
+        "release_assets": [],
+        "sources": [
+          {
+            "path": "README.md",
+            "git_blob_sha": "62389ae93bd6aa56f7a8c85d7e2fa6751fb3403e",
+            "url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri/blob/0127fd30c5f3ea19cf2fc15c7353b539b4181631/README.md"
+          },
+          {
+            "path": "teeth_det_seg.py",
+            "git_blob_sha": "0923b9331a2841761b6fb03bdb41261db6641286",
+            "url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri/blob/0127fd30c5f3ea19cf2fc15c7353b539b4181631/teeth_det_seg.py"
+          },
+          {
+            "path": "TestUnet_batch_seg.py",
+            "git_blob_sha": "f55756f89d8e2eb99996faa527687a84986b4f78",
+            "url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri/blob/0127fd30c5f3ea19cf2fc15c7353b539b4181631/TestUnet_batch_seg.py"
+          },
+          {
+            "path": "requirements.txt",
+            "git_blob_sha": "5740d6754a3b1fdaa4f41e2a59738b4f942f5526",
+            "url": "https://github.com/slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri/blob/0127fd30c5f3ea19cf2fc15c7353b539b4181631/requirements.txt"
+          }
+        ]
+      },
+      "availability": "UNAVAILABLE",
+      "checkpoint_installed": false,
+      "checkpoint_sha256": null,
+      "checkpoint_class_binding": "UNVERIFIED",
+      "runtime_execution": "NOT_RUN",
+      "real_dataset_evaluation": "NOT_RUN",
+      "clinical_validation": "NOT_ESTABLISHED",
+      "clinical_use_prohibited": true,
+      "worker_isolation_required": true,
+      "modality": "PANORAMIC_RADIOGRAPH",
+      "source_input_contract": {
+        "mask_crop_size": [
+          256,
+          256
+        ],
+        "stage_specific_normalization": true,
+        "landmarks": [
+          "LCEJ",
+          "RCEJ",
+          "LRAP",
+          "RRAP"
+        ],
+        "calibration_verified": false
+      },
+      "source_class_status": "EXACT_CHECKPOINT_CLASS_ORDER_UNVERIFIED",
+      "code_license": "UNVERIFIED_NO_LICENSE_FILE",
+      "checkpoint": {
+        "expected_families": [
+          "runs/teeth_det_fold_<n>.pt",
+          "runs/maxilla_det.pt",
+          "runs/keypoint_fold_<n>.pt",
+          "runs/resnet18_Unet_teeth_fold_<n>.pt",
+          "runs/resnet18_Unet_mandible_fold_<n>.pt",
+          "runs/resnet18_Unet_maxilla_fold_<n>.pt"
+        ],
+        "publisher_checksum": null,
+        "model_license": "UNVERIFIED"
+      },
+      "dataset": {
+        "source": null,
+        "license_status": "UNVERIFIED",
+        "patient_grouping_verified": false,
+        "independent_clinician_reference_verified": false
+      },
+      "blockers": [
+        "All six checkpoint families missing",
+        "Code/model/data license grants absent",
+        "Source unrestricted torch.load must not be copied to service",
+        "No reviewed calibration, landmarks, masks or patient-independent holdout",
+        "No real inference or measurement validation"
+      ]
+    }
+  ]
+}

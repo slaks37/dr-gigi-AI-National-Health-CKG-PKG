@@ -14,7 +14,8 @@
     "check": "npm run typecheck && npm run lint && npm test && npm run build",
     "dataset:inventory": "tsx scripts/dataset-inventory.ts",
     "dataset:prepare": "tsx scripts/prepare-training.ts",
-    "test:workflow": "firebase emulators:exec --only auth,firestore --project demo-sonri-workflow --config firebase.workflow-test.json \"playwright test --config playwright.workflow.config.ts\""
+    "test:workflow": "firebase emulators:exec --only auth,firestore --project demo-sonri-workflow --config firebase.workflow-test.json \"playwright test --config playwright.workflow.config.ts\"",
+    "coverage:export": "node --import tsx scripts/export-coverage.ts"
   },
   "dependencies": {
     "@google/genai": "^1.43.0",

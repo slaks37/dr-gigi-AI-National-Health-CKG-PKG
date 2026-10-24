@@ -1,0 +1,13 @@
+{
+  "schema_version": "1",
+  "version": "sonri-coverage-evidence-2026-10-24.1",
+  "clinical_use": "PROHIBITED",
+  "finding_bindings": [],
+  "real_data_evaluations": [],
+  "professional_validations": [],
+  "limitations": [
+    "Source class definitions and synthetic runtime success do not establish a clinically reviewed visual-finding binding.",
+    "Published-source test reproductions do not establish an independent patient-disjoint clinician-reviewed evaluation cohort.",
+    "No per-code clinical validation approval has been supplied. This ledger cannot activate clinical inference."
+  ]
+}

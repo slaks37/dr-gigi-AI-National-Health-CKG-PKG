@@ -22,6 +22,10 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
+      - name: Check generated evidence matrix is current
+        run: |
+          npm run coverage:export
+          git diff --exit-code -- docs/validation/icd10-evidence-coverage.v2.json docs/validation/icd10-evidence-coverage.v2.csv
       - run: npm run test:rules
       - run: npm audit --omit=dev --audit-level=high
       - run: npm run build
@@ -54,6 +58,12 @@ jobs:
         working-directory: services/inference
       - run: python -m pytest -q
         working-directory: services/inference
+      - name: Evaluation leakage, matching and checkpoint inspection regression tests
+        run: python -m pytest -q services/evaluation/tests
+      - name: Redacted credential regression checks
+        run: |
+          python -B scripts/security-scan.test.py
+          python -B scripts/security-scan.py
       - name: Verify default deployment has no enabled checkpoint
         run: |
           python - <<'PYTHON'

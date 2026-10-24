@@ -1,0 +1,109 @@
+{
+  "model_class": "Functional",
+  "serialized_class_counts": {
+    "Functional": 1,
+    "InputLayer": 2,
+    "Sequential": 1,
+    "DTypePolicy": 248,
+    "RandomRotation": 1,
+    "RandomTranslation": 1,
+    "RandomFlip": 1,
+    "RandomZoom": 1,
+    "RandomContrast": 1,
+    "__keras_tensor__": 268,
+    "Lambda": 1,
+    "function": 1,
+    "Rescaling": 2,
+    "Normalization": 1,
+    "ZeroPadding2D": 5,
+    "Conv2D": 65,
+    "VarianceScaling": 81,
+    "Zeros": 182,
+    "BatchNormalization": 50,
+    "Ones": 100,
+    "Activation": 33,
+    "DepthwiseConv2D": 16,
+    "GlobalAveragePooling2D": 17,
+    "Reshape": 16,
+    "Multiply": 16,
+    "Dropout": 10,
+    "Add": 9,
+    "Dense": 1,
+    "GlorotUniform": 1
+  },
+  "outer_layer_count": 244,
+  "input_layers": [
+    {
+      "name": "input_layer_15",
+      "batch_shape": [
+        null,
+        224,
+        224,
+        3
+      ],
+      "dtype": "float32"
+    }
+  ],
+  "dense_layers": [
+    {
+      "name": "pred",
+      "units": 6,
+      "activation": "softmax"
+    }
+  ],
+  "rescaling_layers": [
+    {
+      "name": "rescaling_14",
+      "scale": 0.00392156862745098,
+      "offset": 0.0
+    },
+    {
+      "name": "rescaling_15",
+      "scale": [
+        2.0896918976428642,
+        2.1128856368212916,
+        2.1081851067789197
+      ],
+      "offset": 0.0
+    }
+  ],
+  "lambda_layers": [
+    {
+      "path": "model.config.layers[2]",
+      "layer_name": "lambda_6",
+      "function_kind": "function",
+      "function_name": "preprocess_input",
+      "requires_explicit_runtime_review": true
+    }
+  ],
+  "serialized_function_nodes": [
+    {
+      "path": "model.config.layers[2].config.function",
+      "kind": "function",
+      "inline_bytecode": false
+    }
+  ],
+  "output_layer_reference": [
+    "pred",
+    0,
+    0
+  ],
+  "hdf5_attribute_names": [
+    "backend",
+    "keras_version",
+    "model_config",
+    "training_config"
+  ],
+  "serialized_keras_version": "3.13.2",
+  "serialized_backend": "tensorflow",
+  "schema_version": "sonri.hdf5-contract-inspection.v1",
+  "artifact_name": "best_pretrained_EfficientNetB0_model.h5",
+  "artifact_bytes": 49339888,
+  "sha256_observed": "4d4735b624affe6c6fda4b9033eee02bd728b4b188b59e6c5ceb200ebb1073c3",
+  "publisher_sha256": null,
+  "method": "HDF5 attributes parsed as JSON; no model code deserialization",
+  "clinical_use_prohibited": true,
+  "runtime_execution": "NOT_RUN",
+  "whole_model_deserialization_permitted": false,
+  "class_order_binding": "UNVERIFIED_NO_ARTIFACT_CLASS_METADATA"
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "sonri.checkpoint-metadata.v1",
+  "checkpoint_sha256": "9b4f611126aade449a3086cc8277831e309dfab0b6ff751a96c9af94ed69020c",
+  "inspection_method": "digest-verified ZIP, pickle globals replaced by inert local stand-ins; no tensor deserialization or checkpoint code execution",
+  "top_level_keys": [
+    "model",
+    "args"
+  ],
+  "raw_class_names": null,
+  "training": {
+    "data": null,
+    "model": null,
+    "imgsz": null,
+    "batch": null,
+    "epochs": 100,
+    "dataset_file": "roboflow",
+    "num_classes": null,
+    "class_names": null,
+    "input_size": null,
+    "resolution": null
+  },
+  "class_name_metadata": {}
+}

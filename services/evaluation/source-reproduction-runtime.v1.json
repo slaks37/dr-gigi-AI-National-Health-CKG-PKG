@@ -1,0 +1,51 @@
+{
+  "python": "3.12.14",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "ultralytics": "8.4.177",
+  "torch": "2.8.0",
+  "device": "cpu",
+  "imgsz": 1280,
+  "nms_iou": 0.7,
+  "prediction_min_confidence": 0.001,
+  "max_det_per_image": 300,
+  "latency_seconds_per_image": [
+    1.979779083005269,
+    0.5644777919951594,
+    0.5601657920051366,
+    0.546664374996908,
+    0.5490813750075176,
+    0.4726817909977399,
+    0.4605886250064941,
+    0.5454479999898467,
+    0.5292588330048602,
+    0.5308051249885466,
+    0.5362392500101123,
+    0.5783415420009987,
+    0.5415430830034893,
+    0.3981632909999462,
+    0.4804964170034509,
+    0.40630308400432114,
+    0.624579666997306
+  ],
+  "total_inference_seconds": 10.304617125017103,
+  "clinical_use": "PROHIBITED",
+  "audit": {
+    "patient_split_audited": false,
+    "unresolved": [
+      "PATIENT_IDENTITY_VERIFIED_UNVERIFIED",
+      "TRAIN_TEST_PATIENT_DISJOINT_UNVERIFIED",
+      "EXACT_DUPLICATES_CHECKED_UNVERIFIED",
+      "NEAR_DUPLICATES_ADJUDICATED_UNVERIFIED",
+      "TRAINING_POPULATION_COMPLETE_UNVERIFIED",
+      "PATIENT_GROUP_MISSING",
+      "FROZEN_SPLIT_POPULATION_MISSING"
+    ],
+    "status": "SOURCE_REPRODUCTION_ONLY"
+  },
+  "schema_version": "sonri.real-image-run-runtime.v1",
+  "verified_on": "2026-10-24",
+  "checkpoint_sha256": "7d5f7dcf616f1febbbb28f2552f9d8a2c3e31e90b3c5b03bf26114502dea621d",
+  "images": 17,
+  "patient_data_source": "Public appropriately licensed anonymized research images; images not committed.",
+  "run_count": 1
+}

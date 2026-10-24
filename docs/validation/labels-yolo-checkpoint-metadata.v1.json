@@ -1,0 +1,39 @@
+{
+  "schema_version": "sonri.checkpoint-metadata.v1",
+  "checkpoint_sha256": "7d5f7dcf616f1febbbb28f2552f9d8a2c3e31e90b3c5b03bf26114502dea621d",
+  "inspection_method": "digest-verified ZIP, pickle globals replaced by inert local stand-ins; no tensor deserialization or checkpoint code execution",
+  "top_level_keys": [
+    "epoch",
+    "best_fitness",
+    "model",
+    "ema",
+    "updates",
+    "optimizer",
+    "scaler",
+    "train_args",
+    "train_metrics",
+    "train_results",
+    "date",
+    "version",
+    "git",
+    "license",
+    "docs"
+  ],
+  "raw_class_names": {
+    "0": "d",
+    "1": "D"
+  },
+  "training": {
+    "data": "yolo_split/data.yaml",
+    "model": "yolo11m.pt",
+    "imgsz": 1280,
+    "batch": 32,
+    "epochs": 120,
+    "dataset_file": null,
+    "num_classes": null,
+    "class_names": null,
+    "input_size": null,
+    "resolution": null
+  },
+  "class_name_metadata": {}
+}

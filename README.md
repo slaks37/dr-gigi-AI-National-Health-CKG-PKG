@@ -14,6 +14,7 @@ The application separates observed findings, suspected/differential diagnoses an
 | `/clinical-review` | Administrator assignment; qualified assigned dentist examination, FDI odontogram, evidence and diagnosis confirmation |
 | `/examinations` | Authorized examination history and downloadable HTML report, printable to PDF |
 | `/model-lab` | Administrator-only model inventory, synthetic-image research inference and raw annotations |
+| `/evidence-coverage` | Per-code evidence status for WHO ICD-10 K00–K14, separate from AI capability |
 
 A trusted `clinicalReviewer` claim and case assignment are required for dentist confirmation. Browser profile changes cannot grant clinical privileges. Research model outputs cannot confirm ICD-10 codes; no detection does not establish health. Source patient images are not retained by this examination flow or saved in browser localStorage.
 
@@ -50,7 +51,9 @@ npm run test:workflow
 
 ## Deployment status and gates
 
-[Docker/Compose and staging instructions](docs/operations/STAGING_PLAYBOOK.md) keep Next.js separate from ML workers, mount models read-only and leave inference private. Docker is absent on the current execution host, so a container build has not been verified here. Full hosted Firebase/database/inference staging is not configured; independent clinical dataset benchmarks have not run.
+[Docker/Compose and staging instructions](docs/operations/STAGING_PLAYBOOK.md) keep Next.js separate from ML workers, mount models read-only and leave inference private. The [Phase 2 acceptance harness and hosted requirements](docs/operations/PHASE2_STAGING_REQUIREMENTS.md) exercise synthetic Auth/Firestore, browser workflows, private inference boundaries, authorization, observability and recovery on a Docker-capable CI runner. Only completed runs and artifacts establish a pass. Full hosted Firebase/database/inference staging is not configured; independent clinical dataset benchmarks have not run.
+
+Phase 2 includes an actual pretrained YOLO reproduction on 17 public CC BY 4.0 dental images, with per-class-index TP/FP/FN, localization geometry, AP and uncertainty. [The evaluation evidence](docs/validation/dataset-evaluation.md) documents seven raw-index false negatives and a cross-format annotation class conflict. Both YOLO and RF-DETR disease mappings remain UNVERIFIED; source reproduction is not independent clinical validation. [All 108 terminal codes](docs/validation/icd10-evidence-coverage.v2.csv) have explicit terminology/workflow/finding/evaluation/approval status. No code currently has a verified AI finding binding, independent actual-data evaluation or professional validation. [Additional-model readiness](docs/validation/additional-model-readiness.md) and the [open credential incident](docs/validation/security-incident.md) record remaining artifact, licensing and owner-action blockers.
 
 The existing Vercel project `sonri-browser-ai-research` is a research Preview target. Its `SONRI_RESEARCH_PREVIEW=1` configuration blocks protected account/clinical-storage API workflows. A rendered Preview is not operational clinical staging. Keep that flag enabled until authorized isolated identity, storage and inference configuration and complete hosted acceptance are established. SATUSEHAT submission, remote generative clinical diagnosis and production patient use remain disabled.
 

@@ -7,12 +7,21 @@ test('settings reports real integration readiness without fake credentials', asy
   await expect(page.getByText('drgigi_live_sec_88491028471928')).toHaveCount(0);
 });
 test('anonymous medical APIs cannot be read or written', async ({ request }) => {
-  for (const url of ['/api/records?role=admin', '/api/activity', '/api/stats', '/api/iot/ingest', '/api/models', '/api/clinical-catalog', '/api/encounter-exam?id=synthetic', '/api/clinical-report?id=synthetic']) {
+  for (const url of ['/api/records?role=admin', '/api/activity', '/api/stats', '/api/iot/ingest', '/api/models', '/api/clinical-catalog', '/api/clinical-coverage', '/api/encounter-exam?id=synthetic', '/api/clinical-report?id=synthetic']) {
     const response = await request.get(url); expect(response.status()).toBe(401);
   }
   for (const url of ['/api/records', '/api/satusehat/sync', '/api/gemini/analyze', '/api/encounter-exam', '/api/model-lab', '/api/clinical-fhir']) {
     const response = await request.post(url, { data: { role: 'admin', userUid: 'synthetic' } }); expect(response.status()).toBe(401);
   }
+});
+test('per-code evidence matrix distinguishes terminology from independent model validation on mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/evidence-coverage');
+  await expect(page.getByRole('heading', { name: 'Cakupan bukti K00–K14' })).toBeVisible();
+  await expect(page.locator('tbody tr')).toHaveCount(108);
+  await expect(page.locator('tbody tr').filter({ hasText: 'K02.9' })).toContainText('Belum terbukti independen');
+  await expect(page.getByText('Penggunaan klinis model: PROHIBITED.', { exact: false })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
 test('SONRI workspace is usable at mobile width and retains research gates', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });

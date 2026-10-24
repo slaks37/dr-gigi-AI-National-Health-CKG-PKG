@@ -1,0 +1,572 @@
+{
+  "schema_version": "sonri.cross-format-annotation-audit.v1",
+  "clinical_use": "PROHIBITED",
+  "source_commit": "f02596a0227b9eaf767b955cd67196236111a3d5",
+  "dataset_id": "zenodo.14827784.v1",
+  "comparison_uses_predictions": false,
+  "comparison": "Exact original-test YOLO bytes vs pinned Daath test YOLO bytes; normalized geometry matching IoU >=0.98 against official original-test COCO and LabelMe names.",
+  "images": [
+    {
+      "image_sha256": "c249b994258ab03bf6d77863d3dcefcc15d4b25a84647d920894c1435a8a6a30",
+      "official_yolo_sha256": "64bcceeaa46e9c8828a0e4d431a088fbee0a64ed53db3e4d106f472dcf6f995f",
+      "pinned_daath_yolo_sha256": "64bcceeaa46e9c8828a0e4d431a088fbee0a64ed53db3e4d106f472dcf6f995f",
+      "official_labelme_sha256": "d433e3dc5ee94967d4f434215fb2e2b9016841beb679efe133a8266c16056ac8",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9936763213136676,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9925873584678981,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "394f46ee0d0bcb0237e2f8b0c4919e4c1d6500243b5a936568e4ffac117a0a03",
+      "official_yolo_sha256": "f6cc3b9006bd2b29166adfb4b16ca956d0f5d4d49129f7d5b34d33fda6eefea7",
+      "pinned_daath_yolo_sha256": "f6cc3b9006bd2b29166adfb4b16ca956d0f5d4d49129f7d5b34d33fda6eefea7",
+      "official_labelme_sha256": "bfc941c78469eb971f6bdf87d55c199e7e48b3c5b303af9e31ba5efdd343cae8",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9905382342796948,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9917943033457833,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9898240236492749,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9868045899879518,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "a0c5211cb268c686bc77fbd121fdd9c5835d564ef2adafa90f37c07bb2b658a3",
+      "official_yolo_sha256": "05d3bbc780856cdc57741c8fe023f32384f49e461b1dd58d2d5dadd3c4c7cb7a",
+      "pinned_daath_yolo_sha256": "05d3bbc780856cdc57741c8fe023f32384f49e461b1dd58d2d5dadd3c4c7cb7a",
+      "official_labelme_sha256": "7ec5cc00cc6d448065f1a91a54edcfe1916a810a129c45af59e7dd7247ce9302",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9958737123286385,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9901729668678219,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9992218231636574,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9905705257093806,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "7e3cee6ac0255275dad30a56e18f91f3c0001790adae8ae580fb3d2716b2737a",
+      "official_yolo_sha256": "75fe2fc4a87ae9eec25acfe3814a16ee1f6aabb581444d2487493e7feb795b4d",
+      "pinned_daath_yolo_sha256": "75fe2fc4a87ae9eec25acfe3814a16ee1f6aabb581444d2487493e7feb795b4d",
+      "official_labelme_sha256": "eb99f9d372547fdd2354cc1a81b77558185df0f7781b84c6927686ba6d0fd482",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9949691916419964,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "f40ee9e0b7fad49c9ca18a02f4e1e3e6622b9d9f474e425e33f960509b50bb16",
+      "official_yolo_sha256": "81c386f2b7b8d9d79ad00e16256a73c2f92d828d9004c2b8af9b1ee68376f340",
+      "pinned_daath_yolo_sha256": "81c386f2b7b8d9d79ad00e16256a73c2f92d828d9004c2b8af9b1ee68376f340",
+      "official_labelme_sha256": "c302f2f0bfab00953f0bb933764301ab2d2eb50339b769f9bdf70eb756b62e9d",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 1,
+          "coco_category_name": "d",
+          "box_iou": 0.9928194564934105,
+          "labelme_class_name": "d"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9938199329481276,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9946756557782832,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "c84462ccdeaa953b333d95f051c9afbf43209624ec028ea12a27a66dceb6c522",
+      "official_yolo_sha256": "cd34bddcf6f37623e00c9bfe134bfc91909eda6e705882ac3c57d7eb97f24d40",
+      "pinned_daath_yolo_sha256": "cd34bddcf6f37623e00c9bfe134bfc91909eda6e705882ac3c57d7eb97f24d40",
+      "official_labelme_sha256": "2416b01f933d3725b38185b5d3a14d605a32c62883ad83cef8f8654d362d21d8",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9928071197880032,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9856511795833142,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.99409119247031,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "923aa061d6bbda693562888df5156c7ef5656f24462c2df1c8527ff2e679cb6d",
+      "official_yolo_sha256": "139d79f129a08db846a44b1aa5d6243aa4f24d6e5e149c4cee798dc64c97d0af",
+      "pinned_daath_yolo_sha256": "139d79f129a08db846a44b1aa5d6243aa4f24d6e5e149c4cee798dc64c97d0af",
+      "official_labelme_sha256": "ab5614c08395d7a293ff23bca906ff36322c42b789c3942c6c287c9a37b8ba51",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9949498095697624,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 1,
+          "coco_category_name": "d",
+          "box_iou": 0.9955675588430433,
+          "labelme_class_name": "d"
+        },
+        {
+          "raw_yolo_class_id": 1,
+          "coco_category_name": "d",
+          "box_iou": 0.9931212960609169,
+          "labelme_class_name": "d"
+        },
+        {
+          "raw_yolo_class_id": 1,
+          "coco_category_name": "d",
+          "box_iou": 0.9961318460037393,
+          "labelme_class_name": "d"
+        },
+        {
+          "raw_yolo_class_id": 1,
+          "coco_category_name": "d",
+          "box_iou": 0.9931514924803105,
+          "labelme_class_name": "d"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9914484385370422,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "9ead10fdbf4304aaa28880cd3b0045ed6aef8251250a83a6c20d85e0a27ac952",
+      "official_yolo_sha256": "0189e7fb14f9a6554a2f87f5db43cf60db15364c382807e92444a510e817e108",
+      "pinned_daath_yolo_sha256": "0189e7fb14f9a6554a2f87f5db43cf60db15364c382807e92444a510e817e108",
+      "official_labelme_sha256": "7fe188cddcf4a631477ab7ef9f5790a32e74e254851eb5b1bbe9443eee89c7eb",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.992122405650181,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9807598764067781,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9839434041088518,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9863919571460439,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "2bc345f50d3802e796602a3899e3297bd9c9438383e4bfe3053149f99b78525d",
+      "official_yolo_sha256": "d135dbcdea2d988c8fe249f3323264cec88b45dc2f02e33559876fa4c9bd2797",
+      "pinned_daath_yolo_sha256": "d135dbcdea2d988c8fe249f3323264cec88b45dc2f02e33559876fa4c9bd2797",
+      "official_labelme_sha256": "f3729cffad9fdf8e7b3eaa08ac80dc0205daf3dbdafc8d86f5a4313394d264dc",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9887513522495782,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9874816218565807,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9917646524611714,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9846414504611605,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": null,
+          "box_iou": 0.9781644971170655,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "5d9aea9bd1a3dfd9e96945f2e5e0a73983bdf405775694e8ff237670a3be011d",
+      "official_yolo_sha256": "19d1125c14f31f920b10096240f99926776eed158511af29e2c06019eb358443",
+      "pinned_daath_yolo_sha256": "19d1125c14f31f920b10096240f99926776eed158511af29e2c06019eb358443",
+      "official_labelme_sha256": "9678ca660e9f8cf0bafcf25ede6badf1dc02491bcb068ebd432dc961d071b128",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": null,
+          "box_iou": 0.9751783568863792,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9856637524277722,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9849124537911474,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9939012168473251,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9804479802911646,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": null,
+          "box_iou": 0.9782163507155228,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "fb0aab5e8b7fb792a448c2c3a56c5232f7fb44c60834474427402ed45a8ff4af",
+      "official_yolo_sha256": "f7485f0cc898fde34e0bbe281e3f5109831b833fb78ec127c1d9baf0ff1011ac",
+      "pinned_daath_yolo_sha256": "f7485f0cc898fde34e0bbe281e3f5109831b833fb78ec127c1d9baf0ff1011ac",
+      "official_labelme_sha256": "f5c893b51a2db895272eea272b8d3e59339a2fcd010ed0e993af6dddb79c2072",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9849526152561896,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9885828022993006,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9827968454137692,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9880365605430069,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9882900564261168,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "90e76fb69fae7ef915ef024bc755492a5eb97b5267d06d5d572cf4d5a30b1e40",
+      "official_yolo_sha256": "51025e8d70483c5cf98de426b4c07e387988bfab8bfab2c3e1adea25cb324097",
+      "pinned_daath_yolo_sha256": "51025e8d70483c5cf98de426b4c07e387988bfab8bfab2c3e1adea25cb324097",
+      "official_labelme_sha256": "e96052b283fa0fff4e8d7862e64225eceb3307be635312253f51d5ca1b6f77d5",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9878404871656541,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9859277531355555,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9851361294039228,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9829070810841848,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9864837947277231,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "078799d95366040344322af2ab5b838f18fe999637db68ae9b3e252b4de58634",
+      "official_yolo_sha256": "1060f62b06de1a743c815f1880e38b8f50ce38d83a657bf6c4d14911f88b3851",
+      "pinned_daath_yolo_sha256": "1060f62b06de1a743c815f1880e38b8f50ce38d83a657bf6c4d14911f88b3851",
+      "official_labelme_sha256": "47527184467a8a90f7cd8df88462e260e1c3399c4247d07df7af66a9d7ad94da",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 1,
+          "coco_category_name": "d",
+          "box_iou": 0.9851516990362488,
+          "labelme_class_name": "d"
+        }
+      ]
+    },
+    {
+      "image_sha256": "0b34866aeb8dd56570a68d0bd7f4a36cd11aa43f38b0226547f77f5d751e1184",
+      "official_yolo_sha256": "f3246e99a9ef2c6cb92bd2450fb56017a28827df37c64615997624d440673cef",
+      "pinned_daath_yolo_sha256": "f3246e99a9ef2c6cb92bd2450fb56017a28827df37c64615997624d440673cef",
+      "official_labelme_sha256": "1c1dcab53564fb1689325742a0287d8a01531dfe4865d4ee86f8c0bae4409c4f",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 1,
+          "coco_category_name": "d",
+          "box_iou": 0.9826271771321594,
+          "labelme_class_name": "d"
+        }
+      ]
+    },
+    {
+      "image_sha256": "f63f64fe00fcdfd506d8f920d3de57cac3c9b33f8c42a73af6d57389c32db3c7",
+      "official_yolo_sha256": "d92ba81fa7ec5e2253b695714121b7fe56d3fca2f3ee5c022cd2dce0856c937c",
+      "pinned_daath_yolo_sha256": "d92ba81fa7ec5e2253b695714121b7fe56d3fca2f3ee5c022cd2dce0856c937c",
+      "official_labelme_sha256": "7188ff13f840cd33c4e5af8e86fbe01c4de9b4c18ae346bc44be1c85924e3d20",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9943055378243586,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "fe90999016bffc5227f15c566155cee1526698ed344f5363eb9837d54fc4837d",
+      "official_yolo_sha256": "749d4e790c6df43177731887803b006ffc3ba5a0dfac776470878d2974d7b7dc",
+      "pinned_daath_yolo_sha256": "749d4e790c6df43177731887803b006ffc3ba5a0dfac776470878d2974d7b7dc",
+      "official_labelme_sha256": "e5c5d8b4f9626f0c89026cfed82f0f5f9b7d109f471600e6a9fe1cdc6bad3e65",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9899110174179929,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9883332379726476,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9941212232096168,
+          "labelme_class_name": "D"
+        }
+      ]
+    },
+    {
+      "image_sha256": "a4e55d28d1b1a1c2d7090917a07915338de1b9087ea12303db4721775c38e77c",
+      "official_yolo_sha256": "e74df810e2b369d92084955909f1309fdbeab0bb78477a8d62ce1b220b972d5a",
+      "pinned_daath_yolo_sha256": "e74df810e2b369d92084955909f1309fdbeab0bb78477a8d62ce1b220b972d5a",
+      "official_labelme_sha256": "fb55b37f102f3fdf14a88e524004e68423c6f5710be318701bc5b2f0b6f35dd6",
+      "all_yolo_bytes_identical": true,
+      "matched_boxes": [
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9847488710581156,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": null,
+          "box_iou": 0.9782092596369569,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9830495470621987,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9877707546295872,
+          "labelme_class_name": "D"
+        },
+        {
+          "raw_yolo_class_id": 0,
+          "coco_category_name": "D",
+          "box_iou": 0.9865518922000553,
+          "labelme_class_name": "D"
+        }
+      ]
+    }
+  ],
+  "cross_format_pairs": {
+    "raw_0->COCO_D": 48,
+    "raw_1->COCO_d": 7
+  },
+  "labelme_pairs": {
+    "raw_0->LabelMe_D": 52,
+    "raw_1->LabelMe_d": 7
+  },
+  "geometry_discrepancies": [
+    {
+      "image_sha256": "2bc345f50d3802e796602a3899e3297bd9c9438383e4bfe3053149f99b78525d",
+      "kind": "COCO_YOLO_GEOMETRY_DIFFERS",
+      "raw_class_id": 0,
+      "best_reference_iou": 0.9781644971170655
+    },
+    {
+      "image_sha256": "2bc345f50d3802e796602a3899e3297bd9c9438383e4bfe3053149f99b78525d",
+      "kind": "UNMATCHED_COCO_REFERENCE_BOXES",
+      "count": 1
+    },
+    {
+      "image_sha256": "5d9aea9bd1a3dfd9e96945f2e5e0a73983bdf405775694e8ff237670a3be011d",
+      "kind": "COCO_YOLO_GEOMETRY_DIFFERS",
+      "raw_class_id": 0,
+      "best_reference_iou": 0.9751783568863792
+    },
+    {
+      "image_sha256": "5d9aea9bd1a3dfd9e96945f2e5e0a73983bdf405775694e8ff237670a3be011d",
+      "kind": "COCO_YOLO_GEOMETRY_DIFFERS",
+      "raw_class_id": 0,
+      "best_reference_iou": 0.9782163507155228
+    },
+    {
+      "image_sha256": "5d9aea9bd1a3dfd9e96945f2e5e0a73983bdf405775694e8ff237670a3be011d",
+      "kind": "UNMATCHED_COCO_REFERENCE_BOXES",
+      "count": 2
+    },
+    {
+      "image_sha256": "a4e55d28d1b1a1c2d7090917a07915338de1b9087ea12303db4721775c38e77c",
+      "kind": "COCO_YOLO_GEOMETRY_DIFFERS",
+      "raw_class_id": 0,
+      "best_reference_iou": 0.9782092596369569
+    },
+    {
+      "image_sha256": "a4e55d28d1b1a1c2d7090917a07915338de1b9087ea12303db4721775c38e77c",
+      "kind": "UNMATCHED_COCO_REFERENCE_BOXES",
+      "count": 1
+    }
+  ],
+  "status": "CLASS_CONTRACT_CONFLICT",
+  "checkpoint_declared_names": {
+    "0": "d",
+    "1": "D"
+  },
+  "conclusion": "Raw training-index reproduction is permissible; disease meaning cannot be verified from the conflicting declared class-name contract. Never repair semantics using detector behavior."
+}

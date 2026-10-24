@@ -39,6 +39,7 @@ import * as consultation from '../app/api/gemini/consultation/route';
 import * as iot from '../app/api/iot/ingest/route';
 import * as satusehat from '../app/api/satusehat/sync/route';
 import * as preferences from '../app/api/preferences/route';
+import * as coverage from '../app/api/clinical-coverage/route';
 function req(path: string, token?: string, method = 'GET', body?: unknown) {
   return new NextRequest(`http://localhost/api/${path}`, { method, headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}), 'Content-Type': 'application/json' }, ...(body !== undefined ? { body: JSON.stringify(body) } : {}) });
 }
@@ -56,7 +57,7 @@ describe('API authentication', () => {
     ['records', records.GET, 'GET'], ['records', records.POST, 'POST'], ['records', records.PATCH, 'PATCH'], ['records', records.DELETE, 'DELETE'],
     ['appointments', appointments.GET, 'GET'], ['appointments', appointments.POST, 'POST'], ['activity', activity.GET, 'GET'], ['activity', activity.POST, 'POST'],
     ['stats', stats.GET, 'GET'], ['auth/sync', sync.POST, 'POST'], ['gemini/analyze', ai.POST, 'POST'], ['gemini/consultation', consultation.POST, 'POST'],
-    ['iot/ingest', iot.POST, 'POST'], ['iot/ingest', iot.GET, 'GET'], ['satusehat/sync', satusehat.POST, 'POST'], ['preferences', preferences.POST, 'POST'],
+    ['iot/ingest', iot.POST, 'POST'], ['iot/ingest', iot.GET, 'GET'], ['satusehat/sync', satusehat.POST, 'POST'], ['preferences', preferences.POST, 'POST'], ['clinical-coverage', coverage.GET, 'GET'],
   ] as const)('denies anonymous %s %s', async (path, handler, method) => {
     const response = await handler(req(path, undefined, method, method === 'POST' || method === 'PATCH' ? {} : undefined));
     expect(response.status).toBe(401); expect(response.headers.get('cache-control')).toContain('no-store');
@@ -120,6 +121,15 @@ describe('ownership and RBAC', () => {
   });
 });
 describe('truthful integration status', () => {
+  it('returns code-specific evidence status and rejects absent terminology after authentication', async () => {
+    const response = await coverage.GET(req('clinical-coverage?code=K02.9', 'patient-a'));
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.rows).toHaveLength(1); expect(data.rows[0].code).toBe('K02.9');
+    expect(data.rows[0].ai_evaluated_with_actual_data.evaluated).toBe(false);
+    expect(data.clinical_use).toBe('PROHIBITED');
+    expect((await coverage.GET(req('clinical-coverage?code=K02.51', 'patient-a'))).status).toBe(404);
+  });
   it('SATUSEHAT unconfigured never returns remote sync success', async () => {
     const response = await satusehat.POST(req('satusehat/sync', 'admin', 'POST', {}));
     expect(response.status).toBe(503);
