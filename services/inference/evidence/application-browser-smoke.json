@@ -1,10 +1,10 @@
 {
-  "executed_at": "2026-10-24T11:10:04.338Z",
+  "executed_at": "2026-10-24T11:54:34.152Z",
   "test": "REAL_AUTH_BROWSER_NEXT_FASTAPI_ONNX_FIRESTORE_SYNTHETIC",
   "input": "DETERMINISTIC_SYNTHETIC_NO_PATIENT_DATA",
   "persistence": "CONFIRMED",
   "result": {
-    "request_id": "1d1852b2e66f420a8419ec6c24891a03",
+    "request_id": "db0a34bdd9c7478ea811b2a0a4695920",
     "status": "completed",
     "model_id": "comparative-rfdetr",
     "model_version": "dataset-v1-onnx-fp32-a73a2bb52bca",
@@ -171,7 +171,7 @@
         "Thresholds are technical heuristics, not clinically validated"
       ]
     },
-    "latency_ms": 1987.45,
+    "latency_ms": 3268.73,
     "warnings": [
       "RESEARCH_ONLY",
       "DENTIST_REVIEW_REQUIRED",

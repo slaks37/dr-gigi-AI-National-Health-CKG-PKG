@@ -4,7 +4,10 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: 'standalone',
   distDir: process.env.SONRI_TEST_BUILD === '1' ? '.next-workflow' : '.next',
-  serverExternalPackages: ['heic-decode'],
+  serverExternalPackages: ['heic-decode', '@google-cloud/firestore'],
+  // Vercel's instrumented CommonJS loader cannot require jose's ESM entry.
+  // Bundle this dependency chain so authentication can initialize on Node 24.
+  transpilePackages: ['firebase-admin', 'jwks-rsa', 'jose'],
   outputFileTracingIncludes: { '/api/screenings': ['./node_modules/heic-decode/**/*', './node_modules/libheif-js/**/*'] },
   experimental: {
     cpus: 1,

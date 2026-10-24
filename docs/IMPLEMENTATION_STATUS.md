@@ -33,6 +33,8 @@ This delivery is a functioning integrated research application with real local p
 | Production dependency audit | **0 reported vulnerabilities** after compatible patch updates |
 | Model repeatability smoke | Real RF-DETR and YOLO runs completed; outputs repeat identically on synthetic input |
 
+Hosted acceptance initially exposed Vercel's instrumented CommonJS loader rejecting the Firebase Admin → jwks-rsa → jose ESM chain (`ERR_REQUIRE_ESM`) before API handlers initialized. The dependency chain is explicitly bundled through Next.js `transpilePackages`; JWT libraries are not downgraded. Local build/auth/workflow checks and the replacement Preview must pass before treating that runtime defect as resolved.
+
 Tests do not establish model sensitivity, specificity, precision, recall, F1, mAP, Dice, calibration or false-negative performance. No independent clinical benchmark, physical mobile-device model benchmark or model training was performed. The normal CI workflow skips the additional pretrained-browser case unless a reviewed private checkpoint/worker is explicitly configured; it never downloads unlicensed weights to make CI pass.
 
 Reproduce the model browser case by starting a reviewed local research worker, setting private `SONRI_INFERENCE_URL`/`SONRI_INFERENCE_TOKEN`, and running `SONRI_MODEL_E2E=1 SONRI_MODEL_FIXTURE=/secure/synthetic.png npm run test:workflow`. These are synthetic local test accounts; never point test emulators or fixtures at real patient systems. Main check commands and service setup are in the root and inference READMEs.
