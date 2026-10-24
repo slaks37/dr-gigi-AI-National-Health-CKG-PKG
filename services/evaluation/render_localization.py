@@ -29,7 +29,7 @@ def main():
             board = Image.new('RGB', (width * 2, height + 70), 'white')
             board.paste(original, (0, 70)); board.paste(original, (width, 70))
         draw = ImageDraw.Draw(board)
-        draw.text((8, 8), 'SOURCE COCO CATEGORY NAMES (LEFT) | CHECKPOINT RAW LABELS (RIGHT)', fill='black')
+        draw.text((8, 8), 'REFERENCE LABELS (LEFT) | RAW MODEL LABELS (RIGHT)', fill='black')
         draw.text((8, 28), 'RESEARCH ONLY: class-order contradiction unresolved; source patient independence unverified.', fill='black')
         draw.text((8, 48), 'Image SHA256 ' + item['sha256'], fill='black')
         for rows, offset, color, prediction in [(item['annotations'], 0, 'lime', False), (predictions[item['sha256']], width, 'red', True)]:

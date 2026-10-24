@@ -29,6 +29,14 @@ Only a completed run with the tested Git SHA and artifacts establishes a pass. A
 
 The temporary emulator export remains in a private Docker volume and is removed on exit. Raw emulator logs can contain synthetic sign-in tokens and are not uploaded. The log checker uploads aggregate observations, not raw worker logs. Evidence contains no patient images or identifiers and is not a clinical benchmark. The restore test establishes only the synthetic emulator mechanism; it does not establish managed Firestore backup/export restoration. External alert delivery, forced native model hangs, real load testing, host outage and managed-service failover remain separate acceptance requirements.
 
+## Verified execution — 25 October 2026, Asia/Jakarta
+
+The final harness run [40113906853](https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/actions/runs/40113906853) **passed**. PR branch head was `5567dd03f2a5eb8bb998f5a5778f0382ca9f247b`; GitHub checked out merge commit `0fc9bc0f4cc608830db29f3db1995d15ffafca46`. The corresponding [application/inference CI run](https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/actions/runs/40113906921) also passed. The earlier container failure was fixed by using a rules file inside the Firebase config directory and a writable temporary CLI home. A subsequent artifact-path defect was fixed and the browser report is now required before success.
+
+[Committed normalized evidence](../validation/staging-acceptance.v1.json) preserves the actual browser pass statistics, all 20 API checks (19 negative, one authenticated private-inventory success), five worker boundary checks, private-network result, built image identities, logging allowlist checks and restart/restore results. All ten downloaded artifact members have recorded SHA-256 digests. Originals are available in the workflow's `synthetic-container-staging-evidence` artifact for 14 days and in the private workspace output directory.
+
+The browser lifecycle passed once with no failures, skips or retries. Restart and export/recreate/import preserved all six collection counts and hashes: one record, five audit events, one clinical review, one examination revision, one consent record, and **zero patient-profile documents**. This is recovery evidence for that exact synthetic fixture; it does not establish populated patient-profile restoration or managed Firestore recovery. Every model stayed disabled. Hosted Firebase staging and loaded-model hosting remain **NOT_TESTED**.
+
 ## Exact owner-authorized hosted Firebase staging requirements
 
 Provisioning is pending until the owner provides the following nonsecret identities/approvals and secure access. Do not reuse the production/research Firebase project or copy patient data into staging.
