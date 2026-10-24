@@ -11,8 +11,8 @@ The [original dataset descriptor](https://doi.org/10.1038/s41597-025-05647-9) de
 That source definition cannot safely be attached to the checkpoint's declared names. A complete 17-image cross-format audit compared public source annotation bytes, without using model predictions:
 
 - Every official test YOLO annotation file is byte-identical to its pinned Daath test counterpart.
-- All 59 YOLO reference boxes match official LabelMe geometry at IoU ≥ 0.98. Raw index 0 accompanies LabelMe `D`52 times; index 1 accompanies LabelMe `d`7 times.
-- Original test COCO categories are `1=D,2=d`, whereas train/valid categories are `1=d,2=D`. Category IDs are local to each annotation file.55 COCO boxes match YOLO geometry at IoU ≥ 0.98; four have small conversion differences, bestIoU≈0.975–0.978, recorded explicitly.
+- All 59 YOLO reference boxes match official LabelMe geometry at IoU ≥ 0.98. Raw index 0 accompanies LabelMe `D` 52 times; index 1 accompanies LabelMe `d` 7 times.
+- Original test COCO categories are `1=D,2=d`, whereas train/valid categories are `1=d,2=D`. Category IDs are local to each annotation file. 55 COCO boxes match YOLO geometry at IoU ≥ 0.98; four have small conversion differences, best IoU≈0.975–0.978, recorded explicitly.
 
 See [the hash-identified comparison evidence](dataset-cross-format-audit.v1.json). The contradiction is between source annotation representations and declared checkpoint/config names. Detector behavior is not the evidence for this conclusion. The sample supports investigating a reversed label contract; it does not authorize a global class-name repair across an incompletely documented training cohort. Preserve checkpoint names as raw strings and preserve `UNVERIFIED` until the original converter/class order, full training manifest and qualified source/owner adjudication resolve the conflict. Do not retrain before repairing this reference contract.
 

@@ -33,6 +33,7 @@ let input=""; process.stdin.on("data",d=>input+=d); process.stdin.on("end",()=>{
 });'
 "${compose[@]}" exec -T inference python - < ops/staging/worker-probe.py > ops/staging/evidence/worker-boundary.json
 npx playwright test --config ops/staging/playwright.config.ts
+node -e 'const r=JSON.parse(require("fs").readFileSync("ops/staging/evidence/browser.json","utf8")); if(r.stats.expected!==1 || r.stats.unexpected!==0 || r.stats.skipped!==0) throw new Error("Synthetic browser evidence incomplete")'
 node ops/staging/probe.mjs acceptance
 "${compose[@]}" restart app inference
 "${compose[@]}" up --detach --wait --wait-timeout 180
