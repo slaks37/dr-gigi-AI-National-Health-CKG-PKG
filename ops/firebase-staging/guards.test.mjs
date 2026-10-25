@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, chmodSync, rmSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
-import { validatePlan, verifyReadiness, assertInventoryEmpty, legacyProject, privatePath, repositoryRoot } from './guards.mjs';
+import { validatePlan, verifyReadiness, assertInventoryEmpty, legacyProject, privatePath, repositoryRoot, approvedFetch } from './guards.mjs';
 import { render, roles } from './stage.mjs';
 import { runHosted } from './hosted-acceptance.mjs';
 
@@ -11,7 +11,7 @@ function plan() {
   return { schema_version: 'sonri.firebase-staging-plan.v1', environment: 'research-staging', clinical_use: 'PROHIBITED', project_id: 'synthetic-isolated-stage', database_id: 'sonri-staging', approved_origin: 'https://synthetic-staging.example.test', synthetic_prefix: 'synthetic-stg-unit-only', owner_approved: true, empty_project_approved: true, owner_approval_reference: 'SYNTHETIC_TEST_ONLY', owner_approval_date: '2026-10-25', approved_region: 'asia-southeast2', public_firebase_config: { projectId: 'synthetic-isolated-stage', firestoreDatabaseId: 'sonri-staging', authDomain: 'synthetic-isolated-stage.firebaseapp.com', messagingSenderId: '123456', appId: '1:123456:web:synthetic', apiKey: 'public-config-fixture' } };
 }
 function readiness(p) { return { success: true, environment: 'research-staging', synthetic_accounts_only: true, project_id: p.project_id, database_id: p.database_id, clinical_use: 'PROHIBITED', source_images_retained: false, inventory: { clinical_use: 'PROHIBITED', models: [] } }; }
-function accounts(p) { return { project_id: p.project_id, database_id: p.database_id, synthetic_prefix: p.synthetic_prefix, accounts: Object.fromEntries(Object.entries(roles).map(([key, claims]) => [key, { uid: `${p.synthetic_prefix}-${key}`, email: `${p.synthetic_prefix}-${key}@example.test`, password: 'synthetic-test-only', claims: { ...claims, syntheticResearchIdentity: true }, state: 'CREATED' }])) }; }
+function accounts(p) { return { schema_version: 'sonri.private-synthetic-accounts.v1', project_id: p.project_id, database_id: p.database_id, synthetic_prefix: p.synthetic_prefix, accounts: Object.fromEntries(Object.entries(roles).map(([key, claims]) => [key, { uid: `${p.synthetic_prefix}-${key}`, email: `${p.synthetic_prefix}-${key}@example.test`, password: 'synthetic-test-only', claims: { ...claims, syntheticResearchIdentity: true }, state: 'CREATED' }])) }; }
 
 test('explicit apply requires owner project and empty-environment approval', () => {
   const p = plan(); p.owner_approved = false;
@@ -97,4 +97,31 @@ test('worker readiness rejects unsafe inventory or any promoted model label', ()
     { clinical_use: 'PROHIBITED', models: [{ ...model, label_verification: 'VERIFIED' }] },
     { clinical_use: 'PROHIBITED', models: [null] },
   ]) assert.throws(() => verifyReadiness(p, { ...good, inventory }), /PRIVATE_WORKER_INVENTORY_REQUIRED/);
+});
+
+test('extra identities or altered synthetic roles abort before any provider sign-in', async () => {
+  const p = plan(); let calls = 0;
+  const fetcher = async () => { calls++; throw new Error('UNEXPECTED_PROVIDER_CALL'); };
+  const extra = accounts(p); extra.accounts.unapproved = { uid: 'unapproved' };
+  const wrongRole = accounts(p); wrongRole.accounts.patient.claims.role = 'admin';
+  const wrongReview = accounts(p); wrongReview.accounts.unqualified.claims.clinicalReviewer = true;
+  for (const credentials of [extra, wrongRole, wrongReview]) {
+    await assert.rejects(() => runHosted(p, credentials, { fetcher }), /ONLY_BOOTSTRAPPED_SYNTHETIC_IDENTITIES_ALLOWED/);
+  }
+  assert.equal(calls, 0);
+});
+
+test('oversized streamed API responses are cancelled at the byte bound', async () => {
+  let cancelled = false;
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(new Uint8Array(500000));
+      controller.enqueue(new Uint8Array(500001));
+    },
+    cancel() { cancelled = true; },
+  });
+  await assert.rejects(() => approvedFetch(plan(), '/api/staging-readiness', {
+    fetcher: async () => new Response(stream, { status: 200 }),
+  }), /BOUNDED_API_RESPONSE_REQUIRED/);
+  assert.equal(cancelled, true);
 });

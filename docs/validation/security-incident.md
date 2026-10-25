@@ -1,5 +1,7 @@
 # Supporting-repository credential exposure
 
+Latest incident state: [Phase 3 follow-up](phase3-security-status.md), **OPEN / AWAITING_OWNER_ATTESTATION**. The Phase 2 record below preserves the prior deferral and original location evidence.
+
 Verified by read-only GitHub API on **2026-10-24 (Asia/Jakarta)**. **OPEN — DEFERRED_BY_OWNER: revocation/rotation is not verified.** Clinical use remains prohibited. No credential was tested against its provider, copied to this repository, or included in reports/logs.
 
 | Evidence | Recorded value |

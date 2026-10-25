@@ -300,3 +300,27 @@ def test_both_validation_and_test_require_explicit_reviewed_negative_controls(co
     persist(cohort)
     with pytest.raises(ValueError, match='REVIEWED_NEGATIVE_CONTROL_REQUIRED_FOR_VAL_AND_TEST'):
         bench.audit_population(cohort['manifest_path'], cohort['root'], True)
+
+
+def test_complete_source_sized_manifest_fits_but_cannot_bypass_pixel_duplicate_audit(cohort):
+    original = cohort['manifest']['records'][0]
+    for index in range(2505 - len(cohort['manifest']['records'])):
+        cohort['manifest']['records'].append({
+            **original,
+            'record_id': hashlib.sha256(f'source-sized-synthetic-record-{index}'.encode()).hexdigest(),
+            'patient_group': hashlib.sha256(f'source-sized-synthetic-group-{index}'.encode()).hexdigest(),
+        })
+    persist(cohort)
+    assert len(bench.load_manifest(cohort['manifest_path'], True)['records']) == 2505
+    with pytest.raises(ValueError, match='EXACT_RAW_IMAGE_DUPLICATE'):
+        bench.audit_population(cohort['manifest_path'], cohort['root'], True)
+
+
+def test_dense_near_pair_workload_aborts_without_partial_audit(cohort, monkeypatch):
+    persist(cohort)
+    # Distinct actual synthetic pixels, deliberately broad screening and tiny work bound.
+    monkeypatch.setattr(bench, 'NEAR_DHASH_DISTANCE', 64)
+    monkeypatch.setattr(bench, 'MAX_NEAR_CANDIDATES', 1)
+    with pytest.raises(ValueError, match='NEAR_DUPLICATE_CANDIDATE_LIMIT_REVIEW_RESOURCE_PROTOCOL'):
+        bench.audit_population(cohort['manifest_path'], cohort['root'], True)
+    assert not cohort['audit_path'].exists()

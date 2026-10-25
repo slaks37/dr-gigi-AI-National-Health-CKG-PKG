@@ -61,8 +61,20 @@ export function assertInventoryEmpty(users, collectionIds, prefix) {
 export async function approvedFetch(plan, path, { token, protectionBypass, body, method = 'GET', fetcher = fetch } = {}) {
   if (!path.startsWith('/api/') || path.startsWith('//') || path.includes('://')) throw new Error('API_PATH_REQUIRED');
   const response = await fetcher(new URL(path, plan.approved_origin).href, { method, redirect: 'error', signal: AbortSignal.timeout(90000), cache: 'no-store', headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(protectionBypass ? { 'x-vercel-protection-bypass': protectionBypass } : {}), ...(body ? { 'Content-Type': 'application/json' } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
-  const content = await response.text();
-  if (content.length > 1000000) throw new Error('BOUNDED_API_RESPONSE_REQUIRED');
+  const chunks = []; let size = 0;
+  if (response.body) {
+    const reader = response.body.getReader();
+    try {
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        size += value.byteLength;
+        if (size > 1000000) { await reader.cancel(); throw new Error('BOUNDED_API_RESPONSE_REQUIRED'); }
+        chunks.push(value);
+      }
+    } finally { reader.releaseLock(); }
+  }
+  const content = Buffer.concat(chunks).toString('utf8');
   let data; try { data = JSON.parse(content); } catch { data = null; }
   return { status: response.status, data };
 }

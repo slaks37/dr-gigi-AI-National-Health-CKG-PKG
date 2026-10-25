@@ -7,10 +7,11 @@ import { validatePlan, verifyReadiness, approvedFetch, readPrivateJson, privateP
 import { roles } from './stage.mjs';
 
 export function validateAccounts(plan, credentials) {
-  if (credentials.project_id !== plan.project_id || credentials.database_id !== plan.database_id || credentials.synthetic_prefix !== plan.synthetic_prefix) throw new Error('SYNTHETIC_CREDENTIAL_SCOPE_MISMATCH');
+  if (credentials.schema_version !== 'sonri.private-synthetic-accounts.v1' || credentials.project_id !== plan.project_id || credentials.database_id !== plan.database_id || credentials.synthetic_prefix !== plan.synthetic_prefix) throw new Error('SYNTHETIC_CREDENTIAL_SCOPE_MISMATCH');
+  if (!credentials.accounts || Object.keys(credentials.accounts).length !== Object.keys(roles).length || Object.keys(credentials.accounts).some(role => !(role in roles))) throw new Error('ONLY_BOOTSTRAPPED_SYNTHETIC_IDENTITIES_ALLOWED');
   for (const role of Object.keys(roles)) {
     const a = credentials.accounts?.[role];
-    if (!a || a.uid !== `${plan.synthetic_prefix}-${role}` || a.email !== `${a.uid}@example.test` || !a.password || a.claims?.syntheticResearchIdentity !== true || a.state !== 'CREATED') throw new Error('ONLY_BOOTSTRAPPED_SYNTHETIC_IDENTITIES_ALLOWED');
+    if (!a || a.uid !== `${plan.synthetic_prefix}-${role}` || a.email !== `${a.uid}@example.test` || !a.password || a.claims?.syntheticResearchIdentity !== true || a.claims.role !== roles[role].role || (a.claims.clinicalReviewer === true) !== (roles[role].clinicalReviewer === true) || a.state !== 'CREATED') throw new Error('ONLY_BOOTSTRAPPED_SYNTHETIC_IDENTITIES_ALLOWED');
   }
 }
 async function signIn(plan, account, fetcher) {

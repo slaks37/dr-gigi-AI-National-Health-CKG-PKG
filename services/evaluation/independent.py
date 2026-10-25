@@ -21,12 +21,13 @@ from evaluate import evaluate, iou, match_class, validate_rows
 
 
 APP_ROOT = Path(__file__).resolve().parents[2]
-MAX_RECORDS = 2000
+MAX_RECORDS = 5000
 MAX_IMAGE_BYTES = 25_000_000
-MAX_TOTAL_BYTES = 512_000_000
+MAX_TOTAL_BYTES = 4_000_000_000
 MAX_IMAGE_PIXELS = 25_000_000
-MAX_TOTAL_PIXELS = 200_000_000
+MAX_TOTAL_PIXELS = 25_000_000_000
 MAX_JSON_BYTES = 16_000_000
+MAX_NEAR_CANDIDATES = 25_000
 NEAR_DHASH_DISTANCE = 6
 ATTESTATIONS = [
     'data_rights_confirmed', 'consent_or_approved_waiver_confirmed',
@@ -208,6 +209,7 @@ def audit_population(manifest_path, image_root, allow_synthetic=False):
                 within += 1
                 continue
             pair = tuple(sorted([first['record_id'], second['record_id']]))
+            require(len(candidates) < MAX_NEAR_CANDIDATES, 'NEAR_DUPLICATE_CANDIDATE_LIMIT_REVIEW_RESOURCE_PROTOCOL')
             review = reviews.get(pair, {})
             distinct = (review.get('decision') == 'DISTINCT_IMAGES' and review.get('reviewed') is True
                         and review.get('independent_reviewer_confirmed') is True and _nonempty(review.get('evidence_reference')))
