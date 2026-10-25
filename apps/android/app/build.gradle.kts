@@ -11,8 +11,8 @@ android {
         applicationId = "id.sonri.offline.research"
         minSdk = 29
         targetSdk = 36
-        versionCode = 2
-        versionName = "0.2.0-hybrid-research"
+        versionCode = 3
+        versionName = "0.2.1-hybrid-research"
         buildConfigField("boolean", "NETWORK_ENABLED", "false")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         ndk { abiFilters += setOf("arm64-v8a", "x86_64") }

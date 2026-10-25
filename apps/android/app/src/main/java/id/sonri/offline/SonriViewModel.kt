@@ -94,6 +94,13 @@ class SonriViewModel(app: Application): AndroidViewModel(app) {
         catch(_: Exception) { notice("Penghapusan gagal; data lama dipertahankan.") }
     }
     fun consentReady(): Boolean = unlocked && current?.let { it.researchConsent && (it.dataKind=="SYNTHETIC" || it.permissionReference.trim().length>=8) }==true
+    fun modelReady():Boolean=model.file.isFile && model.file.length()==RFDETR_BYTES && modelPermission.trim().length>=8
+    fun modelReadinessMessage():String=when {
+        !model.file.isFile -> "AI belum siap: model lokal belum diimpor. Impor file ONNX berizin melalui Perangkat dan model."
+        model.file.length()!=RFDETR_BYTES -> "AI belum siap: ukuran file model lokal tidak sesuai. Impor ulang model ONNX yang terverifikasi."
+        modelPermission.trim().length<8 -> "AI belum siap: referensi izin pemakaian model belum tercatat. Lengkapi izin dan impor model melalui Perangkat dan model."
+        else -> "Model lokal dan referensi izin tersedia. SHA-256 tetap diperiksa sebelum setiap analisis; kategori model belum terverifikasi."
+    }
     private fun job(label: String,block: suspend (Int)->Unit) {
         if(!unlocked || busy || cloud.busy)return
         val generation=epoch;busy=true;status=label
@@ -135,10 +142,12 @@ class SonriViewModel(app: Application): AndroidViewModel(app) {
         }
     }
     fun analyze() {
+        if(!unlocked)return notice("Buka workspace dengan kunci perangkat terlebih dahulu.")
+        if(busy || cloud.busy)return notice("Operasi lain sedang berjalan. Tunggu hingga selesai sebelum menjalankan analisis lokal.")
         val source=image ?: return notice("Impor gambar terlebih dahulu.")
         val recordId=current?.id
         if(!consentReady() || !qualityAcknowledged || current?.review!=null)return notice("Persetujuan, pemeriksaan kualitas, dan catatan terbuka diperlukan.")
-        if(modelPermission.length<8 || !model.file.exists())return notice("Model lokal dan referensi izin pemakaian belum tersedia.")
+        if(!modelReady())return notice(modelReadinessMessage())
         screen=Screen.ANALYSIS
         job("Menjalankan model sebenarnya di CPU perangkat. Tidak ada request server.") { generation ->
             val result=withContext(Dispatchers.Default) { val hashMs=model.verify();engine.analyze(model.file,source,hashMs) }

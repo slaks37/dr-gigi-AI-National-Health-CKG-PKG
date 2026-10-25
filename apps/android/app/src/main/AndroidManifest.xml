@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera.any" android:required="false" />
-    <!-- No INTERNET, storage, microphone, analytics or cloud-service permission. -->
+    <!-- The connected build adds networking in its dedicated manifest; offline builds do not. -->
     <application android:allowBackup="false" android:fullBackupContent="false"
         android:dataExtractionRules="@xml/data_extraction_rules" android:usesCleartextTraffic="false"
         android:label="SONRI Riset" android:theme="@style/Theme.Sonri" android:supportsRtl="true">

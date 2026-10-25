@@ -29,6 +29,14 @@ import java.util.Locale
 @Composable private fun Action(text: String,enabled: Boolean=true,action: ()->Unit) { Button(onClick=action,enabled=enabled,modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("action-$text")) { Text(text) } }
 @Composable private fun Field(label: String,value: String,enabled: Boolean=true,change: (String)->Unit) { OutlinedTextField(value,onValueChange={ change(it.take(4000)) },label={Text(label)},enabled=enabled,modifier=Modifier.fillMaxWidth(),minLines=2) }
 @Composable private fun Check(label: String,checked: Boolean,enabled: Boolean=true,change: (Boolean)->Unit) { Row(Modifier.fillMaxWidth().clickable(enabled=enabled) { change(!checked) }.padding(vertical=4.dp)) { Checkbox(checked,change,enabled=enabled);Text(label,Modifier.weight(1f).padding(top=12.dp)) } }
+@Composable private fun AnalysisStatus(vm:SonriViewModel) {
+    Text(vm.modelReadinessMessage(),Modifier.testTag("analysis-model-status"),style=MaterialTheme.typography.bodyMedium)
+    if(vm.message.isNotBlank())Surface(color=Color(0xFFFFEDC2),shape=RoundedCornerShape(12.dp)) {
+        Text(vm.message,Modifier.padding(12.dp).testTag("analysis-status"))
+    }
+    if(vm.busy){LinearProgressIndicator(Modifier.fillMaxWidth().testTag("analysis-progress"));Text(vm.status)}
+    if(vm.cloud.busy)Hint("Sinkronisasi sedang berlangsung. Tunggu hingga selesai sebelum menjalankan analisis lokal.")
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable fun SonriApp(vm: SonriViewModel,unlock: ()->Unit,pickImage: ()->Unit,pickModel: ()->Unit,export: (String)->Unit,securitySettings: ()->Unit) {
@@ -89,7 +97,7 @@ import java.util.Locale
                             Action("Simpan draft terenkripsi",vm.consentReady() && !vm.busy,{try {vm.save()}catch(_:Exception){vm.notice("Draft belum memenuhi kontrak atau kapasitas penyimpanan.")}})
                         }
                         Screen.IMPORT -> {
-                            Hint("Pilih hanya gambar lokal berizin. Pemilih foto Android dapat menawarkan penyedia cloud milik sistem; aplikasi SONRI tidak memiliki izin INTERNET. Untuk uji offline, gunakan file lokal/fixture bawaan.")
+                            Hint(if(BuildConfig.NETWORK_ENABLED)"Pilih hanya gambar lokal berizin. Pemilih foto Android dapat menawarkan penyedia cloud milik sistem. SONRI memproses gambar di perangkat; sinkronisasi riset tidak mengirim gambar. Untuk uji offline, gunakan file lokal/fixture bawaan." else "Pilih hanya gambar lokal berizin. Pemilih foto Android dapat menawarkan penyedia cloud milik sistem; aplikasi SONRI tidak memiliki izin INTERNET. Untuk uji offline, gunakan file lokal/fixture bawaan.")
                             Action("Pilih gambar Android",vm.consentReady() && !vm.busy && record?.review==null,pickImage)
                             Action("Kamera lokal",vm.consentReady() && !vm.busy && record?.review==null,{vm.screen=Screen.CAMERA})
                             Action("Buka fixture geometris sintetis",vm.consentReady() && !vm.busy && record?.review==null,vm::syntheticImage)
@@ -104,12 +112,18 @@ import java.util.Locale
                             } ?: Hint("Belum ada gambar.")
                             Hint("Pemeriksaan teknis ini bukan penilai kelayakan klinis, lokasi gigi, atau modalitas yang tervalidasi.")
                             Check("Saya memeriksa gambar dan memahami batas kualitas/modalitas untuk riset.",vm.qualityAcknowledged,!vm.busy) { vm.qualityAcknowledged=it }
-                            Action("Jalankan AI lokal sebenarnya",vm.image!=null && vm.qualityAcknowledged && !vm.busy,vm::analyze)
+                            AnalysisStatus(vm)
+                            if(!vm.modelReady()) {
+                                Action("Impor model lokal untuk analisis",!vm.busy && !vm.cloud.busy,{vm.screen=Screen.DEVICE})
+                                Hint("Setelah impor melalui pemilih file Android, buka kembali gambar atau fixture karena gambar di RAM dikosongkan saat workspace terkunci.")
+                            }
+                            Action("Jalankan AI lokal sebenarnya",vm.modelReady() && vm.image!=null && vm.qualityAcknowledged && vm.consentReady() && record?.review==null && !vm.busy && !vm.cloud.busy,vm::analyze)
                         }
                         Screen.ANALYSIS -> {
                             Hint("CPUExecutionProvider • float32 • 704×704 • dua thread. Tidak ada kuantisasi atau perubahan resolusi model. Target 15 detik belum merupakan hasil pengukuran ponsel.")
-                            Action("Analisis gambar aktif",vm.image!=null && !vm.busy && vm.qualityAcknowledged,vm::analyze)
-                            Action("Periksa model lokal",!vm.busy,{vm.screen=Screen.DEVICE})
+                            AnalysisStatus(vm)
+                            Action("Analisis gambar aktif",vm.modelReady() && vm.image!=null && vm.qualityAcknowledged && vm.consentReady() && record?.review==null && !vm.busy && !vm.cloud.busy,vm::analyze)
+                            Action(if(vm.modelReady())"Periksa model lokal" else "Impor model lokal untuk analisis",!vm.busy && !vm.cloud.busy,{vm.screen=Screen.DEVICE})
                         }
                         Screen.RESULTS -> {
                             Heading("Hasil Analisis Awal SONRI AI")
