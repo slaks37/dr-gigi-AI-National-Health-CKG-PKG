@@ -11,12 +11,25 @@ android {
         applicationId = "id.sonri.offline.research"
         minSdk = 29
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.1.0-research"
+        versionCode = 2
+        versionName = "0.2.0-hybrid-research"
+        buildConfigField("boolean", "NETWORK_ENABLED", "false")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         ndk { abiFilters += setOf("arm64-v8a", "x86_64") }
     }
     buildTypes {
+        create("connected") {
+            initWith(getByName("debug"))
+            matchingFallbacks += "debug"
+            buildConfigField("boolean", "NETWORK_ENABLED", "true")
+            fun config(name: String, fallback: String = "") = providers.gradleProperty(name).getOrElse(fallback)
+            for ((field,property) in mapOf("FIREBASE_PROJECT" to "sonriProject", "FIREBASE_APP_ID" to "sonriAppId", "FIREBASE_API_KEY" to "sonriApiKey", "GOOGLE_CLIENT_ID" to "sonriGoogleClientId", "RELEASE_ORIGIN" to "sonriReleaseOrigin", "RELEASE_PUBLIC_KEY" to "sonriReleasePublicKey")) {
+                buildConfigField("String",field,"\"${config(property).replace("\\", "\\\\").replace("\"","\\\"")}\"")
+            }
+            buildConfigField("boolean","USE_EMULATORS",config("sonriEmulators","false"))
+            buildConfigField("String","PROJECT_APPROVAL","\"${config("sonriProjectApproval")}\"")
+            manifestPlaceholders["hybridCleartext"] = config("sonriEmulators","false")
+        }
         release {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -28,6 +41,11 @@ android {
     buildFeatures { compose = true; buildConfig = true }
     packaging { resources.excludes += setOf("META-INF/AL2.0", "META-INF/LGPL2.1") }
     testOptions { unitTests.isReturnDefaultValues = true; animationsDisabled = true }
+    testBuildType = if(providers.gradleProperty("sonriConnectedTests").orNull=="true") "connected" else "debug"
+    if(providers.gradleProperty("sonriConnectedTests").orNull=="true") {
+        sourceSets.getByName("androidTest").java.srcDir("src/connectedAndroidTest/java")
+        sourceSets.getByName("androidTest").assets.srcDir("src/connectedAndroidTest/assets")
+    }
 }
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2025.10.01")
@@ -50,4 +68,11 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.6.2")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    "connectedImplementation"(platform("com.google.firebase:firebase-bom:34.4.0"))
+    "connectedImplementation"("com.google.firebase:firebase-auth")
+    "connectedImplementation"("com.google.firebase:firebase-firestore")
+    "connectedImplementation"("androidx.credentials:credentials:1.3.0")
+    "connectedImplementation"("androidx.credentials:credentials-play-services-auth:1.3.0")
+    "connectedImplementation"("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    "connectedImplementation"("androidx.compose.ui:ui-test-manifest")
 }

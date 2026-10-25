@@ -1,6 +1,8 @@
-# SONRI Android offline research
+# SONRI Android connected hybrid research
 
-Native Kotlin / Jetpack Compose application, Android 10+ (API 29), ARM64 and emulator x86_64. Core workflow has no INTERNET permission, login, API key, Firebase, web view, server, analytics or recurring inference-server cost. Existing web and inference services are preserved.
+Native Kotlin / Jetpack Compose application, Android 10+ (API 29), ARM64 and emulator x86_64. The connected-first product uses optional configured Firebase accounts/synthetic synchronization while primary AI remains local. Build `:app:assembleConnected` for this product. The preserved `:app:assembleDebug` offline regression artifact has no INTERNET permission or Firebase dependency. Both share the same native screens, inference and encrypted vault. No remote inference API or recurring inference-server resource is required.
+
+See [connected hybrid setup, privacy, quotas and blockers](../../ops/hybrid/README.md) and [reproducible local-service tests](../../ops/hybrid/TESTING.md). A dedicated owner-approved Spark project is not available; the delivered connected APK has accounts/updates unconfigured and remains usable locally. No live cloud was provisioned. The instructions below preserve the original offline workflow; the connected profile screen adds explicit guest migration and synchronization.
 
 **Research only: synthetic or authorized nonpatient data. Clinical use PROHIBITED.** Every RF-DETR slot is UNVERIFIED. No AI finding is assigned a disease, ICD code, FDI number, probability of disease or healthy status. A local reviewer records a manual decision; device credentials and self-attestation do not verify professional identity.
 

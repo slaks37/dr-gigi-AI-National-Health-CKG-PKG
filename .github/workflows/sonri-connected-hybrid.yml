@@ -1,0 +1,86 @@
+name: SONRI connected hybrid research
+on:
+  pull_request:
+    paths: ['apps/android/**', 'ops/hybrid/**', '.github/workflows/sonri-connected-hybrid.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: sonri-hybrid-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  rules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '24', cache: npm}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - run: npm ci --ignore-scripts
+      - name: Actual isolated rules acceptance
+        run: npx firebase emulators:exec --project demo-sonri-hybrid --config ops/hybrid/firebase.emulator.json --only firestore 'npx vitest run --config ops/hybrid/vitest.config.mts'
+      - run: python3 ops/hybrid/quota.py && git diff --exit-code ops/hybrid/pages/quota-scenarios.json
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '24', cache: npm}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - run: npm ci --ignore-scripts
+      - name: Build safe unconfigured connected APK, unit tests and lint
+        working-directory: apps/android
+        run: ./gradlew :app:assembleConnected :app:testDebugUnitTest :app:lintDebug :app:lintConnected --no-daemon
+      - name: Preserve installable APK without emulator endpoints or test trust
+        run: |
+          mkdir -p apps/android/evidence/local/hybrid
+          cp apps/android/app/build/outputs/apk/connected/app-connected.apk apps/android/evidence/local/hybrid/sonri-hybrid-research-connected.apk
+          sha256sum apps/android/evidence/local/hybrid/*.apk > apps/android/evidence/local/hybrid/SHA256SUMS.txt
+          python3 apps/android/scripts/verify_apk.py --connected --apk apps/android/evidence/local/hybrid/sonri-hybrid-research-connected.apk --manifest apps/android/app/build/intermediates/merged_manifests/connected/processConnectedManifest/AndroidManifest.xml --output apps/android/evidence/local/hybrid/apk-static.json
+      - name: Ephemeral synthetic signing and TLS fixtures (private keys outside repository)
+        run: python3 ops/hybrid/synthetic_updates.py prepare --out "$RUNNER_TEMP/sonri-hybrid-fixture" --assets apps/android/app/src/connectedAndroidTest/assets/generated
+      - name: Build emulator-only connected acceptance APKs
+        working-directory: apps/android
+        run: ./gradlew :app:assembleConnected :app:assembleConnectedAndroidTest -PsonriConnectedTests=true -PsonriEmulators=true -PsonriProject=demo-sonri-hybrid -PsonriAppId=1:123:android:synthetic -PsonriApiKey=synthetic-emulator-only-not-a-secret --no-daemon
+      - name: Start local synthetic services only
+        run: |
+          npx firebase emulators:start --project demo-sonri-hybrid --config ops/hybrid/firebase.emulator.json --only auth,firestore > "$RUNNER_TEMP/hybrid-firebase.log" 2>&1 &
+          python3 ops/hybrid/synthetic_updates.py serve --out "$RUNNER_TEMP/sonri-hybrid-fixture" > "$RUNNER_TEMP/hybrid-tls.log" 2>&1 &
+          python3 - <<'PY'
+          import time,urllib.request
+          for attempt in range(60):
+              try:
+                  urllib.request.urlopen('http://127.0.0.1:9099/emulator/v1/projects/demo-sonri-hybrid/config',timeout=2)
+                  break
+              except Exception: time.sleep(1)
+          else: raise RuntimeError('Local auth emulator not ready')
+          PY
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Actual Android SDK restore/conflict and HTTPS update acceptance
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: default
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          script: python3 apps/android/scripts/connected_test.py --serial emulator-5554 --apk apps/android/app/build/outputs/apk/connected/app-connected.apk --test-apk apps/android/app/build/outputs/apk/androidTest/connected/app-connected-androidTest.apk --output apps/android/evidence/local/hybrid/local-services
+      - name: Upload safe APK and synthetic evidence only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sonri-connected-hybrid-research
+          retention-days: 14
+          path: |
+            apps/android/evidence/local/hybrid/
+            apps/android/app/build/reports/tests/
+            apps/android/app/build/reports/lint-results-debug.html

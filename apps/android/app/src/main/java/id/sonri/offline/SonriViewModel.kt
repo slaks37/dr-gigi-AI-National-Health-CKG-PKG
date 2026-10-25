@@ -13,8 +13,8 @@ import kotlinx.coroutines.*
 
 enum class Screen(val title: String) {
     WELCOME("Selamat datang"),WORKSPACE("Workspace offline"),SELECT_EXAM("Pilih pemeriksaan"),CAMERA("Kamera lokal"),IMPORT("Impor gambar"),
-    QUALITY("Kualitas gambar"),ANALYSIS("Analisis AI lokal"),RESULTS("Kotak temuan visual"),EVIDENCE("Bukti AI mentah"),EXAM("Form pemeriksaan"),
-    ODONTOGRAM("Odontogram FDI"),TERMS("Katalog ICD-10 K00-K14"),DIFFERENTIAL("Banding dan bukti"),REVIEW("Review lokal"),HISTORY("Riwayat terenkripsi"),REPORT("Laporan dan ekspor"),DEVICE("Perangkat dan model")
+    QUALITY("Kualitas gambar"),ANALYSIS("Analisis AI lokal"),RESULTS("Hasil analisis awal"),EVIDENCE("Informasi model dan bukti"),EXAM("Form pemeriksaan"),
+    ODONTOGRAM("Odontogram FDI"),TERMS("Katalog ICD-10 K00-K14"),DIFFERENTIAL("Banding dan bukti"),REVIEW("Review lokal"),HISTORY("Riwayat terenkripsi"),REPORT("Laporan dan ekspor"),DEVICE("Perangkat dan model"),PROFILE("Profil dan sinkronisasi"),UPDATES("Pembaruan aplikasi dan model")
 }
 class SonriViewModel(app: Application): AndroidViewModel(app) {
     val catalog: TerminologyBundle = app.assets.open("terminology.v1.json").use { input ->
@@ -24,6 +24,8 @@ class SonriViewModel(app: Application): AndroidViewModel(app) {
     private val vault=LocalVault(app)
     val model=LocalModel(app)
     private val engine=OnDeviceEngine()
+    val cloud=id.sonri.offline.hybrid.HybridController(app,viewModelScope).apply{onIdentityChanged={refreshCloudVisibility()}}
+    val updates=cloud.backend?.releaseConfig().let{config -> id.sonri.offline.hybrid.UpdateController(app,config?.first.orEmpty(),config?.second.orEmpty(),viewModelScope)}
     private var data=VaultData()
     private var selectedId: String?=null
     private var epoch=0
@@ -33,6 +35,8 @@ class SonriViewModel(app: Application): AndroidViewModel(app) {
     var disclaimerAccepted by mutableStateOf(false)
     var message by mutableStateOf("");private set
     var busy by mutableStateOf(false);private set
+    var online by mutableStateOf(false);private set
+    fun networkChanged(connected:Boolean){val was=online;online=connected;if(connected && !was && unlocked && cloud.pendingCount>0)syncCloud()}
     var status by mutableStateOf("");private set
     var records by mutableStateOf<List<ResearchRecord>>(emptyList());private set
     var current by mutableStateOf<ResearchRecord?>(null);private set
@@ -52,21 +56,21 @@ class SonriViewModel(app: Application): AndroidViewModel(app) {
         if(!getApplication<Application>().getSystemService(KeyguardManager::class.java).isDeviceSecure)return notice("Aktifkan kunci layar perangkat untuk membuka penyimpanan riset.")
         try {
             data=vault.prune(vault.load());vault.save(data)
-            records=data.records;current=records.find { it.id==selectedId };modelPermission=data.modelPermissionReference
+            cloud.load();updates.load();records=cloud.visible(data.records);current=records.find { it.id==selectedId };modelPermission=data.modelPermissionReference
             unlocked=true;screen=Screen.WORKSPACE;message="Workspace lokal terbuka. Identitas profesi tidak diverifikasi."
         } catch(_: Exception) { notice("Penyimpanan tidak dapat dibuka. Data tidak ditimpa; periksa perangkat/kunci. Reset hanya jika rela kehilangan data lokal.") }
     }
     fun lock() {
         if(unlocked && current?.researchConsent==true)try { save(false) } catch(_: Exception) { /* keep old authenticated ciphertext intact */ }
-        epoch++;engine.cancel();task?.cancel();unlocked=false;busy=false;current=null;records=emptyList();image=null;data=VaultData();modelPermission=""
+        epoch++;engine.cancel();task?.cancel();cloud.lock();updates.lock();unlocked=false;busy=false;current=null;records=emptyList();image=null;data=VaultData();modelPermission=""
         reviewer="";reviewEvidence="";dentistAttested=false;pendingModelPermission="";modelAcknowledged=false;qualityAcknowledged=false;selectedTerm=null
     }
     fun newRecord() {
-        if(!unlocked || busy)return
+        if(!unlocked || busy || cloud.busy)return
         current=ResearchRecord();selectedId=current?.id;image=null;qualityAcknowledged=false;screen=Screen.SELECT_EXAM
     }
     fun update(change: (ResearchRecord)->ResearchRecord) {
-        if(!unlocked || busy)return
+        if(!unlocked || busy || cloud.busy)return
         val old=current ?: return
         if(old.review!=null)return notice("Catatan yang direview terkunci. Buka revisi dahulu.")
         current=change(old)
@@ -79,18 +83,19 @@ class SonriViewModel(app: Application): AndroidViewModel(app) {
         val stored=data.records.find { it.id==record.id }
         val saved=if(stored==record)record else DentalRules.changed(record,if(stored==null)"CREATE_RESEARCH_RECORD" else "SAVE_RESEARCH_RECORD")
         val next=data.copy(records=(data.records.filterNot { it.id==saved.id }+saved).sortedByDescending { it.updatedAt })
-        vault.save(next);data=next;records=next.records;current=saved;selectedId=saved.id
-        if(announce)notice("Tersimpan terenkripsi di perangkat ini; tidak ada sinkronisasi.")
+        vault.save(next);data=next;records=cloud.visible(next.records);current=saved;selectedId=saved.id
+        if(stored!=record)cloud.changed(saved)
+        if(announce)notice("Data tersimpan terenkripsi di perangkat ini. Status sinkronisasi riset dapat dilihat di Profil.")
     }
-    fun open(record: ResearchRecord) { if(!unlocked || busy)return;current=record;selectedId=record.id;image=null;selectedTerm=catalog.entries.find { it.code==record.candidateCode };screen=Screen.EXAM }
+    fun open(record: ResearchRecord) { if(!unlocked || busy || cloud.busy)return;current=record;selectedId=record.id;image=null;selectedTerm=catalog.entries.find { it.code==record.candidateCode };screen=Screen.EXAM }
     fun delete(id: String) {
-        if(!unlocked || busy)return
-        try { val next=data.copy(records=data.records.filterNot { it.id==id });vault.save(next);data=next;records=next.records;if(current?.id==id) { current=null;selectedId=null;image=null };notice("Catatan lokal dihapus.") }
+        if(!unlocked || busy || cloud.busy)return
+        try {data.records.find{it.id==id}?.let{cloud.changed(it,true)}; val next=data.copy(records=data.records.filterNot { it.id==id });vault.save(next);data=next;records=cloud.visible(next.records);if(current?.id==id) { current=null;selectedId=null;image=null };notice("Catatan lokal dihapus. Catatan cloud memerlukan sinkronisasi; penghapusan seluruh revisi melalui operator.") }
         catch(_: Exception) { notice("Penghapusan gagal; data lama dipertahankan.") }
     }
     fun consentReady(): Boolean = unlocked && current?.let { it.researchConsent && (it.dataKind=="SYNTHETIC" || it.permissionReference.trim().length>=8) }==true
     private fun job(label: String,block: suspend (Int)->Unit) {
-        if(!unlocked || busy)return
+        if(!unlocked || busy || cloud.busy)return
         val generation=epoch;busy=true;status=label
         task=viewModelScope.launch {
             try { block(generation) }
@@ -143,7 +148,7 @@ class SonriViewModel(app: Application): AndroidViewModel(app) {
     fun cancel() { engine.cancel();task?.cancel() }
     fun choose(term: Term) { if(busy)return;selectedTerm=term;if(term.kind=="TERMINAL")update { it.copy(candidateCode=term.code) };screen=Screen.DIFFERENTIAL }
     fun confirm() {
-        if(!unlocked || busy)return
+        if(!unlocked || busy || cloud.busy)return
         try {
             val record=current ?: return;val term=catalog.entries.find { it.code==record.candidateCode } ?: return notice("Pilih kode terminal secara manual.")
             current=DentalRules.changed(DentalRules.confirm(record,term,reviewer,reviewEvidence,dentistAttested),"LOCAL_SELF_ATTESTED_REVIEW")
@@ -151,13 +156,26 @@ class SonriViewModel(app: Application): AndroidViewModel(app) {
         } catch(_: Exception) { notice("Lengkapi orientasi, pemeriksaan wajib, bukti klinis, dan pernyataan peninjau.") }
     }
     fun reopen() { if(unlocked && !busy)current=current?.let { DentalRules.changed(it.copy(review=null),"REOPEN_LOCAL_REVIEW") } }
-    fun reset() { cancel();lock();vault.deleteAll();model.delete();selectedId=null;notice("Kunci, catatan terenkripsi, dan model lokal dihapus. Ekspor di luar aplikasi tidak ikut dihapus.") }
+    fun reset() { cancel();lock();vault.deleteAll();cloud.reset();updates.reset();model.delete();selectedId=null;notice("Kunci, catatan terenkripsi, dan model lokal dihapus. Ekspor dan catatan cloud tidak ikut dihapus.") }
     fun retention(days: Int) { if(unlocked)try {
         // Persist the valid current draft before pruning so a later lock cannot restore an expired record.
         if(current?.researchConsent==true)save(false)
-        val next=vault.prune(data.copy(retentionDays=days));vault.save(next);data=next;records=next.records
+        val next=vault.prune(data.copy(retentionDays=days));vault.save(next);data=next;records=cloud.visible(next.records)
         if(current!=null && next.records.none{it.id==current?.id}) {current=null;selectedId=null;image=null}
         notice("Retensi lokal: $days hari. Catatan kedaluwarsa dihapus saat workspace dibuka.")
     } catch(_: Exception) { notice("Pengaturan retensi gagal.") } }
+    private fun refreshCloudVisibility(){records=cloud.visible(data.records);if(current?.let{cloud.isBound(it.id) && it.id !in records.map{r->r.id}}==true){current=null;selectedId=null;image=null}}
+    fun syncCloud(){
+        if(!unlocked || busy || cloud.busy)return
+        try{if(current?.researchConsent==true)save(false)}catch(_:Exception){return notice("Simpan draft yang valid terlebih dahulu.")}
+        cloud.sync {record,deleted ->
+            val old=data.records.find{it.id==record.id}
+            require(old==null || cloud.isBound(record.id)){"LOCAL_ID_COLLISION"}
+            require(old?.review==null || old==record){"LOCAL_REVIEW_CONFLICT"}
+            val next=data.copy(records=(data.records.filterNot{it.id==record.id}+if(deleted)emptyList() else listOf(record)).sortedByDescending{it.updatedAt})
+            vault.save(next);data=next;records=cloud.visible(next.records)
+            if(current?.id==record.id){current=if(deleted)null else record;image=null}
+        }
+    }
     override fun onCleared() { engine.cancel();super.onCleared() }
 }

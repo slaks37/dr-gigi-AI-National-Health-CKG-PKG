@@ -60,7 +60,7 @@ class PretrainedEquivalenceTest {
                 assertNull(vm!!.current!!.review);assertEquals("",vm!!.current!!.candidateCode)
             }
             compose.onNodeWithTag("bounding-boxes").performScrollTo().assertIsDisplayed()
-            compose.onNodeWithText("12 deteksi mentah • UNVERIFIED").performScrollTo().assertIsDisplayed()
+            compose.onNodeWithText("12 area ditandai • kategori belum terverifikasi").performScrollTo().assertIsDisplayed()
         } finally {
             compose.activityRule.scenario.onActivity {vm?.delete(recordId);if(!hadModel)vm?.model?.delete();vm?.lock()}
         }
@@ -109,7 +109,7 @@ class PretrainedEquivalenceTest {
             put("manufacturer",Build.MANUFACTURER);put("model",Build.MODEL);put("android_api",Build.VERSION.SDK_INT);put("abi",Build.SUPPORTED_ABIS.first())
             put("ram_os_bytes",memory.totalMem);put("peak_sampled_process_pss_kib",maxPss.get());put("memory_sampling_ms",100)
             put("model_sha256",RFDETR_SHA256);put("model_bytes",model.length());put("provider","CPUExecutionProvider");put("threads",2)
-            put("airplane_mode_observed",true);put("internet_permission",false);put("model_modified",false);put("quantized",false)
+            put("airplane_mode_observed",true);put("internet_permission",BuildConfig.NETWORK_ENABLED);put("model_modified",false);put("quantized",false)
             put("iterations",latency.size);put("inference_p50_ms",percentile(latency,.5));put("inference_p95_ms",percentile(latency,.95))
             put("total_p50_ms",percentile(total,.5));put("total_p95_ms",percentile(total,.95));put("load_first_ms",runs.first().loadMs)
             put("battery_temperature_before_deci_c",beforeBattery?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE,-1) ?: -1)
