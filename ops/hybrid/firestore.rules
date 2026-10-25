@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signed(uid) { return request.auth != null && request.auth.uid == uid && request.auth.token.email_verified == true; }
+    function active(uid) { return signed(uid) && get(/databases/$(database)/documents/accounts/$(uid)).data.state == 'ACTIVE'; }
+    function envelope(d,uid,id) {
+      return d.keys().hasAll(['uid','recordId','revision','operationId','ciphertext','iv','hash','tombstone','reviewed','updatedAt','scope'])
+        && d.keys().hasOnly(['uid','recordId','revision','operationId','ciphertext','iv','hash','tombstone','reviewed','updatedAt','scope'])
+        && d.uid == uid && d.recordId == id && d.revision is int && d.revision > 0
+        && d.operationId is string && d.operationId.size() == 36
+        && d.ciphertext is string && d.ciphertext.size() > 20 && d.ciphertext.size() < 280001
+        && d.iv is string && d.iv.size() == 16 && d.hash is string && d.hash.matches('^[a-f0-9]{64}$')
+        && d.tombstone is bool && d.reviewed is bool && d.scope == 'SYNTHETIC_ONLY' && d.updatedAt == request.time;
+    }
+    function profile(d,uid) {
+      return d.keys().hasOnly(['uid','displayName','participation','accountType','createdAt','updatedAt','state'])
+        && d.keys().hasAll(['uid','displayName','participation','accountType','createdAt','updatedAt','state'])
+        && d.uid == uid && d.displayName is string && d.displayName.size() >= 1 && d.displayName.size() <= 80
+        && d.participation is bool && d.accountType == 'RESEARCH_PARTICIPANT' && d.state == 'ACTIVE' && d.updatedAt == request.time;
+    }
+    match /accounts/{uid} {
+      allow read: if signed(uid) && (!exists(/databases/$(database)/documents/accounts/$(uid)) || resource.data.state == 'ACTIVE');
+      allow create: if signed(uid) && profile(request.resource.data,uid) && request.resource.data.createdAt == request.time;
+      allow update: if active(uid) && profile(request.resource.data,uid) && request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if false;
+      match /records/{id} {
+        function revisionPath(n) { return /databases/$(database)/documents/accounts/$(uid)/records/$(id)/revisions/$(n); }
+        function paired() { return getAfter(revisionPath(request.resource.data.revision)).data == request.resource.data; }
+        function allowedReader() { return active(uid) || (request.auth != null && request.auth.token.clinicianVerified == true
+          && get(/databases/$(database)/documents/accounts/$(uid)).data.state == 'ACTIVE'
+          && get(/databases/$(database)/documents/accounts/$(request.auth.uid)).data.state == 'ACTIVE'
+          && request.auth.token.email_verified == true && exists(/databases/$(database)/documents/accounts/$(uid)/grants/$(id)/reviewers/$(request.auth.uid))); }
+        allow read: if allowedReader();
+        allow create: if active(uid) && envelope(request.resource.data,uid,id) && request.resource.data.revision == 1 && paired();
+        allow update: if active(uid) && envelope(request.resource.data,uid,id) && resource.data.reviewed == false
+          && request.resource.data.revision == resource.data.revision + 1 && paired();
+        allow delete: if false;
+        match /revisions/{revision} {
+          allow read: if active(uid);
+          allow create: if active(uid) && envelope(request.resource.data,uid,id) && revision == string(request.resource.data.revision)
+            && getAfter(/databases/$(database)/documents/accounts/$(uid)/records/$(id)).data == request.resource.data;
+          allow update,delete: if false;
+        }
+      }
+      match /grants/{document=**} { allow read,write: if false; }
+    }
+    match /deletionRequests/{uid} {
+      allow read: if signed(uid);
+      allow create: if signed(uid) && request.resource.data.keys().hasOnly(['uid','requestedAt','scope','status'])
+        && request.resource.data.uid == uid && request.resource.data.requestedAt == request.time
+        && request.resource.data.scope == 'ACCOUNT_AND_ALL_REVISIONS' && request.resource.data.status == 'PENDING_OPERATOR_PURGE';
+      allow update,delete: if false;
+    }
+    match /{document=**} { allow read,write: if false; }
+  }
+}

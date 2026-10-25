@@ -4,7 +4,7 @@ Integrated dental and oral examination research application, built on the existi
 
 The application separates observed findings, suspected/differential diagnoses and clinician-confirmed diagnoses. It includes the WHO ICD-10 2010 K00–K14 reference catalog used for SATUSEHAT compatibility: 15 categories and 108 terminal codes. Terminology coverage does not establish AI diagnostic capability. Clinical rules, model performance, regulatory/privacy approval and production activation remain pending.
 
-The separate [native Android offline research application](apps/android/README.md) runs Kotlin/Compose and local ONNX Runtime without INTERNET permission or a backend. It preserves the 108-code terminology and manual examination/FDI workflow, uses encrypted local records, and imports only an exact-hash owner-authorized model. Weights are not bundled. Emulator execution is documented separately from untested physical phones; labels remain UNVERIFIED and clinical use PROHIBITED. Existing web/Firebase/inference workflows below remain unchanged.
+The separate [native Android offline research application](apps/android/README.md) runs Kotlin/Compose and local ONNX Runtime. Its connected build adds optional Firebase identity and synthetic encrypted synchronization; the preserved offline build has no INTERNET permission. It preserves the 108-code terminology and manual examination/FDI workflow, uses encrypted local records, and imports only an exact-hash owner-authorized model. Weights are not bundled. Emulator execution is documented separately from untested physical phones; labels remain UNVERIFIED and clinical use PROHIBITED. Existing web/Firebase/inference workflows below remain unchanged.
 
 ## Use the application
 

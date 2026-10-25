@@ -21,6 +21,7 @@ class MainActivity: FragmentActivity() {
     private var modelPermission=""
     private var modelAcknowledged=false
     private var exportRecordId: String?=null
+    private var closeConnectivity:(()->Unit)?=null
     private val authentication=registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if(result.resultCode==RESULT_OK) {
             vm.unlock();val action=afterUnlock;afterUnlock=null;if(vm.unlocked)action?.invoke()
@@ -73,6 +74,7 @@ class MainActivity: FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        closeConnectivity=vm.cloud.backend?.observeNetwork{online -> lifecycleScope.launch{vm.networkChanged(online)}}
         setContent {
             SonriApp(vm,::unlock,
                 pickImage={ if(vm.consentReady())imagePicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
@@ -91,4 +93,5 @@ class MainActivity: FragmentActivity() {
         }
     }
     override fun onStop() { vm.lock();super.onStop() }
+    override fun onDestroy(){closeConnectivity?.invoke();super.onDestroy()}
 }

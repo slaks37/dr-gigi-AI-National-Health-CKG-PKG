@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import id.sonri.offline.core.*
+import id.sonri.offline.hybrid.AccountPanel
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -28,6 +29,14 @@ import java.util.Locale
 @Composable private fun Action(text: String,enabled: Boolean=true,action: ()->Unit) { Button(onClick=action,enabled=enabled,modifier=Modifier.fillMaxWidth().heightIn(min=48.dp).testTag("action-$text")) { Text(text) } }
 @Composable private fun Field(label: String,value: String,enabled: Boolean=true,change: (String)->Unit) { OutlinedTextField(value,onValueChange={ change(it.take(4000)) },label={Text(label)},enabled=enabled,modifier=Modifier.fillMaxWidth(),minLines=2) }
 @Composable private fun Check(label: String,checked: Boolean,enabled: Boolean=true,change: (Boolean)->Unit) { Row(Modifier.fillMaxWidth().clickable(enabled=enabled) { change(!checked) }.padding(vertical=4.dp)) { Checkbox(checked,change,enabled=enabled);Text(label,Modifier.weight(1f).padding(top=12.dp)) } }
+@Composable private fun AnalysisStatus(vm:SonriViewModel) {
+    Text(vm.modelReadinessMessage(),Modifier.testTag("analysis-model-status"),style=MaterialTheme.typography.bodyMedium)
+    if(vm.message.isNotBlank())Surface(color=Color(0xFFFFEDC2),shape=RoundedCornerShape(12.dp)) {
+        Text(vm.message,Modifier.padding(12.dp).testTag("analysis-status"))
+    }
+    if(vm.busy){LinearProgressIndicator(Modifier.fillMaxWidth().testTag("analysis-progress"));Text(vm.status)}
+    if(vm.cloud.busy)Hint("Sinkronisasi sedang berlangsung. Tunggu hingga selesai sebelum menjalankan analisis lokal.")
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable fun SonriApp(vm: SonriViewModel,unlock: ()->Unit,pickImage: ()->Unit,pickModel: ()->Unit,export: (String)->Unit,securitySettings: ()->Unit) {
@@ -41,13 +50,14 @@ import java.util.Locale
         ModalNavigationDrawer(drawerState=drawer,drawerContent={
             ModalDrawerSheet { Column(Modifier.verticalScroll(rememberScrollState())) {
                 Text("SONRI • Riset offline",Modifier.padding(20.dp),style=MaterialTheme.typography.titleLarge)
-                Screen.entries.forEach { screen -> NavigationDrawerItem(label={ Text(screen.title) },selected=vm.screen==screen,onClick={
+                val primary=listOf(Screen.WORKSPACE,Screen.SELECT_EXAM,Screen.HISTORY,Screen.ODONTOGRAM,Screen.REVIEW,Screen.PROFILE,Screen.UPDATES,Screen.DEVICE,Screen.TERMS)
+                (primary+Screen.entries.filter{it !in primary}).forEach { screen -> NavigationDrawerItem(label={ Text(when(screen){Screen.WORKSPACE->"Beranda";Screen.SELECT_EXAM->"Pemeriksaan";Screen.HISTORY->"Riwayat";Screen.REVIEW->"Tinjauan";Screen.PROFILE->"Profil";Screen.DEVICE->"Pengaturan";else->screen.title}) },selected=vm.screen==screen,onClick={
                     vm.screen=if(vm.unlocked || screen in setOf(Screen.WELCOME,Screen.TERMS,Screen.DEVICE))screen else Screen.WELCOME
                     scope.launch { drawer.close() }
                 }) }
             } }
         }) {
-            Scaffold(topBar={ TopAppBar(title={ Column { Text("SONRI Riset");Text("Offline • penggunaan klinis dilarang",fontSize=12.sp) } },navigationIcon={ TextButton(onClick={ scope.launch { drawer.open() } },modifier=Modifier.testTag("menu")) {Text("Menu")} },actions={if(vm.unlocked)TextButton(onClick=vm::lock){Text("Kunci")}}) }) { padding ->
+            Scaffold(topBar={ TopAppBar(title={ Column { Text("SONRI Riset");Text("${if(vm.online)"Online" else "Offline"} • AI diproses di perangkat",fontSize=12.sp) } },navigationIcon={ TextButton(onClick={ scope.launch { drawer.open() } },modifier=Modifier.testTag("menu")) {Text("Menu")} },actions={if(vm.unlocked)TextButton(onClick=vm::lock){Text("Kunci")}}) }) { padding ->
                 Column(Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(18.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
                     if(vm.message.isNotBlank())Surface(color=Color(0xFFFFEDC2),shape=RoundedCornerShape(12.dp)) { Text(vm.message,Modifier.padding(12.dp).testTag("status")) }
                     if(vm.busy) { LinearProgressIndicator(Modifier.fillMaxWidth());Text(vm.status);Action("Batalkan",action=vm::cancel) }
@@ -55,14 +65,14 @@ import java.util.Locale
                     Heading(visible.title)
                     when(visible) {
                         Screen.WELCOME -> {
-                            Text("Aplikasi Android native untuk riset. Foto dan inferensi diproses di perangkat tanpa API atau server.")
+                            Text("Selamat datang di SONRI. AI gambar berjalan di perangkat, saat terhubung maupun offline. Akun dan sinkronisasi riset tersedia setelah konfigurasi terpisah.")
                             Hint("Hanya fixture sintetis atau data nonpasien yang memiliki izin. Bukan untuk pelayanan pasien, diagnosis otomatis, atau keputusan terapi.")
-                            Hint("Kelas model UNVERIFIED; istilah ICD-10 bukan kemampuan diagnosis AI. Nama, PIN, atau kunci perangkat tidak memverifikasi profesi dokter gigi.")
+                            Hint("Makna kelas model belum terverifikasi; istilah ICD-10 bukan kemampuan diagnosis AI. Nama atau login tidak memverifikasi profesi dokter gigi.")
                             Check("Saya memahami batas riset dan tidak memakai aplikasi ini untuk perawatan pasien.",vm.disclaimerAccepted) { vm.disclaimerAccepted=it }
                             Action("Buka workspace dengan kunci perangkat",vm.disclaimerAccepted,unlock)
                             Action("Atur kunci layar Android",action=securitySettings)
                             Action("Buka katalog offline",action={vm.screen=Screen.TERMS})
-                            Hint("Catatan dienkripsi dengan kunci Android Keystore. Tidak ada backup/sinkronisasi otomatis; kerusakan, penghapusan aplikasi, atau kehilangan perangkat/kunci dapat menghilangkan seluruh catatan.")
+                            Hint("Catatan perangkat dienkripsi dengan Android Keystore. Sinkronisasi riset opsional hanya untuk catatan sintetis yang dipilih. Kerusakan, penghapusan aplikasi, atau kehilangan perangkat/kunci dapat menghilangkan catatan yang belum dapat dipulihkan.")
                         }
                         Screen.WORKSPACE -> {
                             Text("${vm.records.size} catatan riset lokal. Gambar asli tidak disimpan.")
@@ -71,7 +81,8 @@ import java.util.Locale
                             Action("Lanjutkan pemeriksaan",record!=null && !vm.busy,{vm.screen=Screen.SELECT_EXAM})
                             Action("Riwayat terenkripsi",!vm.busy,{vm.screen=Screen.HISTORY})
                             Action("Model dan kompatibilitas",action={vm.screen=Screen.DEVICE})
-                            Hint("Tidak ada login Firebase dan tidak ada sinkronisasi. Aplikasi terkunci saat meninggalkan layar; pemilih file sistem dapat meminta otorisasi perangkat lagi.")
+                            Action("Profil dan sinkronisasi",action={vm.screen=Screen.PROFILE})
+                            Hint(if(BuildConfig.NETWORK_ENABLED)"AI tetap di perangkat. Kelola akun dan antrean sinkronisasi sintetis di Profil. Workspace terkunci saat meninggalkan aplikasi." else "Mode riset lokal tanpa jaringan. Aplikasi terkunci saat meninggalkan layar; pemilih file sistem dapat meminta otorisasi perangkat lagi.")
                         }
                         Screen.SELECT_EXAM -> if(record==null)Action("Buat pemeriksaan",action=vm::newRecord) else {
                             Field("Alias riset (tanpa nama/NIK pasien)",record.alias,!vm.busy) { value -> vm.update { it.copy(alias=value.take(80)) } }
@@ -86,7 +97,7 @@ import java.util.Locale
                             Action("Simpan draft terenkripsi",vm.consentReady() && !vm.busy,{try {vm.save()}catch(_:Exception){vm.notice("Draft belum memenuhi kontrak atau kapasitas penyimpanan.")}})
                         }
                         Screen.IMPORT -> {
-                            Hint("Pilih hanya gambar lokal berizin. Pemilih foto Android dapat menawarkan penyedia cloud milik sistem; aplikasi SONRI tidak memiliki izin INTERNET. Untuk uji offline, gunakan file lokal/fixture bawaan.")
+                            Hint(if(BuildConfig.NETWORK_ENABLED)"Pilih hanya gambar lokal berizin. Pemilih foto Android dapat menawarkan penyedia cloud milik sistem. SONRI memproses gambar di perangkat; sinkronisasi riset tidak mengirim gambar. Untuk uji offline, gunakan file lokal/fixture bawaan." else "Pilih hanya gambar lokal berizin. Pemilih foto Android dapat menawarkan penyedia cloud milik sistem; aplikasi SONRI tidak memiliki izin INTERNET. Untuk uji offline, gunakan file lokal/fixture bawaan.")
                             Action("Pilih gambar Android",vm.consentReady() && !vm.busy && record?.review==null,pickImage)
                             Action("Kamera lokal",vm.consentReady() && !vm.busy && record?.review==null,{vm.screen=Screen.CAMERA})
                             Action("Buka fixture geometris sintetis",vm.consentReady() && !vm.busy && record?.review==null,vm::syntheticImage)
@@ -101,20 +112,28 @@ import java.util.Locale
                             } ?: Hint("Belum ada gambar.")
                             Hint("Pemeriksaan teknis ini bukan penilai kelayakan klinis, lokasi gigi, atau modalitas yang tervalidasi.")
                             Check("Saya memeriksa gambar dan memahami batas kualitas/modalitas untuk riset.",vm.qualityAcknowledged,!vm.busy) { vm.qualityAcknowledged=it }
-                            Action("Jalankan AI lokal sebenarnya",vm.image!=null && vm.qualityAcknowledged && !vm.busy,vm::analyze)
+                            AnalysisStatus(vm)
+                            if(!vm.modelReady()) {
+                                Action("Impor model lokal untuk analisis",!vm.busy && !vm.cloud.busy,{vm.screen=Screen.DEVICE})
+                                Hint("Setelah impor melalui pemilih file Android, buka kembali gambar atau fixture karena gambar di RAM dikosongkan saat workspace terkunci.")
+                            }
+                            Action("Jalankan AI lokal sebenarnya",vm.modelReady() && vm.image!=null && vm.qualityAcknowledged && vm.consentReady() && record?.review==null && !vm.busy && !vm.cloud.busy,vm::analyze)
                         }
                         Screen.ANALYSIS -> {
                             Hint("CPUExecutionProvider • float32 • 704×704 • dua thread. Tidak ada kuantisasi atau perubahan resolusi model. Target 15 detik belum merupakan hasil pengukuran ponsel.")
-                            Action("Analisis gambar aktif",vm.image!=null && !vm.busy && vm.qualityAcknowledged,vm::analyze)
-                            Action("Periksa model lokal",!vm.busy,{vm.screen=Screen.DEVICE})
+                            AnalysisStatus(vm)
+                            Action("Analisis gambar aktif",vm.modelReady() && vm.image!=null && vm.qualityAcknowledged && vm.consentReady() && record?.review==null && !vm.busy && !vm.cloud.busy,vm::analyze)
+                            Action(if(vm.modelReady())"Periksa model lokal" else "Impor model lokal untuk analisis",!vm.busy && !vm.cloud.busy,{vm.screen=Screen.DEVICE})
                         }
                         Screen.RESULTS -> {
+                            Heading("Hasil Analisis Awal SONRI AI")
+                            if(record?.ai!=null)Text("AI telah menganalisis gambar dan menandai area yang perlu diperhatikan.")
+                            Hint("Rilis riset: makna kategori model belum terverifikasi. Hasil AI merupakan informasi pendukung dan bukan diagnosis medis. Konsultasikan dengan dokter gigi untuk pemeriksaan, diagnosis, dan penanganan yang tepat.")
                             if(vm.image!=null && record?.ai!=null)BoxOverlay(vm.image!!.bitmap,record.ai.findings)
                             else Hint("Gambar tidak disimpan. Impor ulang gambar identik untuk menampilkan overlay catatan sebelumnya.")
                             record?.ai?.let { ai ->
-                                Text("${ai.findings.size} deteksi mentah • UNVERIFIED")
+                                Text("${ai.findings.size} area ditandai • kategori belum terverifikasi")
                                 Hint("Nol deteksi bukan bukti sehat. Skor model tidak terkalibrasi sebagai probabilitas penyakit.")
-                                ai.findings.forEach { Text("${it.rawLabel} • skor %.4f • ${it.box}".format(Locale.US,it.score)) }
                                 Action("Bukti eksekusi dan keterbatasan",action={vm.screen=Screen.EVIDENCE})
                             } ?: Hint("Belum ada eksekusi model berhasil. Tidak ada kotak buatan atau fallback server.")
                             Action("Masukkan pemeriksaan secara terpisah",record!=null,{vm.screen=Screen.EXAM})
@@ -124,6 +143,7 @@ import java.util.Locale
                                 Text("Model: ${ai.modelVersion}\nSHA-256: ${ai.modelSha256}\n${ai.runtime}\n${ai.provider}")
                                 Text("Hash: %.1f ms\nLoad: %.1f ms\nPreprocess: %.1f ms\nInferensi: %.1f ms\nTotal: %.1f ms".format(Locale.US,ai.hashMs,ai.loadMs,ai.preprocessMs,ai.inferenceMs,ai.totalMs))
                                 Hint("Hash gambar: ${ai.imageSha256}\n${ai.width} × ${ai.height}\n${ai.preprocessing}")
+                                ai.findings.forEach { Text("${it.rawLabel} • skor mentah %.4f • ${it.box}".format(Locale.US,it.score)) }
                             } ?: Hint("Belum ada bukti inferensi.")
                             Hint("Semua RAW_CLASS_0..4 tetap UNVERIFIED. Tidak ada binding penyakit/ICD-10, FDI otomatis, healthy class, atau validasi klinis. Modalitas dan makna kelas RF-DETR belum memiliki kontrak sumber otoritatif.")
                         }
@@ -202,6 +222,8 @@ import java.util.Locale
                                 Action("Reset seluruh data riset dan model lokal...",!vm.busy,{resetting=true})
                             } else Hint("Buka workspace dengan kunci perangkat untuk impor model dan pengaturan data.")
                         }
+                        Screen.PROFILE -> AccountPanel(vm)
+                        Screen.UPDATES -> id.sonri.offline.hybrid.UpdatePanel(vm)
                     }
                     Spacer(Modifier.height(20.dp))
                 }
@@ -257,7 +279,7 @@ import java.util.Locale
         findings.forEach { f ->
             val left=fit.left+f.box[0]*fit.width;val top=fit.top+f.box[1]*fit.height
             drawRect(Color.Yellow,androidx.compose.ui.geometry.Offset(left,top),androidx.compose.ui.geometry.Size((f.box[2]-f.box[0])*fit.width,(f.box[3]-f.box[1])*fit.height),style=androidx.compose.ui.graphics.drawscope.Stroke(2.dp.toPx()))
-            drawIntoCanvas{it.nativeCanvas.drawText(f.rawLabel,left,maxOf(fit.top+paint.textSize,top),paint)}
+            drawIntoCanvas{it.nativeCanvas.drawText("Area ${findings.indexOf(f)+1}",left,maxOf(fit.top+paint.textSize,top),paint)}
         }
     }
 }

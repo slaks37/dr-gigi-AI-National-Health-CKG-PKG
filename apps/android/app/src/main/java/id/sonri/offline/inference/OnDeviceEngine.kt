@@ -7,11 +7,11 @@ import java.util.concurrent.atomic.AtomicReference
 import java.util.concurrent.atomic.AtomicInteger
 
 data class EngineRun(val evidence: InferenceEvidence,val boxes: FloatArray,val logits: FloatArray)
-class OnDeviceEngine {
+class OnDeviceEngine:InferenceProvider {
     private val active=AtomicReference<OrtSession.RunOptions?>()
     private val generation=AtomicInteger()
-    fun cancel() { generation.incrementAndGet();try { active.get()?.setTerminate(true) } catch(_: Exception) { /* no sensitive exception payload */ } }
-    @Synchronized fun analyze(model: File,image: ResearchImage,hashMs: Double=0.0): EngineRun {
+    override fun cancel() { generation.incrementAndGet();try { active.get()?.setTerminate(true) } catch(_: Exception) { /* no sensitive exception payload */ } }
+    @Synchronized override fun analyze(model: File,image: ResearchImage,hashMs: Double): EngineRun {
         val ticket=generation.get()
         val totalStart=System.nanoTime();val env=OrtEnvironment.getEnvironment(OrtLoggingLevel.ORT_LOGGING_LEVEL_FATAL,"sonri-offline")
         val loadStart=System.nanoTime()

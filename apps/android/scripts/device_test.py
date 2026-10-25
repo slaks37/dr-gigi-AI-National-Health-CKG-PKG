@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import subprocess
 import time
+from emulator_unlock import unlock
 
 PACKAGE='id.sonri.offline.research'
 MODEL_SHA='a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0'
@@ -48,6 +49,7 @@ def main():
         if 'set to' not in pin.lower():
             pin=adb('shell','locksettings','set-pin','--old','135790','135790',allow_failure=True)
         if 'set to' not in pin.lower():raise RuntimeError('ISOLATED_EMULATOR_SCREEN_LOCK_SETUP_FAILED')
+        unlock(adb)
     if adb('shell','settings','get','global','airplane_mode_on').strip()!='1':raise ValueError('USER_CONFIRMED_AIRPLANE_MODE_REQUIRED')
     adb('install','-r','-t',str(args.apk));adb('install','-r','-t',str(args.test_apk))
     adb('shell','am','force-stop',PACKAGE)

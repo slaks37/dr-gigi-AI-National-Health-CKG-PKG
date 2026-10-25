@@ -1,0 +1,12 @@
+{
+  "schema": "sonri.hybrid.owner-cloud-approval.v1",
+  "projectId": "sonri-hybrid-research-20261025",
+  "firestoreLocation": "asia-southeast2",
+  "plan": "SPARK",
+  "billingAccountLinkAllowed": false,
+  "syntheticOnly": true,
+  "approvalReference": "owner-chat-20261025-free-hosted",
+  "appDistributionGroup": "sonri-owner-research",
+  "testerScope": "EXPLICITLY_APPROVED_OWNER_ONLY",
+  "productionChangesAllowed": false
+}

@@ -11,3 +11,4 @@ local.properties
 private/
 evidence/local/
 .kotlin/
+**/assets/generated/

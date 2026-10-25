@@ -33,6 +33,19 @@ class NativeWorkflowTest {
             compose.onNodeWithTag("action-Buka fixture geometris sintetis").performScrollTo().performClick()
             compose.waitUntil(15_000){vm?.screen==Screen.QUALITY && vm?.busy==false}
             compose.activityRule.scenario.onActivity {assertNotNull(vm!!.image);assertNull(vm!!.current!!.ai)}
+            // The public APK has no weights: acknowledge quality so model readiness is the remaining gate.
+            compose.onNodeWithText("Saya memeriksa gambar dan memahami batas kualitas/modalitas untuk riset.").performScrollTo().performClick()
+            var modelReady=false
+            compose.activityRule.scenario.onActivity {modelReady=vm!!.modelReady()}
+            compose.onNodeWithTag("analysis-model-status").performScrollTo().assertIsDisplayed()
+            if(!modelReady){
+                compose.onNodeWithTag("action-Jalankan AI lokal sebenarnya").performScrollTo().assertIsNotEnabled()
+                compose.activityRule.scenario.onActivity {vm!!.analyze();assertNull(vm!!.current!!.ai)}
+                compose.onNodeWithTag("analysis-status").performScrollTo().assertIsDisplayed()
+                compose.onNodeWithTag("action-Impor model lokal untuk analisis").performScrollTo().performClick()
+                compose.onNodeWithText("Perangkat dan model").performScrollTo().assertIsDisplayed()
+                compose.onNodeWithTag("action-Impor ONNX lokal terverifikasi").performScrollTo().assertIsNotEnabled()
+            }
         } finally {compose.activityRule.scenario.onActivity {vm?.delete(id);vm?.lock()}}
     }
     @Test fun syntheticOdontogramPersistsAndWorkspaceLocksWhenBackgrounded() {

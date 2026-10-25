@@ -29,7 +29,7 @@ class OfflinePlatformTest {
     private val context=instrumentation.targetContext
     @Test fun coreManifestHasNoNetworkStorageOrAudioPermission() {
         @Suppress("DEPRECATION") val permissions=context.packageManager.getPackageInfo(context.packageName,PackageManager.GET_PERMISSIONS).requestedPermissions.orEmpty()
-        assertFalse(Manifest.permission.INTERNET in permissions)
+        assertEquals(BuildConfig.NETWORK_ENABLED,Manifest.permission.INTERNET in permissions)
         assertFalse(Manifest.permission.READ_EXTERNAL_STORAGE in permissions)
         assertFalse(Manifest.permission.RECORD_AUDIO in permissions)
         assertEquals(0,context.applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_ALLOW_BACKUP)
