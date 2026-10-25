@@ -1,0 +1,468 @@
+{
+  "status": "UNVERIFIED_CONTRACT_CONFLICT",
+  "clinical_use": "PROHIBITED",
+  "clinical_approval": false,
+  "disease_mapping_authorized": false,
+  "class_bindings": [],
+  "images_read": 0,
+  "model_runs": 0,
+  "training_runs": 0,
+  "method": "Full pinned annotation-text traversal; byte comparison with original YOLO files and one-to-one geometry association with per-file COCO category names. Associations are descriptive evidence only.",
+  "training_annotation_manifest_sha256": "20d4ca2f8442841251ebbc13f39711b7dd51268bfdbb9d9a8a9603cd344dc49e",
+  "training_annotation_manifest_formula": "SHA256 of sorted relative source label paths plus NUL plus file SHA256, joined by newline; source paths remain private.",
+  "original_yolo_unique_stems": 2245,
+  "original_yolo_files": 2245,
+  "coco_category_orders": {
+    "train": {
+      "1": "d",
+      "2": "D"
+    },
+    "valid": {
+      "1": "d",
+      "2": "D"
+    },
+    "test": {
+      "1": "D",
+      "2": "d"
+    }
+  },
+  "coco_file_sha256": {
+    "train": "3bf6f8addfe491a0b1cebd9bcf9a0427c251e17796d6e58a4e89a33757532be5",
+    "valid": "98cdedb6293fc2a77da80814f0816a8106fce963a2c4aab0885e6594f5c91bd6",
+    "test": "764e7a0e6e7574ff97894916dc47d13dae789d1ac5642dbf0c7625450d924128"
+  },
+  "source_splits": {
+    "train": {
+      "counts": {
+        "files": 1846,
+        "empty_label_files": 421,
+        "byte_identical_original_yolo": 1447,
+        "unmatched_coco_boxes_at_iou095": 2,
+        "no_original_yolo_stem": 399,
+        "no_coco_reference_stem": 399
+      },
+      "raw_annotation_box_counts": {
+        "0": 4365,
+        "1": 358
+      },
+      "geometry_associations_iou095": {
+        "raw_0->COCO_D": 4364,
+        "raw_1->COCO_d": 357
+      },
+      "geometry_associations_iou098": {
+        "raw_0->COCO_D": 4081,
+        "raw_1->COCO_d": 327
+      },
+      "unmatched_yolo_boxes_at_iou095": {
+        "0": 1,
+        "1": 1
+      }
+    },
+    "val": {
+      "counts": {
+        "files": 327,
+        "empty_label_files": 72,
+        "byte_identical_original_yolo": 255,
+        "unmatched_coco_boxes_at_iou095": 0,
+        "no_original_yolo_stem": 72,
+        "no_coco_reference_stem": 72
+      },
+      "raw_annotation_box_counts": {
+        "0": 773,
+        "1": 80
+      },
+      "geometry_associations_iou095": {
+        "raw_0->COCO_D": 773,
+        "raw_1->COCO_d": 80
+      },
+      "geometry_associations_iou098": {
+        "raw_0->COCO_D": 710,
+        "raw_1->COCO_d": 75
+      },
+      "unmatched_yolo_boxes_at_iou095": {}
+    },
+    "test": {
+      "counts": {
+        "files": 332,
+        "empty_label_files": 78,
+        "byte_identical_original_yolo": 254,
+        "unmatched_coco_boxes_at_iou095": 0,
+        "no_original_yolo_stem": 78,
+        "no_coco_reference_stem": 78
+      },
+      "raw_annotation_box_counts": {
+        "0": 785,
+        "1": 65
+      },
+      "geometry_associations_iou095": {
+        "raw_0->COCO_D": 785,
+        "raw_1->COCO_d": 65
+      },
+      "geometry_associations_iou098": {
+        "raw_0->COCO_D": 750,
+        "raw_1->COCO_d": 57
+      },
+      "unmatched_yolo_boxes_at_iou095": {}
+    }
+  },
+  "representative_annotation_evidence": [
+    {
+      "daath_split": "train",
+      "annotation_sha256": "d3ad8ea241a585b227d36f2664c7ddeaa054bfb936c6af9cabe8b3c5d2e67b8a",
+      "reference_coco_partition": "valid",
+      "matched_associations": [
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9876775849095426
+        }
+      ]
+    },
+    {
+      "daath_split": "train",
+      "annotation_sha256": "f57459621a7948b43f99fbc07bc902054f6f3be7eb732e1b029ede9b829ed905",
+      "reference_coco_partition": "train",
+      "matched_associations": [
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9804131525507449
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9869462872317962
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9808197169402921
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9926091037448087
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9812192877188362
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9845490347020697
+        }
+      ]
+    },
+    {
+      "daath_split": "train",
+      "annotation_sha256": "5fa4a501979292c355ddceaa243fcdbf58bbabbc0575ef0232a9eafa804cf7bd",
+      "reference_coco_partition": "test",
+      "matched_associations": [
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9950605170714015
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9941813769308113
+        }
+      ]
+    },
+    {
+      "daath_split": "val",
+      "annotation_sha256": "5969bc095d646c15c50260a3e97368530618133aba5f8b5c63608ce0742bcadb",
+      "reference_coco_partition": "train",
+      "matched_associations": [
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9911023196063141
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9927386515265254
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9945304994820852
+        }
+      ]
+    },
+    {
+      "daath_split": "val",
+      "annotation_sha256": "d1083d536bb9ee6b920d0c4334d7a048c98ad7bf888577606718b09acca82130",
+      "reference_coco_partition": "train",
+      "matched_associations": [
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9933454958911341
+        }
+      ]
+    },
+    {
+      "daath_split": "val",
+      "annotation_sha256": "4d7b2828b18cc8ee1dcdc9686d8143153716b2d0e27b2a5eb87a6ec1f5856c90",
+      "reference_coco_partition": "train",
+      "matched_associations": [
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9874192264060384
+        }
+      ]
+    },
+    {
+      "daath_split": "test",
+      "annotation_sha256": "15bfeb2fd4215e1c7214f3e536985bf03584ed7f41c1321e81cf36c76d343bb4",
+      "reference_coco_partition": "train",
+      "matched_associations": [
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9948971380843283
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9909198807307159
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9979013032169208
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9935654458035349
+        }
+      ]
+    },
+    {
+      "daath_split": "test",
+      "annotation_sha256": "86e176b9869686271bc18f1291c10196781d71bfe9c15109e07343118764df78",
+      "reference_coco_partition": "train",
+      "matched_associations": [
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9899140634139698
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9960070310766638
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9910614953738285
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9934948486671474
+        },
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9860901122533793
+        }
+      ]
+    },
+    {
+      "daath_split": "test",
+      "annotation_sha256": "e8f22a68d3ff69ac979d6f23f88e443ee753e5900e3f51304b2e2aa8b542fd5d",
+      "reference_coco_partition": "train",
+      "matched_associations": [
+        {
+          "raw_class_id": 0,
+          "coco_name": "D",
+          "geometry_iou": 0.9914728278391166
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "COCO and YOLO are conversions of the same source annotations, not independent clinical reference standards.",
+    "Filenames alone do not prove patient identity or independence. Empty labels do not prove health.",
+    "Geometry matching can omit small/changed/overlapping boxes; all unmatched counts remain explicit.",
+    "No converter revision, source-author adjudication or signed full checkpoint training export has been recovered; associations do not authorize an inverse mapping."
+  ],
+  "schema_version": "sonri.phase3-label-provenance.v1",
+  "verified_on": "2026-10-25",
+  "source_commit": "f02596a0227b9eaf767b955cd67196236111a3d5",
+  "source_url": "https://github.com/slaks37/dental_study/tree/f02596a0227b9eaf767b955cd67196236111a3d5",
+  "initial_commit": "3876e982997375df2535904e700136e2e26e1eaf",
+  "configuration_evidence": [
+    {
+      "source_path": "Dataset/classes.txt",
+      "sha256": "16fb9643af1c993b77aeb6ad5927c0e063d4500887a8b37db16f3253e6ae0f58",
+      "git_blob": "c0c4fd84673d57db1cdc185a53da10a3d12130d5",
+      "history_commits": [
+        "3876e982997375df2535904e700136e2e26e1eaf"
+      ]
+    },
+    {
+      "source_path": "yolo_split/data.yaml",
+      "sha256": "8b7c1dde7c362152672b350d1b032780d294acf0b016a07d377242beb8541c0b",
+      "git_blob": "d9e1fdb2669c4a6cd530bb61ce5577563965aa79",
+      "history_commits": [
+        "3876e982997375df2535904e700136e2e26e1eaf"
+      ]
+    },
+    {
+      "source_path": "colab.ipynb",
+      "sha256": "dbf361b1d4e1d48305a33797c7fd8913a3c89c45c4d6c1befe9442e2cf01e6e3",
+      "git_blob": "3b5b7e3478fa4b650d33b8d673bf777ea5a1e895",
+      "history_commits": [
+        "3876e982997375df2535904e700136e2e26e1eaf"
+      ]
+    },
+    {
+      "source_path": "prepare_data.py",
+      "sha256": "693e841d7e3817e5f815afa9049e8ce4b4f6c181499b3fb19a289e0b9f3a8be1",
+      "git_blob": "d2464c4318d9fe2de97e551c8870e3557f907b8d",
+      "history_commits": [
+        "3876e982997375df2535904e700136e2e26e1eaf"
+      ]
+    },
+    {
+      "source_path": "train_yolo.py",
+      "sha256": "a640abe7d5ec668ff9efb4ce1ef2c5f0fced286d2390f4f636ce6adc26bd19c2",
+      "git_blob": "76b918630dbd4cc493a1d3df486438819eb3c2ac",
+      "history_commits": [
+        "3876e982997375df2535904e700136e2e26e1eaf"
+      ]
+    }
+  ],
+  "notebook_operations": [
+    {
+      "cell_number_1based": 7,
+      "line_number_in_cell_1based": 4,
+      "source_line": "URL  = 'https://zenodo.org/records/14827784/files/Dataset.zip?download=1'"
+    },
+    {
+      "cell_number_1based": 9,
+      "line_number_in_cell_1based": 23,
+      "source_line": "images.setdefault(p.stem, p)"
+    },
+    {
+      "cell_number_1based": 9,
+      "line_number_in_cell_1based": 25,
+      "source_line": "labels.setdefault(p.stem, p)"
+    },
+    {
+      "cell_number_1based": 9,
+      "line_number_in_cell_1based": 27,
+      "source_line": "pairs = [(images[k], labels.get(k)) for k in images]"
+    },
+    {
+      "cell_number_1based": 9,
+      "line_number_in_cell_1based": 57,
+      "source_line": "shutil.copy2(lbl, dst_lbl)"
+    },
+    {
+      "cell_number_1based": 9,
+      "line_number_in_cell_1based": 59,
+      "source_line": "dst_lbl.write_text('')"
+    },
+    {
+      "cell_number_1based": 9,
+      "line_number_in_cell_1based": 69,
+      "source_line": "'names': {0: 'd', 1: 'D'},  # d = primary tooth decay, D = permanent"
+    },
+    {
+      "cell_number_1based": 11,
+      "line_number_in_cell_1based": 6,
+      "source_line": "data='yolo_split/data.yaml',"
+    },
+    {
+      "cell_number_1based": 11,
+      "line_number_in_cell_1based": 7,
+      "source_line": "imgsz=1280,"
+    },
+    {
+      "cell_number_1based": 11,
+      "line_number_in_cell_1based": 9,
+      "source_line": "batch=32,"
+    },
+    {
+      "cell_number_1based": 13,
+      "line_number_in_cell_1based": 3,
+      "source_line": "r = model.val(data='yolo_split/data.yaml', split='test', imgsz=1280, device=0)"
+    }
+  ],
+  "repository_commit_history": [
+    {
+      "sha": "f02596a0227b9eaf767b955cd67196236111a3d5",
+      "subject": "readme: minimalist chart redesign (one accent color, rounded bars, no chartjunk)"
+    },
+    {
+      "sha": "3607c6e1574b4cbf6f0a48349b1303fb7380aed9",
+      "subject": "readme: replace matplotlib charts with polished Plotly versions (transparent bg for dark/light adaptivity)"
+    },
+    {
+      "sha": "ec3b144ccc6505936f23f56bb2c4e86fe04069dc",
+      "subject": "readme: add prominent download links section (YOLO, LoRA, GGUF)"
+    },
+    {
+      "sha": "8234a046490504901203a6c174b39c9ca4c95d0b",
+      "subject": "readme: full visual overhaul \u2014 pipeline diagram, charts, sample close-ups"
+    },
+    {
+      "sha": "f7fe04fedbae64f39b8065a4ab9da7f9c299d7a8",
+      "subject": "readme: drop medical-data warning callout"
+    },
+    {
+      "sha": "3876e982997375df2535904e700136e2e26e1eaf",
+      "subject": "Initial commit: YOLO + fine-tuned MedGemma caries pipeline"
+    }
+  ],
+  "checkpoint_metadata": {
+    "schema_version": "sonri.checkpoint-metadata.v1",
+    "checkpoint_sha256": "7d5f7dcf616f1febbbb28f2552f9d8a2c3e31e90b3c5b03bf26114502dea621d",
+    "inspection_method": "digest-verified ZIP, pickle globals replaced by inert local stand-ins; no tensor deserialization or checkpoint code execution",
+    "top_level_keys": [
+      "epoch",
+      "best_fitness",
+      "model",
+      "ema",
+      "updates",
+      "optimizer",
+      "scaler",
+      "train_args",
+      "train_metrics",
+      "train_results",
+      "date",
+      "version",
+      "git",
+      "license",
+      "docs"
+    ],
+    "raw_class_names": {
+      "0": "d",
+      "1": "D"
+    },
+    "training": {
+      "data": "yolo_split/data.yaml",
+      "model": "yolo11m.pt",
+      "imgsz": 1280,
+      "batch": 32,
+      "epochs": 120,
+      "dataset_file": null,
+      "num_classes": null,
+      "class_names": null,
+      "input_size": null,
+      "resolution": null
+    },
+    "class_name_metadata": {}
+  }
+}

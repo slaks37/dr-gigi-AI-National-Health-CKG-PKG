@@ -1,7 +1,7 @@
 {
   "schema_version": "sonri.class-mapping-evidence.v1",
-  "version": "2026-10-24.1",
-  "verified_on": "2026-10-24",
+  "version": "2026-10-25.1",
+  "verified_on": "2026-10-25",
   "clinical_use": "PROHIBITED",
   "meaning_of_verified": "Only explicitly scoped source class definitions/raw order may be verified. Both checkpoint semantic mappings remain UNVERIFIED; no clinical finding or ICD-10 bindings exist. Runtime outputs remain UNVERIFIED/UNCONFIRMED.",
   "mappings": [
@@ -43,9 +43,11 @@
         "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/colab.ipynb",
         "https://doi.org/10.1038/s41597-025-05647-9",
         "https://zenodo.org/api/records/14827784",
-        "docs/validation/dataset-cross-format-audit.v1.json"
+        "docs/validation/dataset-cross-format-audit.v1.json",
+        "docs/validation/phase3-label-provenance.v1.json"
       ],
       "unresolved": [
+        "Full source audit inspected 2505 split label files: 1956 match original YOLO bytes; 549 annotation-missing stems were materialized empty. Across 6424 matched boxes raw0 accompanies COCO D and raw1 accompanies d; two boxes remain unmatched. Original conversion code/version and attributable clinical/source adjudication are still absent. No inverse semantic mapping is enabled.",
         "All59selected officialYOLO boxes match LabelMe labels at IoU>=0.98: raw0 aligns source D (52boxes), raw1 aligns source d (7boxes), while checkpoint/config names say0=d/1=D. Need original conversion specification and owner/clinician adjudication covering complete training data, not a score-based relabel.",
         "No clinical performance or authorized SONRI clinician approval follows from class semantics.",
         "No mapping to VISIBLE_CAVITATION, ICD-10 subtype, severity or FDI tooth number is established.",

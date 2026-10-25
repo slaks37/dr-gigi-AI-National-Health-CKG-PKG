@@ -1,6 +1,7 @@
 import 'server-only';
 import { ApiError } from './security';
 import { z } from 'zod';
+import { inferenceHeaders } from './inference-auth';
 
 export const LabInputSchema = z.strictObject({
   model_id: z.string().regex(/^[A-Za-z0-9._-]{1,100}$/),
@@ -61,7 +62,7 @@ function serviceConfig() {
 export async function modelInventory() {
   const { base, token } = serviceConfig();
   try {
-    const response = await fetch(`${base}/v1/models`, { headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(10_000), cache: 'no-store', redirect: 'error' });
+    const response = await fetch(`${base}/v1/models`, { headers: await inferenceHeaders(base, token), signal: AbortSignal.timeout(10_000), cache: 'no-store', redirect: 'error' });
     if (!response.ok) throw new Error('upstream');
     return InventorySchema.parse(await boundedJson(response));
   } catch { throw new ApiError(503, 'Inference inventory unavailable'); }
@@ -73,7 +74,7 @@ export async function researchInference(input: z.infer<typeof LabInputSchema>) {
   form.set('research_opt_in', 'true');
   form.set('file', new Blob([Buffer.from(input.data, 'base64')], { type: input.mime_type }), 'synthetic-fixture');
   try {
-    const response = await fetch(`${base}/v1/infer`, { method: 'POST', body: form, headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(60_000), cache: 'no-store', redirect: 'error' });
+    const response = await fetch(`${base}/v1/infer`, { method: 'POST', body: form, headers: await inferenceHeaders(base, token), signal: AbortSignal.timeout(60_000), cache: 'no-store', redirect: 'error' });
     if (!response.ok) throw new Error('upstream');
     const body = ResearchResultSchema.parse(await boundedJson(response));
     // A research response can never be promoted to a clinical observation.

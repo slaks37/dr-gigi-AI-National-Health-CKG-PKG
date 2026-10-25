@@ -12,6 +12,14 @@ describe('application → inference boundary', () => {
     vi.stubEnv('SONRI_INFERENCE_URL', ''); vi.stubEnv('SONRI_INFERENCE_TOKEN', '');
     await expect(modelInventory()).rejects.toThrow('INFERENCE_NOT_CONFIGURED');
   });
+  it('never falls back to a worker-only call when platform identity configuration is invalid', async () => {
+    configured(); vi.stubEnv('SONRI_INFERENCE_AUTH_MODE', 'GOOGLE_ADC');
+    vi.stubEnv('SONRI_INFERENCE_AUDIENCE', 'https://sonri-fixture.run.app');
+    const fetcher = vi.fn(); vi.stubGlobal('fetch', fetcher);
+    await expect(modelInventory()).rejects.toThrow('Inference inventory unavailable');
+    await expect(researchInference(input)).rejects.toThrow('no result has been saved');
+    expect(fetcher).not.toHaveBeenCalled();
+  });
   it('sends only bounded synthetic media and server-side authentication', async () => {
     configured(); const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify(output))); vi.stubGlobal('fetch', fetcher);
     const result = await researchInference(input); expect(result.clinical_use).toBe('PROHIBITED');

@@ -1,0 +1,17 @@
+{
+  "project_id": "replace-staging-project",
+  "region": "asia-southeast2",
+  "service": "sonri-inference-staging",
+  "profile": "onnx-cpu",
+  "image": "asia-southeast2-docker.pkg.dev/replace-staging-project/sonri/inference@sha256:REPLACE_WITH_REVIEWED_64_HEX_DIGEST",
+  "worker_service_account": "sonri-worker@replace-staging-project.iam.gserviceaccount.com",
+  "caller_service_account": "sonri-app@replace-staging-project.iam.gserviceaccount.com",
+  "token_secret": "sonri-inference-token",
+  "token_secret_version": "1",
+  "model_bucket": null,
+  "registry_secret": null,
+  "registry_secret_version": null,
+  "model_authorization_reference": null,
+  "license_review_reference": null,
+  "billing_approval_reference": null
+}

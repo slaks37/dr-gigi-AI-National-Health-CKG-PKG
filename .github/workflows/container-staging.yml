@@ -12,6 +12,7 @@ on:
       - src/**
       - services/inference/**
       - ops/staging/**
+      - ops/cloud-run/**
       - tests/workflow/**
       - .github/workflows/container-staging.yml
 permissions:
@@ -39,4 +40,33 @@ jobs:
         with:
           name: synthetic-container-staging-evidence
           path: ops/staging/evidence/
+          retention-days: 14
+
+  cloud-run-image-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SONRI_TESTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Offline Cloud Run configuration, cost and port checks
+        run: python -m unittest discover -s ops/cloud-run -p 'test_*.py' -v
+      - name: Hosted boundary transport fixtures (no hosted IAM claim)
+        run: npx vitest run --config ops/cloud-run/vitest.config.mts
+      - name: Build Cloud Run CPU image and test real local container ports
+        run: bash ops/cloud-run/smoke.sh
+      - name: Publish local container contract evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloud-run-local-container-contract
+          path: ops/cloud-run/generated/port-contract.ndjson
           retention-days: 14

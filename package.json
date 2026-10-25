@@ -20,6 +20,7 @@
   "dependencies": {
     "@google/genai": "^1.43.0",
     "@hookform/resolvers": "^5.2.1",
+    "@vercel/oidc": "4.0.3",
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -28,6 +29,7 @@
     "file-saver": "^2.0.5",
     "firebase": "^12.12.1",
     "firebase-admin": "^14.3.0",
+    "google-auth-library": "11.3.0",
     "heic-decode": "^2.1.0",
     "html2canvas": "^1.4.1",
     "html2canvas-pro": "^2.0.2",
@@ -80,6 +82,9 @@
   },
   "packageManager": "npm@11.19.0",
   "overrides": {
+    "@vercel/cli-config": {
+      "zod": "$zod"
+    },
     "@grpc/grpc-js": "1.14.6",
     "postcss": "$postcss",
     "postcss-selector-parser": "7.1.6",

@@ -40,6 +40,7 @@ import * as iot from '../app/api/iot/ingest/route';
 import * as satusehat from '../app/api/satusehat/sync/route';
 import * as preferences from '../app/api/preferences/route';
 import * as coverage from '../app/api/clinical-coverage/route';
+import * as staging from '../app/api/staging-readiness/route';
 function req(path: string, token?: string, method = 'GET', body?: unknown) {
   return new NextRequest(`http://localhost/api/${path}`, { method, headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}), 'Content-Type': 'application/json' }, ...(body !== undefined ? { body: JSON.stringify(body) } : {}) });
 }
@@ -57,7 +58,7 @@ describe('API authentication', () => {
     ['records', records.GET, 'GET'], ['records', records.POST, 'POST'], ['records', records.PATCH, 'PATCH'], ['records', records.DELETE, 'DELETE'],
     ['appointments', appointments.GET, 'GET'], ['appointments', appointments.POST, 'POST'], ['activity', activity.GET, 'GET'], ['activity', activity.POST, 'POST'],
     ['stats', stats.GET, 'GET'], ['auth/sync', sync.POST, 'POST'], ['gemini/analyze', ai.POST, 'POST'], ['gemini/consultation', consultation.POST, 'POST'],
-    ['iot/ingest', iot.POST, 'POST'], ['iot/ingest', iot.GET, 'GET'], ['satusehat/sync', satusehat.POST, 'POST'], ['preferences', preferences.POST, 'POST'], ['clinical-coverage', coverage.GET, 'GET'],
+    ['iot/ingest', iot.POST, 'POST'], ['iot/ingest', iot.GET, 'GET'], ['satusehat/sync', satusehat.POST, 'POST'], ['preferences', preferences.POST, 'POST'], ['clinical-coverage', coverage.GET, 'GET'], ['staging-readiness', staging.GET, 'GET'],
   ] as const)('denies anonymous %s %s', async (path, handler, method) => {
     const response = await handler(req(path, undefined, method, method === 'POST' || method === 'PATCH' ? {} : undefined));
     expect(response.status).toBe(401); expect(response.headers.get('cache-control')).toContain('no-store');
@@ -121,6 +122,10 @@ describe('ownership and RBAC', () => {
   });
 });
 describe('truthful integration status', () => {
+  it('does not report a legacy deployment as isolated hosted staging', async () => {
+    expect((await staging.GET(req('staging-readiness', 'patient-a'))).status).toBe(403);
+    expect((await staging.GET(req('staging-readiness', 'admin'))).status).toBe(404);
+  });
   it('returns code-specific evidence status and rejects absent terminology after authentication', async () => {
     const response = await coverage.GET(req('clinical-coverage?code=K02.9', 'patient-a'));
     expect(response.status).toBe(200);

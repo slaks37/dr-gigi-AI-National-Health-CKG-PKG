@@ -22,6 +22,8 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
+      - name: Isolated hosted Firebase guard checks (no provider writes)
+        run: node --test ops/firebase-staging/guards.test.mjs
       - name: Check generated evidence matrix is current
         run: |
           npm run coverage:export
@@ -31,6 +33,15 @@ jobs:
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - name: Compiled hosted-staging identity fixture (loopback only)
+        run: node ops/firebase-staging/config-build-smoke.mjs
+      - name: Preserve compiled staging fixture evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-staging-configuration-fixture
+          path: ops/firebase-staging/generated/config-build-smoke.json
+          retention-days: 14
       - name: Synthetic authenticated clinical workflow (separate .next-workflow output)
         run: npm run test:workflow
       - uses: actions/upload-artifact@v4
@@ -60,10 +71,13 @@ jobs:
         working-directory: services/inference
       - name: Evaluation leakage, matching and checkpoint inspection regression tests
         run: python -m pytest -q services/evaluation/tests
+      - name: Offline Cloud Run deployment contract
+        run: python -m unittest discover -s ops/cloud-run -p 'test_*.py' -v
       - name: Redacted credential regression checks
         run: |
           python -B scripts/security-scan.test.py
           python -B scripts/security-scan.py
+          python -B scripts/incident-attestation.test.py
       - name: Verify default deployment has no enabled checkpoint
         run: |
           python - <<'PYTHON'

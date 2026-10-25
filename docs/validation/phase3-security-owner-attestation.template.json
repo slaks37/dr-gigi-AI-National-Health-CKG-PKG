@@ -1,0 +1,13 @@
+{
+  "schema_version": "sonri.incident-owner-attestation.v1",
+  "incident_id": "SONRI-SUPPORTING-SOURCE-EXPOSURE-20261024",
+  "attestor_reference": null,
+  "attested_at": null,
+  "exposed_credential_revoked": false,
+  "revoked_at": null,
+  "replacement_status": "PENDING",
+  "provider_usage_review_completed": false,
+  "affected_source_and_bundle_cleanup_completed": false,
+  "history_and_cache_exposure_assessed": false,
+  "evidence_ticket_reference": null
+}

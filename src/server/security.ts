@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { assertFirebaseStagingRuntime } from '../config/firebase';
 
 export type Principal = { uid: string; role: 'patient' | 'doctor' | 'admin'; email?: string; clinicalReviewer?: boolean; datasetScopes?: string[] };
 export class ApiError extends Error {
@@ -12,6 +13,7 @@ export async function authenticate(req: NextRequest): Promise<Principal> {
   if (!header?.startsWith('Bearer ') || header.length > 8192) throw new ApiError(401, 'Authentication required');
   if (process.env.SONRI_RESEARCH_PREVIEW === '1') throw new ApiError(503, 'Research preview: clinical storage and account workflows are disabled');
   try {
+    assertFirebaseStagingRuntime();
     const { adminAuth } = await import('../lib/firebase-admin');
     // Revocation and disabled-account checks are mandatory.
     return principalFromClaims(await adminAuth.verifyIdToken(header.slice(7), true));

@@ -4,6 +4,8 @@ Branch: `codex/sonri-integrated-platform`, based on main commit `e02f602`.
 
 Phase 2 continues verified commit `b1c9b395d0feece7898583f43a4dbc82ce79459b` on the same branch. The existing implementation is preserved. [Executed container evidence](validation/staging-acceptance.v1.json) records the tested branch and GitHub merge revisions separately.
 
+The subsequent [Phase 3 evidence and blockers](PHASE3_STATUS.md) cover full-source label provenance, independent benchmark tooling, keyless Cloud Run identity and isolated Firebase staging preparation. Earlier execution records below retain their original scope.
+
 This delivery is a functioning integrated research application with real local pretrained execution. It does **not** satisfy the entire software or clinical-production definition of done: operational hosted identity/database/inference staging, additional verified model bundles, independent clinical benchmarks and clinical/regulatory approvals remain outstanding. Production has not been merged, promoted, migrated or activated.
 
 ## Preserved Phase 1 implementation

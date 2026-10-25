@@ -1,6 +1,6 @@
 {
   "coverage_version": "icd10-evidence-coverage-2",
-  "evidence_version": "sonri-coverage-evidence-2026-10-24.1",
+  "evidence_version": "sonri-coverage-evidence-2026-10-25.1",
   "terminology_version": "WHO-ICD10-2010",
   "clinical_use": "PROHIBITED",
   "summary": {
@@ -15,7 +15,9 @@
   "limitations": [
     "Source class definitions and synthetic runtime success do not establish a clinically reviewed visual-finding binding.",
     "Published-source test reproductions do not establish an independent patient-disjoint clinician-reviewed evaluation cohort.",
-    "No per-code clinical validation approval has been supplied. This ledger cannot activate clinical inference."
+    "No per-code clinical validation approval has been supplied. This ledger cannot activate clinical inference.",
+    "Full-source class-conversion tracing still leaves the semantic contract unresolved; empty annotation files are not verified healthy controls.",
+    "Phase 3 cohort-audit tools, threshold protocols and hosting contracts are preparation evidence, not completed independent clinical evaluation."
   ],
   "rows": [
     {

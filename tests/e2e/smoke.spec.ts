@@ -7,7 +7,7 @@ test('settings reports real integration readiness without fake credentials', asy
   await expect(page.getByText('drgigi_live_sec_88491028471928')).toHaveCount(0);
 });
 test('anonymous medical APIs cannot be read or written', async ({ request }) => {
-  for (const url of ['/api/records?role=admin', '/api/activity', '/api/stats', '/api/iot/ingest', '/api/models', '/api/clinical-catalog', '/api/clinical-coverage', '/api/encounter-exam?id=synthetic', '/api/clinical-report?id=synthetic']) {
+  for (const url of ['/api/records?role=admin', '/api/activity', '/api/stats', '/api/iot/ingest', '/api/models', '/api/clinical-catalog', '/api/clinical-coverage', '/api/staging-readiness', '/api/encounter-exam?id=synthetic', '/api/clinical-report?id=synthetic']) {
     const response = await request.get(url); expect(response.status()).toBe(401);
   }
   for (const url of ['/api/records', '/api/satusehat/sync', '/api/gemini/analyze', '/api/encounter-exam', '/api/model-lab', '/api/clinical-fhir']) {
