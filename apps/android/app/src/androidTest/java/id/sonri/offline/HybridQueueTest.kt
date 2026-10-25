@@ -10,7 +10,7 @@ import org.junit.Test
 
 /** Real Keystore/outbox persistence, MOCK backend identity; no hosted service claim. */
 class HybridQueueTest {
-    private class FakeAccount(private val uid:String):CloudBackend {
+    private class FakeAccount(var uid:String):CloudBackend {
         override val configured=true
         override fun identity()=CloudIdentity(uid,"synthetic@example.test",true)
         override suspend fun register(email:String,password:String){}
@@ -24,11 +24,13 @@ class HybridQueueTest {
         override suspend fun readProfile()=emptyMap<String,Any>()
         override suspend fun requestDeletion(){}
         override suspend fun push(value:CloudEnvelope,expected:Long){error("OFFLINE_MOCK")}
-        override suspend fun page(cursor:String?)=CloudPage(emptyList(),null)
+        var nextCursor:String?=null
+        override suspend fun page(cursor:String?)=CloudPage(emptyList(),nextCursor)
     }
     @Test fun explicitMigrationPersistsEncryptedQueueAndKeepsAccountsSeparate(){
         val context=InstrumentationRegistry.getInstrumentation().targetContext;val scope=CoroutineScope(SupervisorJob()+Dispatchers.Main)
-        val cloud=HybridController(context,scope,FakeAccount("synthetic-A"),"test-sync-state")
+        val backend=FakeAccount("synthetic-A")
+        val cloud=HybridController(context,scope,backend,"test-sync-state")
         val record=ResearchRecord(researchConsent=true,alias="SYNTHETIC_QUEUE_PRIVATE_SENTINEL")
         try{
             cloud.reset();cloud.load()
@@ -41,6 +43,11 @@ class HybridQueueTest {
             assertEquals(0,other.pendingCount);assertTrue(other.visible(listOf(record)).isEmpty());other.lock()
             val stored=java.io.File(context.noBackupFilesDir,"test-sync-state.enc").readBytes().toString(Charsets.ISO_8859_1)
             assertFalse(stored.contains("SYNTHETIC"));assertFalse(stored.contains("synthetic-A"))
+            fun awaitAction()=runBlocking{withTimeout(5000){while(cloud.busy)delay(10)}}
+            cloud.action{backend.uid="synthetic-B";cloud.signedIn()};awaitAction();cloud.key()
+            backend.nextCursor="B-only-page";cloud.sync{_,_->};awaitAction();assertEquals("B-only-page",cloud.cursor)
+            cloud.action{backend.uid="synthetic-C";cloud.signedIn()};awaitAction()
+            assertNull(cloud.cursor);assertTrue(cloud.visible(listOf(record)).isEmpty())
         }finally{cloud.reset();scope.cancel()}
     }
 }

@@ -25,8 +25,12 @@ class HybridController(context:Context,private val scope:CoroutineScope,provided
     var participation by mutableStateOf(false);private set
     private var unlocked=false;private var task:Job?=null;private var epoch=0;private var retryAfter=0L
     var onIdentityChanged:()->Unit={}
-    fun load(){state=storage.read()?.let{json.decodeFromString<HybridState>(it)} ?: HybridState();unlocked=true;identity=backend?.identity();render()}
+    fun load(){state=storage.read()?.let{json.decodeFromString<HybridState>(it)} ?: HybridState();unlocked=true;selectIdentity(backend?.identity());render()}
     fun lock(){epoch++;task?.cancel();busy=false;unlocked=false;state=HybridState();identity=null;recovery="";profileName="";participation=false;pendingCount=0;conflicts=emptyList();cursor=null}
+    private fun selectIdentity(value:CloudIdentity?){
+        if(value?.uid!=identity?.uid){cursor=null;profileName="";participation=false}
+        identity=value
+    }
     private fun persist(){check(unlocked);storage.write(json.encodeToString(state));render()}
     private fun render(){pendingCount=state.pending.count{it.envelope.uid==identity?.uid};conflicts=state.conflicts.filter{state.bindings[it]?.uid==identity?.uid};recovery="";if(identity==null){profileName="";participation=false}}
     fun visible(records:List<ResearchRecord>)=if(!unlocked)emptyList() else records.filter{r -> state.bindings[r.id]?.uid.let{it==null || it==identity?.uid}}
@@ -60,13 +64,13 @@ class HybridController(context:Context,private val scope:CoroutineScope,provided
         val backend=backend?.takeIf{it.configured} ?: run{status="Project riset Spark belum dikonfigurasi; fungsi lokal tetap tersedia.";return}
         val generation=epoch;busy=true
         task=scope.launch{
-            try{withTimeout(30_000){block(backend)};if(generation==epoch){identity=backend.identity();render();onIdentityChanged()}}
+            try{withTimeout(30_000){block(backend)};if(generation==epoch){selectIdentity(backend.identity());render();onIdentityChanged()}}
             catch(_:CancellationException){if(generation==epoch)status="Operasi dibatalkan; data lokal dipertahankan."}
             catch(_:Exception){if(generation==epoch){retryAfter=System.currentTimeMillis()+60_000;status="Layanan/izin/kuota belum tersedia atau terjadi konflik. Antrean tetap terenkripsi; coba lagi setelah satu menit."}}
             finally{if(generation==epoch)busy=false}
         }
     }
-    suspend fun signedIn(){identity=backend?.identity();profileName="";participation=false;if(identity?.verified==true){val data=backend!!.readProfile();profileName=data["displayName"] as? String ?: "";participation=data["participation"] as? Boolean ?: false};status="Akun terhubung. Verifikasi email, profil aktif dan kunci pemulihan diperlukan untuk sinkronisasi."}
+    suspend fun signedIn(){selectIdentity(backend?.identity());profileName="";participation=false;if(identity?.verified==true){val data=backend!!.readProfile();profileName=data["displayName"] as? String ?: "";participation=data["participation"] as? Boolean ?: false};status="Akun terhubung. Verifikasi email, profil aktif dan kunci pemulihan diperlukan untuk sinkronisasi."}
     fun signOut(activity:Activity){action{it.signOut(activity);status="Keluar dari akun. Catatan akun tetap terenkripsi dan disembunyikan."}}
     fun sync(accept:(ResearchRecord,Boolean)->Unit){
         if(System.currentTimeMillis()<retryAfter){status="Menunggu jeda percobaan sinkronisasi; fungsi lokal tetap tersedia.";return}
