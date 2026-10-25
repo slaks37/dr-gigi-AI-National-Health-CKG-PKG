@@ -1,0 +1,48 @@
+{
+  "schema_version": "sonri.android.model-manifest.v1",
+  "application_scope": "SYNTHETIC_OR_AUTHORIZED_NONPATIENT_RESEARCH_ONLY",
+  "clinical_use": "PROHIBITED",
+  "models": [
+    {
+      "id": "sonri-rfdetr-large-v1-onnx-fp32",
+      "availability": "VERIFIED_OFFLINE_IMPORT_REQUIRED",
+      "bundled": false,
+      "bytes": 121573930,
+      "sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+      "parent_checkpoint_sha256": "9b4f611126aade449a3086cc8277831e309dfab0b6ff751a96c9af94ed69020c",
+      "license_evidence": "PRIOR_OWNER_LOCAL_RESEARCH_EXPORT_NOTICE_APACHE_2_0_NOT_INDEPENDENTLY_VERIFIED",
+      "android_redistribution_rights": "NOT_INDEPENDENTLY_VERIFIED",
+      "import_requires": ["EXACT_SIZE_AND_HASH", "OWNER_PERMISSION_REFERENCE", "EXPLICIT_OWNER_ACKNOWLEDGMENT"],
+      "runtime": "onnxruntime-android:1.24.3",
+      "provider": "CPUExecutionProvider",
+      "intra_op_threads": 2,
+      "inter_op_threads": 1,
+      "ir_version": 8,
+      "opset": 17,
+      "input": {"name": "input", "type": "float32", "shape": [1, 3, 704, 704]},
+      "outputs": [
+        {"name": "dets", "type": "float32", "shape": [1, 300, 4], "meaning": "normalized_cxcywh"},
+        {"name": "labels", "type": "float32", "shape": [1, 300, 5], "meaning": "raw_logits"}
+      ],
+      "preprocessing": "RGB_HALF_PIXEL_BILINEAR_IMAGENET_NCHW_V1",
+      "postprocessing": "sigmoid; stable top 300 query-class pairs; score > 0.25; max 200 valid clipped xyxy boxes; no NMS; slot 0 retained",
+      "class_ids": [0, 1, 2, 3, 4],
+      "label_verification": "UNVERIFIED",
+      "disease_mapping": null,
+      "clinical_accuracy": "NOT_ESTABLISHED",
+      "model_modified": false,
+      "quantized": false
+    },
+    {
+      "id": "dental_study-yolo11m",
+      "availability": "BLOCKED_NO_AUTHORIZED_MOBILE_EXPORT",
+      "bundled": false,
+      "checkpoint_bytes": 80923921,
+      "checkpoint_sha256": "7d5f7dcf616f1febbbb28f2552f9d8a2c3e31e90b3c5b03bf26114502dea621d",
+      "label_verification": "UNVERIFIED_D_D_CONVERSION_CONFLICT",
+      "android_redistribution_rights": "NOT_VERIFIED",
+      "android_inference": "NOT_TESTED_NO_ONNX_EXPORT",
+      "blockers": ["ARTIFACT_RIGHTS_AND_AGPL_OBLIGATIONS", "AUTHORITATIVE_CLASS_ORDER_AND_DENTAL_REVIEW"]
+    }
+  ]
+}

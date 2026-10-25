@@ -1,0 +1,65 @@
+{
+  "schema_version": "sonri.android-apk-static.v1",
+  "apk": "app-debug.apk",
+  "sha256": "eee000f9bde5eb135df583b6d69d47760bdb0d728133a8e0d0b2e95a0988d6ed",
+  "bytes": 91363222,
+  "permissions": [
+    "android.permission.CAMERA",
+    "id.sonri.offline.research.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+  ],
+  "pretrained_model_bundled": false,
+  "native_libraries": [
+    {
+      "library": "lib/arm64-v8a/libandroidx.graphics.path.so",
+      "elf_load_alignment": 16384,
+      "supports_16k_elf_alignment": true
+    },
+    {
+      "library": "lib/arm64-v8a/libimage_processing_util_jni.so",
+      "elf_load_alignment": 16384,
+      "supports_16k_elf_alignment": true
+    },
+    {
+      "library": "lib/arm64-v8a/libonnxruntime.so",
+      "elf_load_alignment": 16384,
+      "supports_16k_elf_alignment": true
+    },
+    {
+      "library": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+      "elf_load_alignment": 16384,
+      "supports_16k_elf_alignment": true
+    },
+    {
+      "library": "lib/arm64-v8a/libsurface_util_jni.so",
+      "elf_load_alignment": 16384,
+      "supports_16k_elf_alignment": true
+    },
+    {
+      "library": "lib/x86_64/libandroidx.graphics.path.so",
+      "elf_load_alignment": 16384,
+      "supports_16k_elf_alignment": true
+    },
+    {
+      "library": "lib/x86_64/libimage_processing_util_jni.so",
+      "elf_load_alignment": 16384,
+      "supports_16k_elf_alignment": true
+    },
+    {
+      "library": "lib/x86_64/libonnxruntime.so",
+      "elf_load_alignment": 16384,
+      "supports_16k_elf_alignment": true
+    },
+    {
+      "library": "lib/x86_64/libonnxruntime4j_jni.so",
+      "elf_load_alignment": 16384,
+      "supports_16k_elf_alignment": true
+    },
+    {
+      "library": "lib/x86_64/libsurface_util_jni.so",
+      "elf_load_alignment": 16384,
+      "supports_16k_elf_alignment": true
+    }
+  ],
+  "clinical_use": "PROHIBITED",
+  "scope": "ACTUAL_APK_STATIC_INSPECTION_NOT_DEVICE_PERFORMANCE"
+}

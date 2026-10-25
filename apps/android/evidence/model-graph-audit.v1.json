@@ -1,0 +1,103 @@
+{
+  "schema_version": "sonri.android-model-audit.v1",
+  "model_sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+  "model_bytes": 121573930,
+  "ir_version": 8,
+  "opsets": {
+    "ai.onnx": 17
+  },
+  "operators": {
+    "ai.onnx:Add": 184,
+    "ai.onnx:And": 1,
+    "ai.onnx:Cast": 38,
+    "ai.onnx:Concat": 25,
+    "ai.onnx:Constant": 491,
+    "ai.onnx:ConstantOfShape": 7,
+    "ai.onnx:Conv": 9,
+    "ai.onnx:Cos": 4,
+    "ai.onnx:Div": 37,
+    "ai.onnx:Equal": 6,
+    "ai.onnx:Erf": 12,
+    "ai.onnx:Exp": 3,
+    "ai.onnx:Expand": 9,
+    "ai.onnx:Gather": 4,
+    "ai.onnx:GatherElements": 2,
+    "ai.onnx:Gemm": 4,
+    "ai.onnx:Greater": 2,
+    "ai.onnx:GridSample": 4,
+    "ai.onnx:LayerNormalization": 52,
+    "ai.onnx:Less": 1,
+    "ai.onnx:MatMul": 151,
+    "ai.onnx:Mul": 120,
+    "ai.onnx:Not": 3,
+    "ai.onnx:ReduceMax": 1,
+    "ai.onnx:ReduceSum": 5,
+    "ai.onnx:Relu": 9,
+    "ai.onnx:Reshape": 137,
+    "ai.onnx:Shape": 27,
+    "ai.onnx:Sigmoid": 8,
+    "ai.onnx:Sin": 4,
+    "ai.onnx:Slice": 66,
+    "ai.onnx:Softmax": 20,
+    "ai.onnx:Split": 1,
+    "ai.onnx:Sqrt": 48,
+    "ai.onnx:Sub": 4,
+    "ai.onnx:Tile": 2,
+    "ai.onnx:TopK": 1,
+    "ai.onnx:Transpose": 125,
+    "ai.onnx:Unsqueeze": 19,
+    "ai.onnx:Where": 8
+  },
+  "initializer_bytes": 121139976,
+  "external_weights": false,
+  "desktop_onnx_runtime": "1.24.3",
+  "desktop_platform": "macOS-27.0.1-arm64-arm-64bit",
+  "desktop_load_ms": 336.67800002149306,
+  "desktop_process_peak_rss_bytes": 645513216,
+  "inputs": [
+    {
+      "name": "input",
+      "shape": [
+        1,
+        3,
+        704,
+        704
+      ],
+      "type": "tensor(float)"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "dets",
+      "shape": [
+        1,
+        300,
+        4
+      ],
+      "type": "tensor(float)"
+    },
+    {
+      "name": "labels",
+      "shape": [
+        1,
+        300,
+        5
+      ],
+      "type": "tensor(float)"
+    }
+  ],
+  "baseline_optimization": "ORT_ALL_OPT_CPU_2_THREADS",
+  "fp16": false,
+  "quantization": false,
+  "model_modified": false,
+  "permission_basis_reference": "prior-owner-local-research-export-sonri-model-json",
+  "android_redistribution_rights": "NOT_INDEPENDENTLY_VERIFIED",
+  "packaged_in_apk": false,
+  "physical_phone_tested": false,
+  "clinical_use": "PROHIBITED",
+  "limitations": [
+    "Desktop peak RSS includes ONNX inspection, weights and reference generation; it is not an Android memory benchmark.",
+    "Prior owner-local research approval is not proof of unrestricted Android redistribution rights.",
+    "No disease class contract or clinical accuracy is established."
+  ]
+}
