@@ -1,0 +1,207 @@
+{
+  "refreshed_on": "2026-10-25",
+  "timezone": "Asia/Jakarta",
+  "scope": "Read-only metadata/complete trees/releases, no secret-bearing repository fetched",
+  "forks": [
+    {
+      "repository": "slaks37/Oral-Disease-detector-sonri",
+      "head": "9f96216e6daf5db71408285899a923b8fe0a59e3",
+      "default_branch": "main",
+      "head_date": "2026-07-16T13:36:59Z",
+      "upstream": "Abdelhameed-Nasr/Oral-Disease-detector",
+      "complete_tree": true,
+      "file_count": 14,
+      "code_license": null,
+      "license_paths": [],
+      "checkpoint_files": [],
+      "releases": []
+    },
+    {
+      "repository": "slaks37/DENTEXsonri",
+      "head": "a33bc4cd24ae864c679e8ee0a156354b2b6bd858",
+      "default_branch": "main",
+      "head_date": "2026-06-08T13:51:16Z",
+      "upstream": "ibrahimethemhamamci/DENTEX",
+      "complete_tree": true,
+      "file_count": 979,
+      "code_license": null,
+      "license_paths": [],
+      "checkpoint_files": [],
+      "releases": []
+    },
+    {
+      "repository": "slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri",
+      "head": "0127fd30c5f3ea19cf2fc15c7353b539b4181631",
+      "default_branch": "main",
+      "head_date": "2026-07-09T18:10:53Z",
+      "upstream": "Anasbme/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification",
+      "complete_tree": true,
+      "file_count": 9,
+      "code_license": null,
+      "license_paths": [],
+      "checkpoint_files": [],
+      "releases": []
+    },
+    {
+      "repository": "slaks37/ToothSeg-sonri",
+      "head": "b29d1017fa124f89645fa56f98649e3f3f43bdb0",
+      "default_branch": "main",
+      "head_date": "2026-05-27T10:05:46Z",
+      "upstream": "MIC-DKFZ/ToothSeg",
+      "complete_tree": true,
+      "file_count": 133,
+      "code_license": "Apache-2.0",
+      "license_paths": [
+        "LICENSE"
+      ],
+      "checkpoint_files": [],
+      "releases": []
+    }
+  ],
+  "official_upstreams": [
+    {
+      "repository": "Abdelhameed-Nasr/Oral-Disease-detector",
+      "head": "9f96216e6daf5db71408285899a923b8fe0a59e3",
+      "default_branch": "main",
+      "head_date": "2026-07-16T13:36:59Z",
+      "upstream": null,
+      "complete_tree": true,
+      "file_count": 14,
+      "code_license": null,
+      "license_paths": [],
+      "checkpoint_files": [],
+      "releases": []
+    },
+    {
+      "repository": "ibrahimethemhamamci/DENTEX",
+      "head": "a33bc4cd24ae864c679e8ee0a156354b2b6bd858",
+      "default_branch": "main",
+      "head_date": "2026-06-08T13:51:16Z",
+      "upstream": null,
+      "complete_tree": true,
+      "file_count": 979,
+      "code_license": null,
+      "license_paths": [],
+      "checkpoint_files": [],
+      "releases": []
+    },
+    {
+      "repository": "Anasbme/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification",
+      "head": "0127fd30c5f3ea19cf2fc15c7353b539b4181631",
+      "default_branch": "main",
+      "head_date": "2026-07-09T18:10:53Z",
+      "upstream": null,
+      "complete_tree": true,
+      "file_count": 9,
+      "code_license": null,
+      "license_paths": [],
+      "checkpoint_files": [],
+      "releases": []
+    },
+    {
+      "repository": "MIC-DKFZ/ToothSeg",
+      "head": "b29d1017fa124f89645fa56f98649e3f3f43bdb0",
+      "default_branch": "main",
+      "head_date": "2026-05-27T10:05:46Z",
+      "upstream": null,
+      "complete_tree": true,
+      "file_count": 133,
+      "code_license": "Apache-2.0",
+      "license_paths": [
+        "LICENSE"
+      ],
+      "checkpoint_files": [],
+      "releases": []
+    }
+  ],
+  "schema_version": "sonri.phase3-additional-model-readiness.v1",
+  "external_metadata": {
+    "refreshed_on": "2026-10-25",
+    "timezone": "Asia/Jakarta",
+    "primary_sources": {
+      "oral_model": {
+        "url": "https://www.kaggle.com/api/v1/models/list?search=oral-disease-trained-model",
+        "status": "READ",
+        "metadata": {
+          "ref": "abdelhameednasr/oral-disease-trained-model",
+          "instances": [
+            {
+              "framework": "keras",
+              "slug": "default",
+              "versionNumber": 1,
+              "versionId": 937620,
+              "licenseName": "Attribution 4.0 International (CC BY 4.0)",
+              "totalUncompressedBytes": 49339888,
+              "url": "https://www.kaggle.com/models/abdelhameednasr/oral-disease-trained-model/Keras/default"
+            }
+          ]
+        }
+      },
+      "oral_data": {
+        "url": "https://www.kaggle.com/api/v1/datasets/list?search=salmansajid05%2Foral-diseases",
+        "status": "READ",
+        "metadata": {
+          "ref": "salmansajid05/oral-diseases",
+          "licenseName": "Unknown",
+          "currentVersionNumber": 3,
+          "totalBytes": 246299421,
+          "lastUpdated": "2024-04-03T12:18:41.957Z"
+        }
+      },
+      "toothseg_model": {
+        "url": "https://zenodo.org/api/records/14893540",
+        "status": "READ",
+        "metadata": {
+          "id": 14893540,
+          "modified": "2025-02-19T15:12:37.485320+00:00",
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "files": [
+            {
+              "name": "Baselines.zip",
+              "bytes": 2828320982,
+              "checksum": "md5:43d05f3a637fff2af00ec508d3a7696e"
+            },
+            {
+              "name": "ToothSeg.zip",
+              "bytes": 920019129,
+              "checksum": "md5:5d8dd061cce9529943567aeba3271143"
+            }
+          ]
+        }
+      },
+      "dentex_data": {
+        "url": "https://huggingface.co/api/datasets/ibrahimhamamci/DENTEX",
+        "status": "READ",
+        "metadata": {
+          "sha": "7b27ccc8e342dcb774f69adc6ca5e6c09fefce93",
+          "gated": false,
+          "license": "cc-by-nc-sa-4.0",
+          "file_names": [
+            ".gitattributes",
+            "DENTEX/test_data.zip",
+            "DENTEX/training_data.zip",
+            "DENTEX/validation_data.zip",
+            "DENTEX/validation_triple.json",
+            "README.md",
+            "figures/data.png",
+            "figures/dentex.jpg",
+            "figures/output.png"
+          ]
+        }
+      }
+    },
+    "private_classifier_rehash": {
+      "exists": true,
+      "bytes": 49339888,
+      "sha256_observed": "4d4735b624affe6c6fda4b9033eee02bd728b4b188b59e6c5ceb200ebb1073c3",
+      "matches_phase2": true
+    }
+  },
+  "operational_models": 0,
+  "new_model_or_image_downloads": 0,
+  "new_runtime_installations": 0,
+  "clinical_use": "PROHIBITED",
+  "limitations": "Metadata availability and documentary licenses do not establish runtime compatibility, lawful patient use, patient-independent evaluation or clinical validation."
+}

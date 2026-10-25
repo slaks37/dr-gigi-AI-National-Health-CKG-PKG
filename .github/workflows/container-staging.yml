@@ -1,0 +1,72 @@
+name: Synthetic Docker staging acceptance
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - Dockerfile
+      - compose.yaml
+      - package*.json
+      - next.config.ts
+      - firestore.rules
+      - app/**
+      - src/**
+      - services/inference/**
+      - ops/staging/**
+      - ops/cloud-run/**
+      - tests/workflow/**
+      - .github/workflows/container-staging.yml
+permissions:
+  contents: read
+concurrency:
+  group: sonri-container-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  synthetic-container-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - name: Build and exercise isolated Docker Compose stack
+        run: bash ops/staging/run.sh
+      - name: Publish sanitized synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-container-staging-evidence
+          path: ops/staging/evidence/
+          retention-days: 14
+
+  cloud-run-image-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SONRI_TESTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Offline Cloud Run configuration, cost and port checks
+        run: python -m unittest discover -s ops/cloud-run -p 'test_*.py' -v
+      - name: Hosted boundary transport fixtures (no hosted IAM claim)
+        run: npx vitest run --config ops/cloud-run/vitest.config.mts
+      - name: Build Cloud Run CPU image and test real local container ports
+        run: bash ops/cloud-run/smoke.sh
+      - name: Publish local container contract evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloud-run-local-container-contract
+          path: ops/cloud-run/generated/port-contract.ndjson
+          retention-days: 14

@@ -1,0 +1,118 @@
+{
+  "executed_at_utc": "2026-10-24T06:50:11.155055+00:00",
+  "http_status": 200,
+  "test_kind": "REAL_PRETRAINED_SYNTHETIC_API_SMOKE_AND_REPEATABILITY",
+  "runtime": {
+    "python": "3.12.14",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "engine": "yolo",
+    "provider": "PyTorch CPU",
+    "torch": "2.8.0",
+    "ultralytics": "8.4.177"
+  },
+  "model": {
+    "id": "intraoral-yolo",
+    "version": "daath-yolo11m-7d5f7dcf616f",
+    "modality": "intraoral",
+    "adapter": "yolo",
+    "architecture": "YOLO11m",
+    "source": "slaks37/dental_study",
+    "license": "AGPL-3.0 per upstream source; local research only; commercial obligations pending review",
+    "available": true,
+    "reason": null,
+    "sha256": "7d5f7dcf616f1febbbb28f2552f9d8a2c3e31e90b3c5b03bf26114502dea621d",
+    "label_verification": "UNVERIFIED",
+    "availability_basis": "ARTIFACT_DIGEST_AND_RUNTIME_DEPENDENCY_PRESENCE",
+    "clinical_use": "PROHIBITED",
+    "research_only": true,
+    "fdi_numbering_available": false,
+    "limitations": [
+      "No independent clinical validation",
+      "Model scores are not disease probabilities",
+      "A negative result does not establish health"
+    ],
+    "runtime_status": "NOT_PROBED"
+  },
+  "fixture": {
+    "kind": "deterministic synthetic geometric RGB image",
+    "patient_data": false,
+    "sha256": "2fd5e924a70199af7eafe3892c09b2dc92bfa8e5251439a0816d2307b7e32445",
+    "width": 704,
+    "height": 704
+  },
+  "repeat_findings_identical": true,
+  "responses": [
+    {
+      "request_id": "66414ea7540d4638b5909e639991343a",
+      "status": "completed",
+      "model_id": "intraoral-yolo",
+      "model_version": "daath-yolo11m-7d5f7dcf616f",
+      "model_sha256": "7d5f7dcf616f1febbbb28f2552f9d8a2c3e31e90b3c5b03bf26114502dea621d",
+      "modality": "intraoral",
+      "clinical_use": "PROHIBITED",
+      "label_verification": "UNVERIFIED",
+      "findings": [],
+      "quality": {
+        "accepted": true,
+        "width": 704,
+        "height": 704,
+        "mean_brightness": 141.541,
+        "laplacian_variance": 1801.083,
+        "reasons": [],
+        "compatibility": "MODALITY_SELF_REPORTED",
+        "limitations": [
+          "Quality checks do not prove an oral image or correct modality",
+          "Thresholds are technical heuristics, not clinically validated"
+        ]
+      },
+      "latency_ms": 1984.24,
+      "warnings": [
+        "RESEARCH_ONLY",
+        "DENTIST_REVIEW_REQUIRED",
+        "RAW_LABEL_SEMANTICS_UNVERIFIED",
+        "SCORES_ARE_NOT_DIAGNOSTIC_PROBABILITIES",
+        "NEGATIVE_OUTPUT_DOES_NOT_ESTABLISH_HEALTH"
+      ]
+    },
+    {
+      "request_id": "f315083ed8e8464eb71ad8ca5b24ae39",
+      "status": "completed",
+      "model_id": "intraoral-yolo",
+      "model_version": "daath-yolo11m-7d5f7dcf616f",
+      "model_sha256": "7d5f7dcf616f1febbbb28f2552f9d8a2c3e31e90b3c5b03bf26114502dea621d",
+      "modality": "intraoral",
+      "clinical_use": "PROHIBITED",
+      "label_verification": "UNVERIFIED",
+      "findings": [],
+      "quality": {
+        "accepted": true,
+        "width": 704,
+        "height": 704,
+        "mean_brightness": 141.541,
+        "laplacian_variance": 1801.083,
+        "reasons": [],
+        "compatibility": "MODALITY_SELF_REPORTED",
+        "limitations": [
+          "Quality checks do not prove an oral image or correct modality",
+          "Thresholds are technical heuristics, not clinically validated"
+        ]
+      },
+      "latency_ms": 200.81,
+      "warnings": [
+        "RESEARCH_ONLY",
+        "DENTIST_REVIEW_REQUIRED",
+        "RAW_LABEL_SEMANTICS_UNVERIFIED",
+        "SCORES_ARE_NOT_DIAGNOSTIC_PROBABILITIES",
+        "NEGATIVE_OUTPUT_DOES_NOT_ESTABLISH_HEALTH"
+      ]
+    }
+  ],
+  "clinical_validation": "NOT_PERFORMED",
+  "dataset_benchmark": "NOT_PERFORMED",
+  "limitations": [
+    "Synthetic image execution only",
+    "Raw checkpoint labels d/D have no trusted clinical semantics",
+    "No sensitivity, specificity, mAP, Dice or calibration can be inferred",
+    "Current commercial model terms require independent review"
+  ]
+}

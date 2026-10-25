@@ -1,0 +1,12 @@
+{
+  "source": "https://cloud.google.com/run/pricing",
+  "verification": "OFFICIAL_PAGE_REQUEST_BASED_TABLE_WITH_INTERACTIVE_JAKARTA_REGION_SELECTED",
+  "verified_client_date": "2026-10-25",
+  "currency": "USD",
+  "billing_mode": "REQUEST_BASED",
+  "us-central1": { "cpu_per_vcpu_second": "0.000024", "memory_per_gib_second": "0.0000025", "per_request": "0.0000004" },
+  "asia-southeast2": { "cpu_per_vcpu_second": "0.0000336", "memory_per_gib_second": "0.0000035", "per_request": "0.0000004" },
+  "monthly_maximum_shared_free_credit_usd": { "cpu": "4.32", "memory": "0.90", "requests": "0.80" },
+  "credit_basis": "Tier1 CPU180000seconds; memory360000GiBseconds; requests2000000. Discounts aggregate across projects under one billing account.",
+  "excluded": ["Cloud Build", "Artifact Registry", "model bucket storage and operations", "Secret Manager", "Firebase and Firestore", "Cloud Logging beyond allowances", "network data transfer", "VPC connector or load balancer", "tax", "currency conversion", "any other account usage"]
+}

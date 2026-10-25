@@ -22,11 +22,28 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
+      - name: Isolated hosted Firebase guard checks (no provider writes)
+        run: node --test ops/firebase-staging/guards.test.mjs
+      - name: Check generated evidence matrix is current
+        run: |
+          npm run coverage:export
+          git diff --exit-code -- docs/validation/icd10-evidence-coverage.v2.json docs/validation/icd10-evidence-coverage.v2.csv
       - run: npm run test:rules
       - run: npm audit --omit=dev --audit-level=high
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - name: Compiled hosted-staging identity fixture (loopback only)
+        run: node ops/firebase-staging/config-build-smoke.mjs
+      - name: Preserve compiled staging fixture evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-staging-configuration-fixture
+          path: ops/firebase-staging/generated/config-build-smoke.json
+          retention-days: 14
+      - name: Synthetic authenticated clinical workflow (separate .next-workflow output)
+        run: npm run test:workflow
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
@@ -34,3 +51,42 @@ jobs:
           path: |
             playwright-report/
             test-results/
+
+  inference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            services/inference/requirements.txt
+            services/inference/requirements-test.txt
+            services/inference/constraints.lock.txt
+      - run: python -m pip install -c constraints.lock.txt -r requirements-test.txt
+        working-directory: services/inference
+      - run: python -m pytest -q
+        working-directory: services/inference
+      - name: Evaluation leakage, matching and checkpoint inspection regression tests
+        run: python -m pytest -q services/evaluation/tests
+      - name: Offline Cloud Run deployment contract
+        run: python -m unittest discover -s ops/cloud-run -p 'test_*.py' -v
+      - name: Redacted credential regression checks
+        run: |
+          python -B scripts/security-scan.test.py
+          python -B scripts/security-scan.py
+          python -B scripts/incident-attestation.test.py
+      - name: Verify default deployment has no enabled checkpoint
+        run: |
+          python - <<'PYTHON'
+          import json
+          from pathlib import Path
+          config = json.loads(Path('services/inference/registry.example.json').read_text())
+          assert not any(model.get('enabled') for model in config['models'])
+          PYTHON
+      - name: Validate Compose structure without printing resolved secrets
+        run: docker compose config --quiet
+        env:
+          SONRI_INFERENCE_TOKEN: synthetic-ci-token-never-used-for-any-deployment-0001

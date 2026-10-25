@@ -1,0 +1,313 @@
+{
+  "schema_version": "sonri.executed-staging-evidence.v1",
+  "scope": "SYNTHETIC_DOCKER_COMPOSE_ACCEPTANCE",
+  "status": "PASS",
+  "clinical_use": "PROHIBITED",
+  "source": {
+    "workflow_url": "https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/actions/runs/40113906853",
+    "workflow_run_id": 40113906853,
+    "pull_request_head_sha": "5567dd03f2a5eb8bb998f5a5778f0382ca9f247b",
+    "checked_out_merge_commit": "0fc9bc0f4cc608830db29f3db1995d15ffafca46",
+    "application_ci_url": "https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/actions/runs/40113906921",
+    "artifact_name": "synthetic-container-staging-evidence",
+    "artifact_retention_days": 14
+  },
+  "run": {
+    "commit": "0fc9bc0f4cc608830db29f3db1995d15ffafca46",
+    "executed_at": "2026-10-24T17:01:54.503Z",
+    "scope": "SYNTHETIC_DOCKER_COMPOSE_ACCEPTANCE",
+    "status": "PASS",
+    "real_firebase_staging": "NOT_TESTED",
+    "model_registry": "ALL_DISABLED",
+    "clinical_validation": "NOT_PERFORMED"
+  },
+  "browser": {
+    "stats": {
+      "startTime": "2026-10-24T17:00:56.613Z",
+      "duration": 4762.673,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "clinical_workflow": "PATIENT_CONSENT_ASSIGNMENT_ODONTOGRAM_REVIEW_REPORT",
+    "result": "PASS"
+  },
+  "api_acceptance": {
+    "executed_at": "2026-10-24T17:01:02.129Z",
+    "scope": "SYNTHETIC_DOCKER_ACCEPTANCE",
+    "mode": "acceptance",
+    "checks": [
+      {
+        "name": "anonymous denied",
+        "expected_status": 401,
+        "actual_status": 401
+      },
+      {
+        "name": "malformed token denied",
+        "expected_status": 401,
+        "actual_status": 401
+      },
+      {
+        "name": "patient cannot list all cases",
+        "expected_status": 403,
+        "actual_status": 403
+      },
+      {
+        "name": "patient cannot assign clinician",
+        "expected_status": 403,
+        "actual_status": 403
+      },
+      {
+        "name": "patient cannot confirm diagnosis",
+        "expected_status": 403,
+        "actual_status": 403
+      },
+      {
+        "name": "patient cannot save examination",
+        "expected_status": 403,
+        "actual_status": 403
+      },
+      {
+        "name": "patient cannot read audit",
+        "expected_status": 403,
+        "actual_status": 403
+      },
+      {
+        "name": "patient cannot invoke research worker",
+        "expected_status": 403,
+        "actual_status": 403
+      },
+      {
+        "name": "patient cannot run research model",
+        "expected_status": 403,
+        "actual_status": 403
+      },
+      {
+        "name": "role claim injection denied",
+        "expected_status": 400,
+        "actual_status": 400
+      },
+      {
+        "name": "cross-patient screening denied",
+        "expected_status": 403,
+        "actual_status": 403
+      },
+      {
+        "name": "cross-patient record denied",
+        "expected_status": 403,
+        "actual_status": 403
+      },
+      {
+        "name": "cross-patient report denied",
+        "expected_status": 403,
+        "actual_status": 403
+      },
+      {
+        "name": "cross-patient odontogram denied",
+        "expected_status": 403,
+        "actual_status": 403
+      },
+      {
+        "name": "unassigned qualified doctor denied",
+        "expected_status": 403,
+        "actual_status": 403
+      },
+      {
+        "name": "missing consent denied",
+        "expected_status": 400,
+        "actual_status": 400
+      },
+      {
+        "name": "stale assignment version denied",
+        "expected_status": 409,
+        "actual_status": 409
+      },
+      {
+        "name": "disabled identity denied",
+        "expected_status": 401,
+        "actual_status": 401
+      },
+      {
+        "name": "Firestore client cannot forge audit",
+        "actual_status": 403,
+        "expected_status": 403
+      },
+      {
+        "name": "app reaches private inference with server credential",
+        "expected_status": 200,
+        "actual_status": 200
+      }
+    ],
+    "model_registry": "ALL_DISABLED",
+    "real_firebase_staging": "NOT_TESTED",
+    "clinical_validation": "NOT_PERFORMED"
+  },
+  "worker_boundary": {
+    "scope": "SYNTHETIC_PRIVATE_WORKER_BOUNDARY",
+    "checks": [
+      {
+        "name": "worker liveness",
+        "status": 200
+      },
+      {
+        "name": "missing worker credential",
+        "status": 401
+      },
+      {
+        "name": "wrong worker credential",
+        "status": 401
+      },
+      {
+        "name": "private authenticated inventory",
+        "status": 200
+      },
+      {
+        "name": "disabled model fails closed",
+        "status": 503
+      }
+    ],
+    "clinical_validation": "NOT_PERFORMED"
+  },
+  "network": {
+    "inference_published_ports": false,
+    "scope": "SYNTHETIC_DOCKER_NETWORK"
+  },
+  "restart": {
+    "executed_at": "2026-10-24T17:01:34.349Z",
+    "scope": "SYNTHETIC_DOCKER_ACCEPTANCE",
+    "mode": "restart",
+    "checks": [
+      {
+        "name": "restart: patient can retrieve persisted case",
+        "expected_status": 200,
+        "actual_status": 200
+      },
+      {
+        "name": "restart: app reaches worker",
+        "expected_status": 200,
+        "actual_status": 200
+      },
+      {
+        "name": "restart: all six collection counts and hashes unchanged",
+        "result": "PASS"
+      }
+    ],
+    "model_registry": "ALL_DISABLED",
+    "real_firebase_staging": "NOT_TESTED",
+    "clinical_validation": "NOT_PERFORMED"
+  },
+  "restore": {
+    "executed_at": "2026-10-24T17:01:54.322Z",
+    "scope": "SYNTHETIC_DOCKER_ACCEPTANCE",
+    "mode": "restore",
+    "checks": [
+      {
+        "name": "restore: patient can retrieve persisted case",
+        "expected_status": 200,
+        "actual_status": 200
+      },
+      {
+        "name": "restore: app reaches worker",
+        "expected_status": 200,
+        "actual_status": 200
+      },
+      {
+        "name": "restore: all six collection counts and hashes unchanged",
+        "result": "PASS"
+      }
+    ],
+    "model_registry": "ALL_DISABLED",
+    "real_firebase_staging": "NOT_TESTED",
+    "clinical_validation": "NOT_PERFORMED"
+  },
+  "recovery_baseline": {
+    "records": {
+      "count": 1,
+      "sha256": "6363a350eae50770107588a6690f6966eec4c8b5402ecf806d6016ca5cc3ae54"
+    },
+    "patients": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "auditLogs": {
+      "count": 5,
+      "sha256": "86261a4a5b6eadbd464fc2faea46015b0c716bebe6596d9821c0e1152813ce58"
+    },
+    "clinicalReviews": {
+      "count": 1,
+      "sha256": "128b42f87643b3224fd7cb4d3db79aebc32717fc5fd04e86ba2e95ceda2fc070"
+    },
+    "examinationRevisions": {
+      "count": 1,
+      "sha256": "44a644ebae2bed550b73c1907cf2693cf601bc35210231566cfd6a069c769b39"
+    },
+    "consentRecords": {
+      "count": 1,
+      "sha256": "0d71bf18df5038aa9f7ade31d13c2a1888e1a15caca2da125441d9171c220241"
+    }
+  },
+  "observability": {
+    "scope": "SYNTHETIC_CONTAINER_LOG_ALLOWLIST",
+    "requests": 10,
+    "fields": [
+      "event",
+      "request_id",
+      "route",
+      "status_code",
+      "latency_ms"
+    ],
+    "unauthorized_observed": true,
+    "unavailable_observed": true,
+    "credential_or_upload_leak_detected": false
+  },
+  "built_images": [
+    {
+      "ID": "sha256:8febf63a6c9c7bf6f99b8d32b5a28513f2ca617777eddde5665007b152456c32",
+      "ContainerName": "sonri-phase2-synthetic-firebase-1",
+      "Repository": "sonri-firebase-emulators",
+      "Tag": "synthetic",
+      "Platform": "linux/amd64",
+      "Size": 2166139194,
+      "LastTagTime": "2026-10-24T16:59:44.177215906Z"
+    },
+    {
+      "ID": "sha256:d89f8110d698cb1b2e1ebe142ab9cfb2c3bcac683ac63ec6c107ebebf95d939e",
+      "ContainerName": "sonri-phase2-synthetic-inference-1",
+      "Repository": "sonri-inference",
+      "Tag": "local",
+      "Platform": "linux/amd64",
+      "Size": 356127207,
+      "LastTagTime": "2026-10-24T16:59:32.481755103Z"
+    },
+    {
+      "ID": "sha256:9c99c3af6c4f1272172b7b2c291d48192a4ffbc0bd61960d03757dcda5489747",
+      "ContainerName": "sonri-phase2-synthetic-app-1",
+      "Repository": "sonri-app",
+      "Tag": "local",
+      "Platform": "linux/amd64",
+      "Size": 324639230,
+      "LastTagTime": "2026-10-24T17:00:19.009622153Z"
+    }
+  ],
+  "artifact_sha256": {
+    "acceptance.json": "ed8befc3831de3794ed9c206299289d96d9beee1d5d899632cbcd96abccd1477",
+    "browser.json": "f0a7857315e3daebe2af739b434bb747925a94a53d6390b4723a0dfc895b972e",
+    "container-images.json": "e376295b880b4d4cfd03e4d5101981393b3ca58f3fee9a1a3ef1c64866ec1211",
+    "network.json": "167772124a8d38fc69893fa1c9c3a671dab693e6acc2e60caa1ae3da234b00e0",
+    "observability.json": "bd7159358dfe69f53fd9b051bd5b2b09d45c84ede500ebc06ae24bcba8b51dab",
+    "recovery-baseline.json": "a25fb2f377a5d1e8ffb33d7f1d3a7f7d656faff88bdb0489143ddb4d7e48e73b",
+    "restart.json": "a61125aec1bcd59466f71682d8f63d6e92d619bcf22c74c70da3c08ec9f7b9a1",
+    "restore.json": "79fe2dc7b0f61df63dd20566400f4716335acaea7609045bc664db667a6671a6",
+    "run.json": "6218f3bb681fd3ed7362c07db944e90eae0764d4cd1234b57337b8c2071b768c",
+    "worker-boundary.json": "31cca1e676e795d87b8a934b11a94ba7ff5df26b444cb494e4c57aecc419307d"
+  },
+  "limitations": [
+    "Synthetic accounts and Auth/Firestore emulators only; managed Firebase staging NOT_TESTED.",
+    "All checkpoint registries disabled; container model loading, native inference hangs and clinical performance NOT_TESTED.",
+    "Five collections contain fixture documents; patients has zero documents. Recovery preserves all six counts and hashes but does not demonstrate restoration of populated patient-profile documents.",
+    "External alert delivery, host outage/load, managed-service backup recovery, professional validation and clinical production NOT_TESTED.",
+    "The workflow checks out GitHub PR merge refs; pull_request_head_sha and checked_out_merge_commit are recorded separately.",
+    "Raw browser report retained in downloaded private workspace artifact; only pass statistics are reproduced here."
+  ]
+}

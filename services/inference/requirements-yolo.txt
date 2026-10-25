@@ -1,0 +1,6 @@
+-r requirements.txt
+# Optional CPU worker profile. Do not install into the Next.js runtime.
+# Ultralytics/YOLO is AGPL-3.0; an operator must review intended use.
+ultralytics==8.4.177
+torch==2.8.0
+torchvision==0.23.0

@@ -1,0 +1,108 @@
+{
+  "schema_version": "sonri.repository-audit-execution.v1",
+  "executed_at": "2026-10-24T13:50:28.384220+07:00",
+  "timezone": "Asia/Jakarta",
+  "script": "scripts/audit-repositories.py",
+  "script_sha256": "1baadb42e0f267b97a3bcbdf8caee46525b4c22a865fc047f85947822877e7fd",
+  "exit_code": 0,
+  "repositories": [
+    {
+      "repository": "slaks37/2.0-Sonry-Oral",
+      "commit": "214b87b4c977530fd5aedaba7622a3f84def3644",
+      "tree_complete": true,
+      "file_count": 41,
+      "selected_source_text_count": 6,
+      "source_fetch_errors": 0
+    },
+    {
+      "repository": "slaks37/DENTEXsonri",
+      "commit": "a33bc4cd24ae864c679e8ee0a156354b2b6bd858",
+      "tree_complete": true,
+      "file_count": 979,
+      "selected_source_text_count": 30,
+      "source_fetch_errors": 0
+    },
+    {
+      "repository": "slaks37/Oral-Disease-detector-sonri",
+      "commit": "9f96216e6daf5db71408285899a923b8fe0a59e3",
+      "tree_complete": true,
+      "file_count": 14,
+      "selected_source_text_count": 4,
+      "source_fetch_errors": 0
+    },
+    {
+      "repository": "slaks37/Sonri-untuk-Negeri",
+      "commit": "b43c2fe614a1ba96da0094ed6271398bd7479a8d",
+      "tree_complete": true,
+      "file_count": 35,
+      "selected_source_text_count": 5,
+      "source_fetch_errors": 0
+    },
+    {
+      "repository": "slaks37/Tooth-and-Cavity-Instance-Segmentation",
+      "commit": "de639e2b608fb0701738e9e8d650ebcae2976eb2",
+      "tree_complete": true,
+      "file_count": 9,
+      "selected_source_text_count": 5,
+      "source_fetch_errors": 0
+    },
+    {
+      "repository": "slaks37/ToothSeg-sonri",
+      "commit": "b29d1017fa124f89645fa56f98649e3f3f43bdb0",
+      "tree_complete": true,
+      "file_count": 133,
+      "selected_source_text_count": 10,
+      "source_fetch_errors": 0
+    },
+    {
+      "repository": "slaks37/YOLOv8_Unet_panoramic_dental_segmentation_and_bone_loss_quantification-sonri",
+      "commit": "0127fd30c5f3ea19cf2fc15c7353b539b4181631",
+      "tree_complete": true,
+      "file_count": 9,
+      "selected_source_text_count": 4,
+      "source_fetch_errors": 0
+    },
+    {
+      "repository": "slaks37/dental_study",
+      "commit": "f02596a0227b9eaf767b955cd67196236111a3d5",
+      "tree_complete": true,
+      "file_count": 19499,
+      "selected_source_text_count": 16,
+      "source_fetch_errors": 0
+    },
+    {
+      "repository": "slaks37/dr-gigi-AI-National-Health-CKG-PKG",
+      "commit": "e02f602811e4d36a3ac32fe18e5e455018c6938f",
+      "tree_complete": true,
+      "file_count": 145,
+      "selected_source_text_count": 30,
+      "source_fetch_errors": 0
+    },
+    {
+      "repository": "slaks37/rf-detr",
+      "commit": "a0065d0acaa3663ce5ff09fe91d08d1b2a4046c3",
+      "tree_complete": true,
+      "file_count": 534,
+      "selected_source_text_count": 30,
+      "source_fetch_errors": 0
+    }
+  ],
+  "datasets_downloaded": false,
+  "checkpoint_binaries_downloaded": false,
+  "known_exposed_credential_redacted_in_raw_export": true,
+  "models_executed_by_repository_audit": false,
+  "packaging_validation": {
+    "yaml_parsed": [
+      "compose.yaml",
+      ".github/workflows/ci.yml"
+    ],
+    "source_env_names_cross_checked": true,
+    "next_standalone_output_cross_checked": true,
+    "default_registry_disabled": true,
+    "inference_has_no_published_port": true,
+    "inference_network_internal": true,
+    "docker_executable_available": false,
+    "container_build_executed": false,
+    "staging_deployment_executed_by_repository_audit": false
+  }
+}

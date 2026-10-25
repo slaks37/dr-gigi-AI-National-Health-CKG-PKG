@@ -1,0 +1,23 @@
+{
+  "schema_version": "sonri.firebase-staging-plan.v1",
+  "environment": "research-staging",
+  "clinical_use": "PROHIBITED",
+  "owner_approved": false,
+  "empty_project_approved": false,
+  "owner_approval_reference": "",
+  "owner_approval_date": "",
+  "project_id": "owner-approved-staging",
+  "database_id": "sonri-staging",
+  "approved_origin": "https://owner-approved-staging.example.invalid",
+  "approved_region": "",
+  "synthetic_prefix": "synthetic-stg-owner-run",
+  "forbidden_project_ids": [],
+  "public_firebase_config": {
+    "projectId": "owner-approved-staging",
+    "appId": "1:000000000000:web:OWNER_MUST_REPLACE",
+    "apiKey": "PUBLIC_SDK_CONFIG_OWNER_MUST_REPLACE",
+    "authDomain": "owner-approved-staging.firebaseapp.com",
+    "firestoreDatabaseId": "sonri-staging",
+    "messagingSenderId": "000000000000"
+  }
+}

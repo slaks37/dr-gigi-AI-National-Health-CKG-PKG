@@ -1,0 +1,184 @@
+{
+  "executed_at": "2026-10-24T11:54:34.152Z",
+  "test": "REAL_AUTH_BROWSER_NEXT_FASTAPI_ONNX_FIRESTORE_SYNTHETIC",
+  "input": "DETERMINISTIC_SYNTHETIC_NO_PATIENT_DATA",
+  "persistence": "CONFIRMED",
+  "result": {
+    "request_id": "db0a34bdd9c7478ea811b2a0a4695920",
+    "status": "completed",
+    "model_id": "comparative-rfdetr",
+    "model_version": "dataset-v1-onnx-fp32-a73a2bb52bca",
+    "model_sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+    "modality": "intraoral",
+    "clinical_use": "PROHIBITED",
+    "label_verification": "UNVERIFIED",
+    "findings": [
+      {
+        "kind": "detection",
+        "class_id": 4,
+        "raw_label": "RAW_CLASS_4",
+        "score": 0.3588905,
+        "box": [
+          0.09443,
+          0.710326,
+          0.177878,
+          0.903658
+        ]
+      },
+      {
+        "kind": "detection",
+        "class_id": 4,
+        "raw_label": "RAW_CLASS_4",
+        "score": 0.3410802,
+        "box": [
+          0.502626,
+          0.709914,
+          0.587414,
+          0.903575
+        ]
+      },
+      {
+        "kind": "detection",
+        "class_id": 4,
+        "raw_label": "RAW_CLASS_4",
+        "score": 0.3393377,
+        "box": [
+          0.639064,
+          0.709701,
+          0.723791,
+          0.903354
+        ]
+      },
+      {
+        "kind": "detection",
+        "class_id": 4,
+        "raw_label": "RAW_CLASS_4",
+        "score": 0.3354193,
+        "box": [
+          0.230448,
+          0.709585,
+          0.314395,
+          0.903751
+        ]
+      },
+      {
+        "kind": "detection",
+        "class_id": 4,
+        "raw_label": "RAW_CLASS_4",
+        "score": 0.3273197,
+        "box": [
+          0.774923,
+          0.709916,
+          0.860218,
+          0.903736
+        ]
+      },
+      {
+        "kind": "detection",
+        "class_id": 4,
+        "raw_label": "RAW_CLASS_4",
+        "score": 0.3235712,
+        "box": [
+          0.366419,
+          0.709591,
+          0.451235,
+          0.903806
+        ]
+      },
+      {
+        "kind": "detection",
+        "class_id": 4,
+        "raw_label": "RAW_CLASS_4",
+        "score": 0.3209022,
+        "box": [
+          0.503543,
+          0.411935,
+          0.586966,
+          0.604687
+        ]
+      },
+      {
+        "kind": "detection",
+        "class_id": 4,
+        "raw_label": "RAW_CLASS_4",
+        "score": 0.3172601,
+        "box": [
+          0.230146,
+          0.412123,
+          0.314299,
+          0.605647
+        ]
+      },
+      {
+        "kind": "detection",
+        "class_id": 4,
+        "raw_label": "RAW_CLASS_4",
+        "score": 0.300384,
+        "box": [
+          0.094354,
+          0.412604,
+          0.177592,
+          0.60542
+        ]
+      },
+      {
+        "kind": "detection",
+        "class_id": 4,
+        "raw_label": "RAW_CLASS_4",
+        "score": 0.2938836,
+        "box": [
+          0.639328,
+          0.411902,
+          0.723381,
+          0.60535
+        ]
+      },
+      {
+        "kind": "detection",
+        "class_id": 4,
+        "raw_label": "RAW_CLASS_4",
+        "score": 0.2857933,
+        "box": [
+          0.366403,
+          0.412172,
+          0.450677,
+          0.60527
+        ]
+      },
+      {
+        "kind": "detection",
+        "class_id": 4,
+        "raw_label": "RAW_CLASS_4",
+        "score": 0.278406,
+        "box": [
+          0.775251,
+          0.412378,
+          0.859931,
+          0.604906
+        ]
+      }
+    ],
+    "quality": {
+      "accepted": true,
+      "width": 704,
+      "height": 704,
+      "mean_brightness": 141.541,
+      "laplacian_variance": 1801.083,
+      "reasons": [],
+      "compatibility": "MODALITY_SELF_REPORTED",
+      "limitations": [
+        "Quality checks do not prove an oral image or correct modality",
+        "Thresholds are technical heuristics, not clinically validated"
+      ]
+    },
+    "latency_ms": 3268.73,
+    "warnings": [
+      "RESEARCH_ONLY",
+      "DENTIST_REVIEW_REQUIRED",
+      "RAW_LABEL_SEMANTICS_UNVERIFIED",
+      "SCORES_ARE_NOT_DIAGNOSTIC_PROBABILITIES",
+      "NEGATIVE_OUTPUT_DOES_NOT_ESTABLISH_HEALTH"
+    ]
+  },
+  "clinical_validation": "NOT_PERFORMED"
+}

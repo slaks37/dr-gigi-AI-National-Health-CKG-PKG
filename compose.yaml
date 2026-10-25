@@ -1,0 +1,58 @@
+name: sonri-staging-candidate
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sonri-app:local
+    init: true
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${SONRI_APP_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      GCLOUD_PROJECT: ${GCLOUD_PROJECT:-}
+      FIRESTORE_DATABASE_ID: ${FIRESTORE_DATABASE_ID:-}
+      SONRI_INFERENCE_URL: http://inference:8000
+      SONRI_INFERENCE_TOKEN: ${SONRI_INFERENCE_TOKEN:?Set a random inference token with at least 32 characters}
+    depends_on:
+      inference:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=128m
+      - /app/.next/cache:rw,noexec,nosuid,size=128m,uid=1000,gid=1000
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 2g
+    networks: [default, inference_internal]
+  inference:
+    build:
+      context: ./services/inference
+      dockerfile: Dockerfile
+    image: sonri-inference:local
+    init: true
+    restart: unless-stopped
+    environment:
+      INFERENCE_API_TOKEN: ${SONRI_INFERENCE_TOKEN:?Set a random inference token with at least 32 characters}
+      SONRI_MODEL_REGISTRY: /config/registry.json
+      SONRI_MODEL_ROOT: /models
+      OMP_NUM_THREADS: "2"
+      OPENBLAS_NUM_THREADS: "2"
+    # Deliberately no published port and no enabled model in the supplied registry.
+    volumes:
+      - ./services/inference/registry.example.json:/config/registry.json:ro
+      - model_store:/models:ro
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=128m,uid=10001,gid=10001
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 4g
+    networks: [inference_internal]
+volumes:
+  model_store:
+networks:
+  default: {}
+  inference_internal:
+    internal: true

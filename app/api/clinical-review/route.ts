@@ -3,7 +3,7 @@ import { store } from '@/src/server/store';
 import { parse } from '@/src/clinical-engine/validation/parse';
 import { ReviewRequestSchema } from '@/src/clinical-engine/validation/review';
 import { ScreeningSchema, FindingSchema } from '@/src/clinical-engine/types/schema';
-import { lookupCode, validateCodes } from '@/src/clinical-engine/terminology/catalog';
+import { lookupCode, validateCodes, TERMINOLOGY_VERSION } from '@/src/clinical-engine/terminology/catalog';
 import { applyReasoning } from '@/src/clinical-engine/core/pipeline';
 import { FieldValue } from 'firebase-admin/firestore';
 export const POST=api(async(req,p)=>{
@@ -25,7 +25,7 @@ export const POST=api(async(req,p)=>{
    if(f.fdi_number&&(!input.orientation_known||!input.anatomical_context_known))throw new ApiError(400,'FDI requires known orientation and anatomical context');
    return FindingSchema.parse({...f,source:'QUALIFIED_CLINICIAN',model_version:null,reviewer_uid:p.uid,review_required:true});
   });
-  result.visual_findings=findings;applyReasoning(result,findings);result.confirmed_icd10=input.confirmed_icd10;
+  result.visual_findings=findings;applyReasoning(result,findings);result.confirmed_icd10=input.confirmed_icd10;result.terminology_version=TERMINOLOGY_VERSION;
   result.clinician_review={status:input.decision,reviewer_uid:p.uid,reviewed_at:new Date().toISOString(),note:input.note,evidence:input.clinical_evidence};
   result.evidence_provenance.source='CLINICIAN_REVIEW';
   if(input.decision==='APPROVED')result.screening_status='CLINICIAN_CONFIRMED';

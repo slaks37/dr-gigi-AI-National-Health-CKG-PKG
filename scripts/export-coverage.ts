@@ -1,0 +1,10 @@
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { coverageMatrix } from '../src/clinical-engine/terminology/coverage';
+const matrix = coverageMatrix(), directory = 'docs/validation';
+mkdirSync(directory, { recursive: true });
+writeFileSync(`${directory}/icd10-evidence-coverage.v2.json`, JSON.stringify(matrix, null, 2) + '\n');
+const fields = ['code','title','kind','terminology_available','clinical_evidence_workflow_available','ai_findings_supported','ai_evaluated_with_actual_data','clinically_validated_by_authorized_professionals','clinical_use'];
+const quote = (s: unknown) => '"' + String(s).replaceAll('"', '""') + '"';
+const rows = matrix.rows.map(r => [r.code, r.title, r.kind, r.terminology_available.available, r.clinical_evidence_workflow.available, r.ai_findings_supported.supported, r.ai_evaluated_with_actual_data.evaluated, r.clinically_validated_by_authorized_professionals.validated, r.clinical_use]);
+writeFileSync(`${directory}/icd10-evidence-coverage.v2.csv`, [fields, ...rows].map(r => r.map(quote).join(',')).join('\n') + '\n');
+console.log(JSON.stringify({ coverage_version: matrix.coverage_version, summary: matrix.summary, clinical_use: matrix.clinical_use }));

@@ -1,0 +1,63 @@
+{
+  "schema_version": "sonri.checkpoint-provenance.v1",
+  "verified_on": "2026-10-24",
+  "clinical_approval": false,
+  "metrics": null,
+  "artifacts": [
+    {
+      "model_id": "daath-yolo11m-research",
+      "artifact_filename": "daath-best.pt",
+      "sha256": "7d5f7dcf616f1febbbb28f2552f9d8a2c3e31e90b3c5b03bf26114502dea621d",
+      "bytes": 80923921,
+      "integrity": "LOCAL_SHA256_MATCHES_PINNED_GIT_LFS_POINTER",
+      "source_url": "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/best.pt",
+      "license_evidence": "Pinned README states AGPL-3.0 YOLO weights; source MIT claim requires notices review.",
+      "labels": {
+        "0": "d",
+        "1": "D"
+      },
+      "label_semantics": "UNVERIFIED",
+      "clinical_use": "DISABLED",
+      "inference_in_this_audit": false
+    },
+    {
+      "model_id": "owner-rfdetr-large-v1-research",
+      "artifact_filename": "sonri-rfdetr-large-v1.pt",
+      "sha256": "9b4f611126aade449a3086cc8277831e309dfab0b6ff751a96c9af94ed69020c",
+      "bytes": 134706223,
+      "integrity": "LOCAL_SHA256_VERIFIED",
+      "source": "Previously owner-exported custom model; not a GitHub fork release asset.",
+      "license_evidence": "Prior local operator record reports Apache-2.0; current model-page license not reverified. Operator must retain grant tied to this artifact.",
+      "labels": {
+        "0": "RAW_CLASS_0",
+        "1": "RAW_CLASS_1",
+        "2": "RAW_CLASS_2",
+        "3": "RAW_CLASS_3",
+        "4": "RAW_CLASS_4"
+      },
+      "label_semantics": "UNVERIFIED",
+      "clinical_use": "DISABLED",
+      "inference_in_this_audit": false
+    },
+    {
+      "model_id": "owner-rfdetr-large-v1-onnx-research",
+      "artifact_filename": "sonri-rfdetr-large-v1.onnx",
+      "sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+      "bytes": 121573930,
+      "integrity": "LOCAL_SHA256_VERIFIED",
+      "source_artifact_sha256": "9b4f611126aade449a3086cc8277831e309dfab0b6ff751a96c9af94ed69020c",
+      "source": "Existing local ONNX export, not a newly downloaded model",
+      "license_evidence": "Same owner export provenance caveat as parent checkpoint",
+      "labels": {
+        "0": "RAW_CLASS_0",
+        "1": "RAW_CLASS_1",
+        "2": "RAW_CLASS_2",
+        "3": "RAW_CLASS_3",
+        "4": "RAW_CLASS_4"
+      },
+      "label_semantics": "UNVERIFIED",
+      "clinical_use": "DISABLED",
+      "inference_in_this_audit": false
+    }
+  ]
+}

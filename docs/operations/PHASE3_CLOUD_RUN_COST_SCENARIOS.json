@@ -1,0 +1,254 @@
+{
+  "source": "https://cloud.google.com/run/pricing",
+  "verified_client_date": "2026-10-25",
+  "currency": "USD",
+  "billing": "REQUEST_BASED",
+  "region": "asia-southeast2",
+  "scenarios": [
+    {
+      "name": "No requests",
+      "region": "asia-southeast2",
+      "profile": "onnx-cpu",
+      "requests": 0,
+      "average_request_seconds": "0",
+      "cold_starts": 0,
+      "startup_seconds_per_cold_start": "0",
+      "shutdown_seconds_per_cold_start": "1",
+      "computed_billable_instance_seconds": "0",
+      "gross_compute_and_requests_usd": "0.000000",
+      "net_if_entire_shared_free_credit_available_usd": "0.000000",
+      "net_if_free_credit_already_consumed_usd": "0.000000",
+      "gross_by_sku_usd": {
+        "cpu": "0.000000",
+        "memory": "0.000000",
+        "requests": "0.000000"
+      },
+      "net_by_sku_if_full_credit_usd": {
+        "cpu": "0.000000",
+        "memory": "0.000000",
+        "requests": "0.000000"
+      },
+      "assumptions": [
+        "One sequential request per instance; request durations treated as constant averages rounded up to 100 ms",
+        "Startup and graceful shutdown are billable and modeled separately",
+        "No warm idle instances (minimum instances 0); no startup CPU boost",
+        "These are workload assumptions, not measured inference latency",
+        "Shared free credits cannot be claimed independently for every scenario/service/project",
+        "Excluded services, tax and data transfer are additional; budget alerts and maximum instances 1 are not a spending cap"
+      ],
+      "not_a_total_project_bill": true
+    },
+    {
+      "name": "Small synthetic staging",
+      "region": "asia-southeast2",
+      "profile": "onnx-cpu",
+      "requests": 1000,
+      "average_request_seconds": "2",
+      "cold_starts": 50,
+      "startup_seconds_per_cold_start": "8",
+      "shutdown_seconds_per_cold_start": "1",
+      "computed_billable_instance_seconds": "2450",
+      "gross_compute_and_requests_usd": "0.099870",
+      "net_if_entire_shared_free_credit_available_usd": "0.000000",
+      "net_if_free_credit_already_consumed_usd": "0.099870",
+      "gross_by_sku_usd": {
+        "cpu": "0.082320",
+        "memory": "0.017150",
+        "requests": "0.000400"
+      },
+      "net_by_sku_if_full_credit_usd": {
+        "cpu": "0.000000",
+        "memory": "0.000000",
+        "requests": "0.000000"
+      },
+      "assumptions": [
+        "One sequential request per instance; request durations treated as constant averages rounded up to 100 ms",
+        "Startup and graceful shutdown are billable and modeled separately",
+        "No warm idle instances (minimum instances 0); no startup CPU boost",
+        "These are workload assumptions, not measured inference latency",
+        "Shared free credits cannot be claimed independently for every scenario/service/project",
+        "Excluded services, tax and data transfer are additional; budget alerts and maximum instances 1 are not a spending cap"
+      ],
+      "not_a_total_project_bill": true
+    },
+    {
+      "name": "10000 requests at 5 s",
+      "region": "asia-southeast2",
+      "profile": "onnx-cpu",
+      "requests": 10000,
+      "average_request_seconds": "5",
+      "cold_starts": 200,
+      "startup_seconds_per_cold_start": "10",
+      "shutdown_seconds_per_cold_start": "1",
+      "computed_billable_instance_seconds": "52200",
+      "gross_compute_and_requests_usd": "2.123320",
+      "net_if_entire_shared_free_credit_available_usd": "0.000000",
+      "net_if_free_credit_already_consumed_usd": "2.123320",
+      "gross_by_sku_usd": {
+        "cpu": "1.753920",
+        "memory": "0.365400",
+        "requests": "0.004000"
+      },
+      "net_by_sku_if_full_credit_usd": {
+        "cpu": "0.000000",
+        "memory": "0.000000",
+        "requests": "0.000000"
+      },
+      "assumptions": [
+        "One sequential request per instance; request durations treated as constant averages rounded up to 100 ms",
+        "Startup and graceful shutdown are billable and modeled separately",
+        "No warm idle instances (minimum instances 0); no startup CPU boost",
+        "These are workload assumptions, not measured inference latency",
+        "Shared free credits cannot be claimed independently for every scenario/service/project",
+        "Excluded services, tax and data transfer are additional; budget alerts and maximum instances 1 are not a spending cap"
+      ],
+      "not_a_total_project_bill": true
+    },
+    {
+      "name": "100000 requests at 5 s",
+      "region": "asia-southeast2",
+      "profile": "onnx-cpu",
+      "requests": 100000,
+      "average_request_seconds": "5",
+      "cold_starts": 500,
+      "startup_seconds_per_cold_start": "10",
+      "shutdown_seconds_per_cold_start": "1",
+      "computed_billable_instance_seconds": "505500",
+      "gross_compute_and_requests_usd": "20.563300",
+      "net_if_entire_shared_free_credit_available_usd": "15.303300",
+      "net_if_free_credit_already_consumed_usd": "20.563300",
+      "gross_by_sku_usd": {
+        "cpu": "16.984800",
+        "memory": "3.538500",
+        "requests": "0.040000"
+      },
+      "net_by_sku_if_full_credit_usd": {
+        "cpu": "12.664800",
+        "memory": "2.638500",
+        "requests": "0.000000"
+      },
+      "assumptions": [
+        "One sequential request per instance; request durations treated as constant averages rounded up to 100 ms",
+        "Startup and graceful shutdown are billable and modeled separately",
+        "No warm idle instances (minimum instances 0); no startup CPU boost",
+        "These are workload assumptions, not measured inference latency",
+        "Shared free credits cannot be claimed independently for every scenario/service/project",
+        "Excluded services, tax and data transfer are additional; budget alerts and maximum instances 1 are not a spending cap"
+      ],
+      "not_a_total_project_bill": true
+    },
+    {
+      "name": "Long CPU requests",
+      "region": "asia-southeast2",
+      "profile": "onnx-cpu",
+      "requests": 1000,
+      "average_request_seconds": "60",
+      "cold_starts": 100,
+      "startup_seconds_per_cold_start": "15",
+      "shutdown_seconds_per_cold_start": "1",
+      "computed_billable_instance_seconds": "61600",
+      "gross_compute_and_requests_usd": "2.501360",
+      "net_if_entire_shared_free_credit_available_usd": "0.000000",
+      "net_if_free_credit_already_consumed_usd": "2.501360",
+      "gross_by_sku_usd": {
+        "cpu": "2.069760",
+        "memory": "0.431200",
+        "requests": "0.000400"
+      },
+      "net_by_sku_if_full_credit_usd": {
+        "cpu": "0.000000",
+        "memory": "0.000000",
+        "requests": "0.000000"
+      },
+      "assumptions": [
+        "One sequential request per instance; request durations treated as constant averages rounded up to 100 ms",
+        "Startup and graceful shutdown are billable and modeled separately",
+        "No warm idle instances (minimum instances 0); no startup CPU boost",
+        "These are workload assumptions, not measured inference latency",
+        "Shared free credits cannot be claimed independently for every scenario/service/project",
+        "Excluded services, tax and data transfer are additional; budget alerts and maximum instances 1 are not a spending cap"
+      ],
+      "not_a_total_project_bill": true
+    },
+    {
+      "name": "Optional YOLO CPU",
+      "region": "asia-southeast2",
+      "profile": "yolo-cpu",
+      "requests": 10000,
+      "average_request_seconds": "10",
+      "cold_starts": 500,
+      "startup_seconds_per_cold_start": "20",
+      "shutdown_seconds_per_cold_start": "1",
+      "computed_billable_instance_seconds": "110500",
+      "gross_compute_and_requests_usd": "8.976600",
+      "net_if_entire_shared_free_credit_available_usd": "3.752600",
+      "net_if_free_credit_already_consumed_usd": "8.976600",
+      "gross_by_sku_usd": {
+        "cpu": "7.425600",
+        "memory": "1.547000",
+        "requests": "0.004000"
+      },
+      "net_by_sku_if_full_credit_usd": {
+        "cpu": "3.105600",
+        "memory": "0.647000",
+        "requests": "0.000000"
+      },
+      "assumptions": [
+        "One sequential request per instance; request durations treated as constant averages rounded up to 100 ms",
+        "Startup and graceful shutdown are billable and modeled separately",
+        "No warm idle instances (minimum instances 0); no startup CPU boost",
+        "These are workload assumptions, not measured inference latency",
+        "Shared free credits cannot be claimed independently for every scenario/service/project",
+        "Excluded services, tax and data transfer are additional; budget alerts and maximum instances 1 are not a spending cap"
+      ],
+      "not_a_total_project_bill": true
+    },
+    {
+      "name": "Continuous full utilization for 30 days",
+      "region": "asia-southeast2",
+      "profile": "onnx-cpu",
+      "requests": 518400,
+      "average_request_seconds": "5",
+      "cold_starts": 0,
+      "startup_seconds_per_cold_start": "0",
+      "shutdown_seconds_per_cold_start": "1",
+      "computed_billable_instance_seconds": "2592000",
+      "gross_compute_and_requests_usd": "105.442560",
+      "net_if_entire_shared_free_credit_available_usd": "100.015200",
+      "net_if_free_credit_already_consumed_usd": "105.442560",
+      "gross_by_sku_usd": {
+        "cpu": "87.091200",
+        "memory": "18.144000",
+        "requests": "0.207360"
+      },
+      "net_by_sku_if_full_credit_usd": {
+        "cpu": "82.771200",
+        "memory": "17.244000",
+        "requests": "0.000000"
+      },
+      "assumptions": [
+        "One sequential request per instance; request durations treated as constant averages rounded up to 100 ms",
+        "Startup and graceful shutdown are billable and modeled separately",
+        "No warm idle instances (minimum instances 0); no startup CPU boost",
+        "These are workload assumptions, not measured inference latency",
+        "Shared free credits cannot be claimed independently for every scenario/service/project",
+        "Excluded services, tax and data transfer are additional; budget alerts and maximum instances 1 are not a spending cap"
+      ],
+      "not_a_total_project_bill": true
+    }
+  ],
+  "excluded": [
+    "Cloud Build",
+    "Artifact Registry",
+    "model bucket storage and operations",
+    "Secret Manager",
+    "Firebase and Firestore",
+    "Cloud Logging beyond allowances",
+    "network data transfer",
+    "VPC connector or load balancer",
+    "tax",
+    "currency conversion",
+    "any other account usage"
+  ],
+  "billable_actions_executed": false
+}

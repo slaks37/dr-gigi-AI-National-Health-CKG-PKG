@@ -1,0 +1,119 @@
+{
+  "schema_version": "sonri.class-mapping-evidence.v1",
+  "version": "2026-10-25.1",
+  "verified_on": "2026-10-25",
+  "clinical_use": "PROHIBITED",
+  "meaning_of_verified": "Only explicitly scoped source class definitions/raw order may be verified. Both checkpoint semantic mappings remain UNVERIFIED; no clinical finding or ICD-10 bindings exist. Runtime outputs remain UNVERIFIED/UNCONFIRMED.",
+  "mappings": [
+    {
+      "id": "daath-yolo-source-classes.v1",
+      "model_id": "intraoral-yolo",
+      "checkpoint_sha256": "7d5f7dcf616f1febbbb28f2552f9d8a2c3e31e90b3c5b03bf26114502dea621d",
+      "status": "UNVERIFIED",
+      "verification_scope": "RAW_CLASS_ORDER_AND_PUBLISHED_SOURCE_DEFINITIONS_ONLY_CHECKPOINT_SEMANTICS_UNRESOLVED",
+      "training_link": "Checkpoint raw names and train_args match pinned configuration. However original-test annotation conversion places raw YOLO class0 on COCO-named D boxes, contradicting checkpoint/config name d. Source class meaning cannot safely be bound to checkpoint output.",
+      "source_dataset": "zenodo.14827784.v1",
+      "modality": "INTRAORAL_OCCLUSAL_PHOTOGRAPH",
+      "annotation_geometry": "Whole visible carious-tooth bounding box as defined by source annotators; not a lesion-only boundary, depth/stage or FDI tooth identity.",
+      "classes": [
+        {
+          "class_id": 0,
+          "raw_label": "d",
+          "source_definition": "Primary tooth with visible decay",
+          "source_definition_status": "VERIFIED",
+          "finding_bindings": [],
+          "icd10_bindings": [],
+          "checkpoint_semantic_binding_status": "UNVERIFIED"
+        },
+        {
+          "class_id": 1,
+          "raw_label": "D",
+          "source_definition": "Permanent tooth with visible decay",
+          "source_definition_status": "VERIFIED",
+          "finding_bindings": [],
+          "icd10_bindings": [],
+          "checkpoint_semantic_binding_status": "UNVERIFIED"
+        }
+      ],
+      "evidence_references": [
+        "docs/validation/labels-yolo-checkpoint-metadata.v1.json",
+        "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/best.pt",
+        "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/Dataset/classes.txt",
+        "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/yolo_split/data.yaml",
+        "https://github.com/slaks37/dental_study/blob/f02596a0227b9eaf767b955cd67196236111a3d5/colab.ipynb",
+        "https://doi.org/10.1038/s41597-025-05647-9",
+        "https://zenodo.org/api/records/14827784",
+        "docs/validation/dataset-cross-format-audit.v1.json",
+        "docs/validation/phase3-label-provenance.v1.json"
+      ],
+      "unresolved": [
+        "Full source audit inspected 2505 split label files: 1956 match original YOLO bytes; 549 annotation-missing stems were materialized empty. Across 6424 matched boxes raw0 accompanies COCO D and raw1 accompanies d; two boxes remain unmatched. Original conversion code/version and attributable clinical/source adjudication are still absent. No inverse semantic mapping is enabled.",
+        "All59selected officialYOLO boxes match LabelMe labels at IoU>=0.98: raw0 aligns source D (52boxes), raw1 aligns source d (7boxes), while checkpoint/config names say0=d/1=D. Need original conversion specification and owner/clinician adjudication covering complete training data, not a score-based relabel.",
+        "No clinical performance or authorized SONRI clinician approval follows from class semantics.",
+        "No mapping to VISIBLE_CAVITATION, ICD-10 subtype, severity or FDI tooth number is established.",
+        "All-case negatives, patient-identity linkage, full checkpoint training cohort and duplicate leakage audit remain incomplete."
+      ]
+    },
+    {
+      "id": "owner-rfdetr-raw-classes.v1",
+      "model_id": "comparative-rfdetr",
+      "checkpoint_sha256": "9b4f611126aade449a3086cc8277831e309dfab0b6ff751a96c9af94ed69020c",
+      "derived_export_sha256": "a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0",
+      "status": "UNVERIFIED",
+      "verification_scope": "RAW_OUTPUT_SLOT_COUNT_ONLY",
+      "modality": "UNVERIFIED",
+      "classes": [
+        {
+          "class_id": 0,
+          "raw_label": "RAW_CLASS_0",
+          "source_definition": null,
+          "source_definition_status": "UNVERIFIED",
+          "finding_bindings": [],
+          "icd10_bindings": []
+        },
+        {
+          "class_id": 1,
+          "raw_label": "RAW_CLASS_1",
+          "source_definition": null,
+          "source_definition_status": "UNVERIFIED",
+          "finding_bindings": [],
+          "icd10_bindings": []
+        },
+        {
+          "class_id": 2,
+          "raw_label": "RAW_CLASS_2",
+          "source_definition": null,
+          "source_definition_status": "UNVERIFIED",
+          "finding_bindings": [],
+          "icd10_bindings": []
+        },
+        {
+          "class_id": 3,
+          "raw_label": "RAW_CLASS_3",
+          "source_definition": null,
+          "source_definition_status": "UNVERIFIED",
+          "finding_bindings": [],
+          "icd10_bindings": []
+        },
+        {
+          "class_id": 4,
+          "raw_label": "RAW_CLASS_4",
+          "source_definition": null,
+          "source_definition_status": "UNVERIFIED",
+          "finding_bindings": [],
+          "icd10_bindings": []
+        }
+      ],
+      "evidence_references": [
+        "docs/validation/labels-rfdetr-checkpoint-metadata.v1.json",
+        "docs/validation/labels-rfdetr-onnx-metadata.v1.json"
+      ],
+      "unresolved": [
+        "Exact PT checkpoint provides class_names=null and dataset_file=roboflow; no class/category mapping metadata exists.",
+        "ONNX input [1,3,704,704], dets[1,300,4], labels[1,300,5] has no custom metadata; slot count does not prove five dental diseases or background handling.",
+        "Need exact Roboflow workspace/project/version and immutable COCO categories/classes export tied to this training run, export configuration/class ordering/background handling and model-specific license.",
+        "No modality provenance or independent reference cohort can be bound to these weights; real dental accuracy evaluation would be uninterpretable."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,361 @@
+{
+  "schema_version": "sonri.detection-evaluation.v1",
+  "clinical_use": "PROHIBITED",
+  "purpose": "source-reproduction",
+  "checkpoint_sha256": "7d5f7dcf616f1febbbb28f2552f9d8a2c3e31e90b3c5b03bf26114502dea621d",
+  "dataset": {
+    "dataset_id": "zenodo.14827784",
+    "dataset_version": "v1",
+    "license": "CC-BY-4.0 per current official repository record",
+    "license_evidence": "https://zenodo.org/api/records/14827784",
+    "clinical_annotation_evidence": "https://doi.org/10.1038/s41597-025-05647-9",
+    "modality": "intraoral-occlusal",
+    "attribution": "Faizan Ahmed SM, Ghori MH, Khalid A, Nooruddin A, Adnan N, Lal A, Umer F. Annotated intraoral image dataset for dental caries detection. Scientific Data 12, 1297 (2025). DOI 10.1038/s41597-025-05647-9; dataset DOI 10.5281/zenodo.14827784.",
+    "selection": "Complete intersection of original Benchmarking test COCO-referenced records and exact Daath yolo_split/labels/test stems at pinned commit; 17 records; no performance-based selection.",
+    "source_commit": "f02596a0227b9eaf767b955cd67196236111a3d5",
+    "annotation_sha256": "764e7a0e6e7574ff97894916dc47d13dae789d1ac5642dbf0c7625450d924128",
+    "archive_md5_from_record": "852520f16faf65f4704ee06bd82561fa",
+    "full_archive_md5_verified": false,
+    "member_integrity": "HTTP Content-Range checked; ZIP CRC32 checked and per-image SHA256 frozen",
+    "class_id_resolution": "Use each COCO file category.name; official test 1=D,2=d differs from train/valid 1=d,2=D.",
+    "reference_protocol": "Exact raw YOLO training class IDs, independently byte-compared to pinned source test annotations. Disease semantics UNVERIFIED because source class-name contract conflicts with cross-format annotation content."
+  },
+  "audit": {
+    "patient_split_audited": false,
+    "reference_contract_audited": false,
+    "unresolved": [
+      "PATIENT_IDENTITY_VERIFIED_UNVERIFIED",
+      "TRAIN_TEST_PATIENT_DISJOINT_UNVERIFIED",
+      "EXACT_DUPLICATES_CHECKED_UNVERIFIED",
+      "NEAR_DUPLICATES_ADJUDICATED_UNVERIFIED",
+      "TRAINING_POPULATION_COMPLETE_UNVERIFIED",
+      "PATIENT_GROUP_MISSING",
+      "FROZEN_SPLIT_POPULATION_MISSING",
+      "SEMANTIC_LABEL_MAPPING_VERIFIED_UNVERIFIED",
+      "REFERENCE_CLASS_CONTRACT_VERIFIED_UNVERIFIED",
+      "INDEPENDENT_REFERENCE_REVIEW_VERIFIED_UNVERIFIED",
+      "REFERENCE_CLASS_CONTRACT_CONFLICT"
+    ],
+    "status": "SOURCE_REPRODUCTION_ONLY"
+  },
+  "metrics": {
+    "images": 17,
+    "negative_reference_images": 0,
+    "confidence_threshold": 0.25,
+    "matching_iou": 0.5,
+    "ap_protocol": "101-point interpolation, score-greedy one-to-one matches, IoU 0.50:0.05:0.95; per-image max_det is declared by runner",
+    "per_class": [
+      {
+        "class_id": 0,
+        "source_class_name": "RAW_TRAINING_CLASS_0",
+        "reference_boxes": 52,
+        "tp": 45,
+        "fp": 11,
+        "fn": 7,
+        "precision": 0.8035714285714286,
+        "recall": 0.8653846153846154,
+        "f1": 0.8333333333333334,
+        "recall_wilson95_box_level": [
+          0.747266798348062,
+          0.9332311829460386
+        ],
+        "ap50": 0.900793031161389,
+        "ap50_95": 0.6052420761887604
+      },
+      {
+        "class_id": 1,
+        "source_class_name": "RAW_TRAINING_CLASS_1",
+        "reference_boxes": 7,
+        "tp": 7,
+        "fp": 2,
+        "fn": 0,
+        "precision": 0.7777777777777778,
+        "recall": 1.0,
+        "f1": 0.875,
+        "recall_wilson95_box_level": [
+          0.6456695649333126,
+          1
+        ],
+        "ap50": 1.0,
+        "ap50_95": 0.7893917963224893
+      }
+    ],
+    "false_negative_reasons": {
+      "WRONG_CLASS_AT_REFERENCE_LOCATION": 1,
+      "CORRECT_LOCATION_BELOW_CONFIDENCE_THRESHOLD": 5,
+      "LOCALIZATION_IOU_BELOW_THRESHOLD": 1
+    },
+    "localization_errors": [
+      {
+        "image_sha256": "a0c5211cb268c686bc77fbd121fdd9c5835d564ef2adafa90f37c07bb2b658a3",
+        "type": "FALSE_NEGATIVE",
+        "class_id": 0,
+        "reference_box": [
+          0.054569767335724786,
+          0.6199712556179434,
+          0.22890823954653744,
+          0.8440799970768426
+        ],
+        "reason": "WRONG_CLASS_AT_REFERENCE_LOCATION"
+      },
+      {
+        "image_sha256": "7e3cee6ac0255275dad30a56e18f91f3c0001790adae8ae580fb3d2716b2737a",
+        "type": "FALSE_NEGATIVE",
+        "class_id": 0,
+        "reference_box": [
+          0.7924076607387143,
+          0.6448498465960286,
+          0.960841313269494,
+          0.846727191851911
+        ],
+        "reason": "CORRECT_LOCATION_BELOW_CONFIDENCE_THRESHOLD"
+      },
+      {
+        "image_sha256": "f40ee9e0b7fad49c9ca18a02f4e1e3e6622b9d9f474e425e33f960509b50bb16",
+        "type": "FALSE_NEGATIVE",
+        "class_id": 0,
+        "reference_box": [
+          0.06896551724137934,
+          0.6785064580680372,
+          0.23848303121166692,
+          0.8968073494633436
+        ],
+        "reason": "CORRECT_LOCATION_BELOW_CONFIDENCE_THRESHOLD"
+      },
+      {
+        "image_sha256": "f40ee9e0b7fad49c9ca18a02f4e1e3e6622b9d9f474e425e33f960509b50bb16",
+        "type": "FALSE_NEGATIVE",
+        "class_id": 0,
+        "reference_box": [
+          0.7598132751805916,
+          0.7308077132981626,
+          0.950626959247649,
+          0.9582044751682736
+        ],
+        "reason": "CORRECT_LOCATION_BELOW_CONFIDENCE_THRESHOLD"
+      },
+      {
+        "image_sha256": "5d9aea9bd1a3dfd9e96945f2e5e0a73983bdf405775694e8ff237670a3be011d",
+        "type": "FALSE_NEGATIVE",
+        "class_id": 0,
+        "reference_box": [
+          0.12188309033928327,
+          0.5284136112563362,
+          0.2581414361629649,
+          0.6773009342395382
+        ],
+        "reason": "CORRECT_LOCATION_BELOW_CONFIDENCE_THRESHOLD"
+      },
+      {
+        "image_sha256": "90e76fb69fae7ef915ef024bc755492a5eb97b5267d06d5d572cf4d5a30b1e40",
+        "type": "FALSE_NEGATIVE",
+        "class_id": 0,
+        "reference_box": [
+          0.10704538562620038,
+          0.3987854251012146,
+          0.277620539775599,
+          0.567476383265857
+        ],
+        "reason": "CORRECT_LOCATION_BELOW_CONFIDENCE_THRESHOLD"
+      },
+      {
+        "image_sha256": "a4e55d28d1b1a1c2d7090917a07915338de1b9087ea12303db4721775c38e77c",
+        "type": "FALSE_NEGATIVE",
+        "class_id": 0,
+        "reference_box": [
+          0.791095890410959,
+          0.5294471153846154,
+          0.9524152847873107,
+          0.7229567307692308
+        ],
+        "reason": "LOCALIZATION_IOU_BELOW_THRESHOLD"
+      },
+      {
+        "image_sha256": "078799d95366040344322af2ab5b838f18fe999637db68ae9b3e252b4de58634",
+        "type": "FALSE_POSITIVE",
+        "class_id": 0,
+        "prediction_box": [
+          0.7777419090270996,
+          0.15484324097633362,
+          0.9605976939201355,
+          0.3600999712944031
+        ],
+        "score": 0.8385921716690063,
+        "best_unmatched_same_class_iou": 0
+      },
+      {
+        "image_sha256": "c249b994258ab03bf6d77863d3dcefcc15d4b25a84647d920894c1435a8a6a30",
+        "type": "FALSE_POSITIVE",
+        "class_id": 0,
+        "prediction_box": [
+          0.0261879563331604,
+          0.035496048629283905,
+          0.18463744223117828,
+          0.24803178012371063
+        ],
+        "score": 0.715033233165741,
+        "best_unmatched_same_class_iou": 0
+      },
+      {
+        "image_sha256": "9ead10fdbf4304aaa28880cd3b0045ed6aef8251250a83a6c20d85e0a27ac952",
+        "type": "FALSE_POSITIVE",
+        "class_id": 0,
+        "prediction_box": [
+          0.1402060091495514,
+          0.5380601286888123,
+          0.2857343852519989,
+          0.6965272426605225
+        ],
+        "score": 0.697076678276062,
+        "best_unmatched_same_class_iou": 0
+      },
+      {
+        "image_sha256": "fe90999016bffc5227f15c566155cee1526698ed344f5363eb9837d54fc4837d",
+        "type": "FALSE_POSITIVE",
+        "class_id": 0,
+        "prediction_box": [
+          0.6786782145500183,
+          0.7158074378967285,
+          0.7955948710441589,
+          0.8795390725135803
+        ],
+        "score": 0.622881293296814,
+        "best_unmatched_same_class_iou": 0
+      },
+      {
+        "image_sha256": "fe90999016bffc5227f15c566155cee1526698ed344f5363eb9837d54fc4837d",
+        "type": "FALSE_POSITIVE",
+        "class_id": 0,
+        "prediction_box": [
+          0.17054153978824615,
+          0.8124482035636902,
+          0.29330527782440186,
+          0.9432315826416016
+        ],
+        "score": 0.5885564684867859,
+        "best_unmatched_same_class_iou": 0
+      },
+      {
+        "image_sha256": "fe90999016bffc5227f15c566155cee1526698ed344f5363eb9837d54fc4837d",
+        "type": "FALSE_POSITIVE",
+        "class_id": 0,
+        "prediction_box": [
+          0.6484345197677612,
+          0.44941356778144836,
+          0.7621704936027527,
+          0.586315393447876
+        ],
+        "score": 0.4589228332042694,
+        "best_unmatched_same_class_iou": 0
+      },
+      {
+        "image_sha256": "fb0aab5e8b7fb792a448c2c3a56c5232f7fb44c60834474427402ed45a8ff4af",
+        "type": "FALSE_POSITIVE",
+        "class_id": 0,
+        "prediction_box": [
+          0.12310418486595154,
+          0.5000496506690979,
+          0.2771792411804199,
+          0.6658614873886108
+        ],
+        "score": 0.45659783482551575,
+        "best_unmatched_same_class_iou": 0.0
+      },
+      {
+        "image_sha256": "078799d95366040344322af2ab5b838f18fe999637db68ae9b3e252b4de58634",
+        "type": "FALSE_POSITIVE",
+        "class_id": 0,
+        "prediction_box": [
+          0.7570894360542297,
+          0.32670605182647705,
+          0.9403535723686218,
+          0.5554859042167664
+        ],
+        "score": 0.4372270703315735,
+        "best_unmatched_same_class_iou": 0
+      },
+      {
+        "image_sha256": "fb0aab5e8b7fb792a448c2c3a56c5232f7fb44c60834474427402ed45a8ff4af",
+        "type": "FALSE_POSITIVE",
+        "class_id": 0,
+        "prediction_box": [
+          0.0,
+          0.7913928031921387,
+          0.055148061364889145,
+          0.9940391182899475
+        ],
+        "score": 0.4336698651313782,
+        "best_unmatched_same_class_iou": 0.0
+      },
+      {
+        "image_sha256": "078799d95366040344322af2ab5b838f18fe999637db68ae9b3e252b4de58634",
+        "type": "FALSE_POSITIVE",
+        "class_id": 0,
+        "prediction_box": [
+          0.7436901926994324,
+          0.5108073353767395,
+          0.8945419192314148,
+          0.6736755967140198
+        ],
+        "score": 0.3950960338115692,
+        "best_unmatched_same_class_iou": 0
+      },
+      {
+        "image_sha256": "a4e55d28d1b1a1c2d7090917a07915338de1b9087ea12303db4721775c38e77c",
+        "type": "FALSE_POSITIVE",
+        "class_id": 0,
+        "prediction_box": [
+          0.5143033862113953,
+          0.9609838724136353,
+          0.695547878742218,
+          0.999889075756073
+        ],
+        "score": 0.3680404722690582,
+        "best_unmatched_same_class_iou": 0.0
+      },
+      {
+        "image_sha256": "a0c5211cb268c686bc77fbd121fdd9c5835d564ef2adafa90f37c07bb2b658a3",
+        "type": "FALSE_POSITIVE",
+        "class_id": 1,
+        "prediction_box": [
+          0.04700202867388725,
+          0.6318597793579102,
+          0.23393282294273376,
+          0.8525073528289795
+        ],
+        "score": 0.618480920791626,
+        "best_unmatched_same_class_iou": 0
+      },
+      {
+        "image_sha256": "f63f64fe00fcdfd506d8f920d3de57cac3c9b33f8c42a73af6d57389c32db3c7",
+        "type": "FALSE_POSITIVE",
+        "class_id": 1,
+        "prediction_box": [
+          0.06618402153253555,
+          0.39108115434646606,
+          0.2576816976070404,
+          0.6822262406349182
+        ],
+        "score": 0.2753952741622925,
+        "best_unmatched_same_class_iou": 0
+      }
+    ],
+    "uncertainty_note": "Wilson intervals treat boxes as independent and are descriptive only; correlated teeth/views and small selected sample preclude patient-level clinical inference."
+  },
+  "id": "source-raw-yolo-reproduction-17.v1",
+  "verified_on": "2026-10-24",
+  "status": "SOURCE_RAW_INDEX_REPRODUCTION",
+  "model_id": "intraoral-yolo",
+  "dataset_id": "zenodo.14827784",
+  "dataset_version": "v1",
+  "real_images": true,
+  "independent_clinician_reference": false,
+  "patient_split_audited": false,
+  "findings_evaluated": [],
+  "evidence_reference": "services/evaluation/source-raw-yolo-reproduction-17.v1.json",
+  "label_semantics": "UNVERIFIED",
+  "clinical_validation": false,
+  "interpretation": "Agreement with source raw YOLO annotation indices only. No clinical diagnostic sensitivity, external generalization, disease mapping or ICD-10 support established.",
+  "runtime_evidence": "services/evaluation/source-reproduction-runtime.v1.json",
+  "semantic_mapping_status": "UNVERIFIED"
+}

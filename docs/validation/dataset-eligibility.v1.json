@@ -1,0 +1,106 @@
+{
+  "schema_version": "sonri.dataset-eligibility.v1",
+  "verified_on": "2026-10-24",
+  "clinical_use": "PROHIBITED",
+  "datasets": [
+    {
+      "id": "zenodo.14827784.v1",
+      "status": "LICENSED_SOURCE_REPRODUCTION_AVAILABLE_INDEPENDENT_BENCHMARK_BLOCKED",
+      "modality": "INTRAORAL_PHOTOGRAPH",
+      "published_total_images": 6313,
+      "source": "https://zenodo.org/api/records/14827784",
+      "publication": "https://doi.org/10.1038/s41597-025-05647-9",
+      "license": "CC-BY-4.0 per current official dataset record (article publication rights are a separate artifact)",
+      "license_verified": true,
+      "clinical_annotation_provenance": "Original publication reports two calibrated dentists and third-dentist adjudication; source reference, no new SONRI clinician sign-off.",
+      "sharing_provenance": "Original publication reports anonymization and written consent/assent for open sharing under AKUH ERC#2024-9433-29648.",
+      "official_benchmark_annotations": {
+        "train": {
+          "coco_referenced_images": 1781,
+          "coco_annotation_count": 5386,
+          "category_id_to_name": {
+            "1": "d",
+            "2": "D"
+          },
+          "annotation_sha256": "3bf6f8addfe491a0b1cebd9bcf9a0427c251e17796d6e58a4e89a33757532be5"
+        },
+        "valid": {
+          "coco_referenced_images": 214,
+          "coco_annotation_count": 652,
+          "category_id_to_name": {
+            "1": "d",
+            "2": "D"
+          },
+          "annotation_sha256": "98cdedb6293fc2a77da80814f0816a8106fce963a2c4aab0885e6594f5c91bd6"
+        },
+        "test": {
+          "coco_referenced_images": 232,
+          "coco_annotation_count": 690,
+          "category_id_to_name": {
+            "1": "D",
+            "2": "d"
+          },
+          "annotation_sha256": "764e7a0e6e7574ff97894916dc47d13dae789d1ac5642dbf0c7625450d924128"
+        }
+      },
+      "pinned_daath_split_commit": "f02596a0227b9eaf767b955cd67196236111a3d5",
+      "pinned_daath_split_counts": {
+        "train": {
+          "image_label_pairs_in_tree": 1846,
+          "source_regex_groups_with_filename_fallback": 1077,
+          "matched_identifier_groups": 774,
+          "images_without_matching_identifier": 303
+        },
+        "val": {
+          "image_label_pairs_in_tree": 327,
+          "source_regex_groups_with_filename_fallback": 166,
+          "matched_identifier_groups": 166,
+          "images_without_matching_identifier": 0
+        },
+        "test": {
+          "image_label_pairs_in_tree": 332,
+          "source_regex_groups_with_filename_fallback": 167,
+          "matched_identifier_groups": 167,
+          "images_without_matching_identifier": 0
+        }
+      },
+      "normalized_source_regex_group_overlap": {
+        "train_val": 0,
+        "train_test": 0,
+        "val_test": 0
+      },
+      "group_audit_status": "PROVISIONAL_FILENAME_IDENTIFIERS_ONLY_NOT_PATIENT_VERIFIED",
+      "source_test_reproduction": {
+        "selected_images": 17,
+        "selection": "Entire intersection of original benchmark-test COCO-referenced images with pinned Daath test filenames; no score-based selection.",
+        "original_coco_reference_boxes": 59,
+        "original_coco_class_name_counts": {
+          "d": 7,
+          "D": 52
+        },
+        "negative_reference_images": 0,
+        "real_images_downloaded": true,
+        "private_location": "Operator temporary directory outside repository; mode0700 folder and0600 images. No image bytes committed.",
+        "full_archive_hash_verified": false,
+        "selected_member_integrity": "ZIP CRC32 verified; per-image SHA256 frozen in manifest; original archive MD5 retained from record only."
+      },
+      "independent_benchmark_eligible": false,
+      "blockers": [
+        "Daath checkpoint trained on same source dataset: source-test reproduction is not external validation.",
+        "Patient identifiers are inferred from source filename regex; no documentary patient linkage or complete training patient manifest.303 training images fail that regex.",
+        "No full train/test exact/near-duplicate pixel audit or blinded SONRI clinician re-review.",
+        "Original COCO labels, LabelMe labels, YOLO indices and checkpoint class-name contract require cross-format adjudication.",
+        "No verified negative-image reference cohort in the selected17records.",
+        "No confidence threshold/model selection or clinical acceptance criteria approved by authorized professionals."
+      ]
+    }
+  ],
+  "rf_detr_dataset": {
+    "status": "UNAVAILABLE_EXACT_EXPORT_PROVENANCE",
+    "blockers": [
+      "No artifact-tied Roboflow project/version/immutable annotation manifest, class order or modality.",
+      "Generic RF-DETR repository datasets or class counts cannot identify this custom checkpoint training reference.",
+      "Need owner-supplied secure exact export and annotation schema; no secret should be included in public evidence."
+    ]
+  }
+}

@@ -44,6 +44,6 @@ export async function screen(input:ScreeningRequest,uid:string,vision:OralVision
 export function applyReasoning(result:Screening,findings:Finding[]) {
  result.clinical_suspicions=reason(findings,result.symptoms,result.context);
  result.suggested_icd10=[...new Set(result.clinical_suspicions.flatMap(c=>c.suggested_icd10))];
- result.differential_diagnoses=result.clinical_suspicions.map(c=>c.candidate);
+ result.differential_diagnoses=[...new Set(result.clinical_suspicions.flatMap(c=>c.differential_diagnoses))];
  result.required_examinations=[...new Set(['Pemeriksaan langsung oleh dokter gigi',...result.clinical_suspicions.flatMap(c=>c.required_examinations)])];
 }

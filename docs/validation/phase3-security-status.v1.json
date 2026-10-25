@@ -1,0 +1,24 @@
+{
+  "schema_version": "sonri.phase3-security-status.v1",
+  "recorded_on": "2026-10-25",
+  "timezone": "Asia/Jakarta",
+  "incident_id": "SONRI-SUPPORTING-SOURCE-EXPOSURE-20261024",
+  "status": "OPEN",
+  "owner_action_status": "AWAITING_OWNER_ATTESTATION",
+  "last_owner_instruction_on_record": "2026-10-25",
+  "new_nonsecret_owner_attestation_found": false,
+  "provider_revocation_verified": false,
+  "rotation_completed_verified": false,
+  "source_cleanup_verified": false,
+  "provider_usage_review_verified": false,
+  "secret_source_refetched": false,
+  "exposed_credential_read_or_tested": false,
+  "independent_staging_with_separate_credentials_may_continue": true,
+  "clinical_use": "PROHIBITED",
+  "evidence_references": [
+    "security-incident.md",
+    "security-source-exposure.json"
+  ],
+  "template_is_owner_evidence": false,
+  "latest_owner_intent": "Owner requested the source/removal link; no revocation or rotation completion has been stated."
+}

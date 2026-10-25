@@ -1,0 +1,20 @@
+FROM eclipse-temurin:21-jre-jammy AS java
+FROM node:24-bookworm-slim
+ENV JAVA_HOME=/opt/java/openjdk PATH=/opt/java/openjdk/bin:$PATH \
+    FIREBASE_EMULATORS_PATH=/opt/firebase/emulators CI=true \
+    HOME=/tmp XDG_CONFIG_HOME=/tmp/.config
+WORKDIR /app
+COPY --from=java /opt/java/openjdk /opt/java/openjdk
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts && \
+    ./node_modules/.bin/firebase setup:emulators:firestore && \
+    mkdir -p /state && chown node:node /state
+COPY firestore.rules ./ops/staging/firestore.rules
+COPY ops/staging/firebase.json ./ops/staging/firebase.json
+COPY ops/staging/firebase-entrypoint.sh ./ops/staging/firebase-entrypoint.sh
+ENV PATH=/app/node_modules/.bin:$PATH
+USER node
+WORKDIR /tmp
+EXPOSE 8088 9098
+HEALTHCHECK --interval=5s --timeout=3s --start-period=45s CMD node -e "Promise.all([fetch('http://127.0.0.1:9098/emulator/v1/projects/demo-sonri-workflow/config'),fetch('http://127.0.0.1:8088/')]).then(rs=>{if(rs.some(r=>!r.ok))process.exit(1)}).catch(()=>process.exit(1))"
+CMD ["sh", "/app/ops/staging/firebase-entrypoint.sh"]

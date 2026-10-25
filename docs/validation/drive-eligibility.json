@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0",
+  "audited_on": "2026-10-24",
+  "timezone": "Asia/Jakarta",
+  "source_reference": "USER_PROVIDED_GOOGLE_DRIVE_DATASET_FOLDER",
+  "source_link_publication": "OMITTED_TO_AVOID_EXPANDING_DATASET_EXPOSURE",
+  "method": "READ_ONLY_METADATA_AND_RECURSIVE_FOLDER_LISTING",
+  "image_content_opened_or_downloaded": false,
+  "sharing_changed": false,
+  "patient_filenames_or_folder_names_published": false,
+  "root_permissions": {
+    "metadata_available": true,
+    "shared": true,
+    "anyone_role": "writer",
+    "allow_file_discovery": false,
+    "assessment": "PUBLIC_LINK_WRITE_ACCESS_PRESENT_OWNER_REMEDIATION_REQUIRED"
+  },
+  "returned_metadata": {
+    "root_direct_subfolders": 34,
+    "nested_subfolders": 6,
+    "descendant_folders_listed": 40,
+    "listing_errors": 0,
+    "returned_descendant_entries": 2980,
+    "returned_files": 2974,
+    "returned_image_files": 2973,
+    "mime_type_counts": {
+      "image/jpeg": 2793,
+      "image/heif": 150,
+      "image/png": 30,
+      "video/quicktime": 1,
+      "application/vnd.google-apps.folder": 6
+    },
+    "non_image_non_folder_files": 1,
+    "governance_or_annotation_documents_among_returned_entries": 0
+  },
+  "completeness": {
+    "requested_max_items_per_folder": 1000,
+    "folders_returning_exactly_request_limit": 2,
+    "provider_continuation_token_returned": false,
+    "full_inventory_verified": false,
+    "counts_are_returned_metadata_only": true,
+    "limitations": [
+      "Two folders returned exactly 1000 entries; additional unseen entries cannot be excluded without an owner-provided complete manifest or a reliably paginated listing API.",
+      "Connector search returned fewer root children than direct list_folder; search was not used as exhaustive inventory evidence.",
+      "No absence claim is made for files outside returned listings, inaccessible artifacts or external governance records."
+    ]
+  },
+  "evaluation_eligibility": {
+    "status": "BLOCKED",
+    "access_is_not_licensed_authorization": true,
+    "license_or_data_use_permission": "NOT_VERIFIED",
+    "patient_consent_and_ethics_approval": "NOT_VERIFIED",
+    "independent_clinical_reference_labels": "NOT_AVAILABLE_IN_RETURNED_METADATA",
+    "annotation_schema_and_class_order": "NOT_AVAILABLE_IN_RETURNED_METADATA",
+    "patient_group_manifest": "NOT_AVAILABLE_IN_RETURNED_METADATA",
+    "train_val_test_overlap_audit": "NOT_POSSIBLE_WITH_CURRENT_MANIFESTS",
+    "folder_labels_are_clinical_ground_truth": false,
+    "benchmark_executed": false,
+    "clinical_use": "PROHIBITED"
+  },
+  "required_owner_actions": [
+    "Restrict public link write access using the owner's approved secure channel; no sharing mutation was performed by this audit.",
+    "Provide written evaluation/data-use authorization, applicable image licenses and patient-consent or ethics documentation in an approved private location.",
+    "Provide a complete immutable image/hash manifest, modality and de-identified patient-group identifiers with train/validation/test provenance.",
+    "Provide independently clinician-reviewed annotations with class definitions, box/mask coordinate conventions, reviewer qualifications and disagreement resolution.",
+    "Re-audit source hashes and leakage after governance and access controls are verified, before any download or evaluation."
+  ],
+  "private_raw_metadata": "RETAINED_OUTSIDE_REPOSITORY_NOT_PUBLISHED",
+  "clinical_validation": "NOT_PERFORMED"
+}

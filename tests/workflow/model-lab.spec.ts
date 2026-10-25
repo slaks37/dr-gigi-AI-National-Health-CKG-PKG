@@ -1,0 +1,37 @@
+import { test, expect } from '@playwright/test';
+import { initializeApp, getApps } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
+import { getFirestore } from 'firebase-admin/firestore';
+import { writeFileSync } from 'node:fs';
+
+test('admin browser → Next API → real Python pretrained inference → audited database result', async ({ page }) => {
+  test.skip(process.env.SONRI_MODEL_E2E !== '1', 'Requires an operator-configured local research checkpoint and running private inference worker');
+  process.env.FIREBASE_AUTH_EMULATOR_HOST = '127.0.0.1:9098'; process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8088';
+  const app = getApps().find(a => a.name === 'model-workflow') ?? initializeApp({ projectId: 'demo-sonri-workflow' }, 'model-workflow');
+  const auth = getAuth(app), db = getFirestore(app), uid = 'synthetic-lab-admin';
+  await auth.deleteUser(uid).catch(() => undefined);
+  await auth.createUser({ uid, email: `${uid}@example.test`, password: 'synthetic-test-password-only' });
+  await auth.setCustomUserClaims(uid, { role: 'admin' });
+  await page.goto('/login');
+  await page.getByLabel('Email', { exact: true }).fill(`${uid}@example.test`);
+  await page.getByLabel('Kata sandi').fill('synthetic-test-password-only');
+  await page.getByRole('button', { name: 'Masuk dengan email' }).click();
+  await expect(page.getByRole('button', { name: 'Keluar akun' })).toBeVisible();
+  await page.goto('/model-lab');
+  await expect(page.getByRole('button', { name: 'Sign Out' })).toBeVisible();
+  await page.getByLabel('Model', { exact: true }).selectOption('comparative-rfdetr');
+  await page.getByLabel('Fixture sintetis', { exact: false }).setInputFiles(process.env.SONRI_MODEL_FIXTURE!);
+  await page.getByRole('checkbox', { name: 'Saya memastikan input sintetis', exact: false }).check();
+  const responsePromise = page.waitForResponse(r => r.url().endsWith('/api/model-lab') && r.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Jalankan inferensi penelitian' }).click();
+  const response = await responsePromise; expect(response.status()).toBe(200); const body = await response.json();
+  await expect(page.getByRole('heading', { name: 'Hasil penelitian' })).toBeVisible();
+  await expect(page.getByText('Penggunaan klinis: PROHIBITED', { exact: false })).toBeVisible();
+  expect(body.result.findings.length).toBeGreaterThan(0);
+  expect(body.result.model_sha256).toBe('a73a2bb52bca024f98bcddc446fed57e4c3b1296558c6eddb6dc87f0d9c7f5e0');
+  const run = (await db.collection('modelRuns').doc(body.run_id).get()).data()!;
+  expect(run.inputSource).toBe('DECLARED_SYNTHETIC'); expect(run.clinicalUse).toBe('PROHIBITED');
+  expect(run).not.toHaveProperty('data'); expect(run).not.toHaveProperty('patient_id');
+  await page.screenshot({ path: 'test-results/synthetic-model-lab.png', fullPage: true });
+  writeFileSync('services/inference/evidence/application-browser-smoke.json', JSON.stringify({ executed_at: new Date().toISOString(), test: 'REAL_AUTH_BROWSER_NEXT_FASTAPI_ONNX_FIRESTORE_SYNTHETIC', input: 'DETERMINISTIC_SYNTHETIC_NO_PATIENT_DATA', persistence: body.persistence, result: body.result, clinical_validation: 'NOT_PERFORMED' }, null, 2) + '\n');
+});

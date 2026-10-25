@@ -1,0 +1,21 @@
+{
+  "scope": "PINNED_GITHUB_SOURCE",
+  "repository": "slaks37/Sonri-untuk-Negeri",
+  "commit": "b43c2fe614a1ba96da0094ed6271398bd7479a8d",
+  "path": "app/checkup/page.tsx",
+  "git_blob_sha": "65534c5807b802b8568c10c9c1b9e33561787d2c",
+  "scanned_text_files": 1,
+  "findings": [
+    {
+      "path": "app/checkup/page.tsx",
+      "line": 301,
+      "kind": "OPENAI_STYLE_SECRET"
+    }
+  ],
+  "raw_source_persisted": false,
+  "schema_version": "sonri.redacted-credential-scan.v1",
+  "secret_values_emitted": false,
+  "secret_fingerprints_emitted": false,
+  "finding_count": 1,
+  "patterns_only": true
+}

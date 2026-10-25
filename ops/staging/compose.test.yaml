@@ -1,0 +1,35 @@
+# Synthetic CI acceptance only. Never apply this override to a real Firebase project.
+services:
+  app:
+    build:
+      args:
+        NEXT_PUBLIC_SONRI_EMULATORS: "true"
+    environment:
+      GCLOUD_PROJECT: demo-sonri-workflow
+      FIRESTORE_DATABASE_ID: (default)
+      FIRESTORE_EMULATOR_HOST: firebase:8088
+      FIREBASE_AUTH_EMULATOR_HOST: firebase:9098
+      SONRI_RESEARCH_PREVIEW: "0"
+    depends_on:
+      firebase:
+        condition: service_healthy
+  firebase:
+    build:
+      context: .
+      dockerfile: ops/staging/Dockerfile.firebase
+    image: sonri-firebase-emulators:synthetic
+    init: true
+    ports:
+      - "127.0.0.1:8088:8088"
+      - "127.0.0.1:9098:9098"
+    volumes:
+      - synthetic_emulator_state:/state
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,size=512m,uid=1000,gid=1000
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 2g
+    networks: [default]
+volumes:
+  synthetic_emulator_state:

@@ -1,0 +1,285 @@
+{
+  "schema_version": "sonri.phase3-executed-software-evidence.v1",
+  "status": "PASS",
+  "scope": "SYNTHETIC_CI_AND_LOCAL_CONTAINER_CONTRACTS",
+  "clinical_use": "PROHIBITED",
+  "source": {
+    "pull_request_head_sha": "6bb7bad3f7f3c3997c281fc9db609356b1531499",
+    "checked_out_pr_merge_sha": "951fc170c718f7fec3d052c33f99ee47726375b3",
+    "application_ci_url": "https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/actions/runs/40159239542",
+    "container_ci_url": "https://github.com/slaks37/dr-gigi-AI-National-Health-CKG-PKG/actions/runs/40159239541",
+    "artifact_retention_days": 14,
+    "artifacts": [
+      {
+        "id": 12585664771,
+        "name": "synthetic-container-staging-evidence"
+      },
+      {
+        "id": 12585309976,
+        "name": "cloud-run-local-container-contract"
+      },
+      {
+        "id": 12584654624,
+        "name": "compiled-staging-configuration-fixture"
+      }
+    ]
+  },
+  "run": {
+    "commit": "951fc170c718f7fec3d052c33f99ee47726375b3",
+    "executed_at": "2026-10-25T03:48:19.072Z",
+    "scope": "SYNTHETIC_DOCKER_COMPOSE_ACCEPTANCE",
+    "status": "PASS",
+    "real_firebase_staging": "NOT_TESTED",
+    "model_registry": "ALL_DISABLED",
+    "clinical_validation": "NOT_PERFORMED"
+  },
+  "browser_stats": {
+    "startTime": "2026-10-25T03:47:16.118Z",
+    "duration": 8021.589,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "api_checks": {
+    "passed": 20,
+    "negative_authorization_or_input_checks": 19
+  },
+  "worker_boundary": {
+    "scope": "SYNTHETIC_PRIVATE_WORKER_BOUNDARY",
+    "checks": [
+      {
+        "name": "worker liveness",
+        "status": 200
+      },
+      {
+        "name": "missing worker credential",
+        "status": 401
+      },
+      {
+        "name": "wrong worker credential",
+        "status": 401
+      },
+      {
+        "name": "private authenticated inventory",
+        "status": 200
+      },
+      {
+        "name": "disabled model fails closed",
+        "status": 503
+      }
+    ],
+    "clinical_validation": "NOT_PERFORMED"
+  },
+  "network": {
+    "inference_published_ports": false,
+    "scope": "SYNTHETIC_DOCKER_NETWORK"
+  },
+  "observability": {
+    "scope": "SYNTHETIC_CONTAINER_LOG_ALLOWLIST",
+    "requests": 10,
+    "fields": [
+      "event",
+      "request_id",
+      "route",
+      "status_code",
+      "latency_ms"
+    ],
+    "unauthorized_observed": true,
+    "unavailable_observed": true,
+    "credential_or_upload_leak_detected": false
+  },
+  "restart": {
+    "executed_at": "2026-10-25T03:47:57.716Z",
+    "scope": "SYNTHETIC_DOCKER_ACCEPTANCE",
+    "mode": "restart",
+    "checks": [
+      {
+        "name": "restart: patient can retrieve persisted case",
+        "expected_status": 200,
+        "actual_status": 200
+      },
+      {
+        "name": "restart: app reaches worker",
+        "expected_status": 200,
+        "actual_status": 200
+      },
+      {
+        "name": "restart: all six collection counts and hashes unchanged",
+        "result": "PASS"
+      }
+    ],
+    "model_registry": "ALL_DISABLED",
+    "real_firebase_staging": "NOT_TESTED",
+    "clinical_validation": "NOT_PERFORMED"
+  },
+  "restore": {
+    "executed_at": "2026-10-25T03:48:18.850Z",
+    "scope": "SYNTHETIC_DOCKER_ACCEPTANCE",
+    "mode": "restore",
+    "checks": [
+      {
+        "name": "restore: patient can retrieve persisted case",
+        "expected_status": 200,
+        "actual_status": 200
+      },
+      {
+        "name": "restore: app reaches worker",
+        "expected_status": 200,
+        "actual_status": 200
+      },
+      {
+        "name": "restore: all six collection counts and hashes unchanged",
+        "result": "PASS"
+      }
+    ],
+    "model_registry": "ALL_DISABLED",
+    "real_firebase_staging": "NOT_TESTED",
+    "clinical_validation": "NOT_PERFORMED"
+  },
+  "recovery_baseline": {
+    "records": {
+      "count": 1,
+      "sha256": "31aa692e9b84338456f29247c85ffe08e54b8a0cab3c1638e0deec0ed035b39c"
+    },
+    "patients": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "auditLogs": {
+      "count": 5,
+      "sha256": "e99b4273b44fdde23c6f77e44f2561f43cdeeaecd495939b0858bb14888f8897"
+    },
+    "clinicalReviews": {
+      "count": 1,
+      "sha256": "7f1257737ff3a51c0bc279538d25b98a2da53d41f8a4b1be46bb46db10b833f0"
+    },
+    "examinationRevisions": {
+      "count": 1,
+      "sha256": "e4018f5f50cd7c5f601d17ef69d32a183917de2d63f9cc925c17d16825ff411a"
+    },
+    "consentRecords": {
+      "count": 1,
+      "sha256": "3b42b01d702e12edd2f69991be98ebecda6ed693b09cc2691062c99b0ea5ad16"
+    }
+  },
+  "built_images": [
+    {
+      "ID": "sha256:9e657afc73d213f944688ba0fab717cf0cd97353c96b879322dd44c2f3465156",
+      "ContainerName": "sonri-phase2-synthetic-inference-1",
+      "Repository": "sonri-inference",
+      "Tag": "local",
+      "Platform": "linux/amd64",
+      "Size": 356127207,
+      "LastTagTime": "2026-10-25T03:45:05.056008245Z"
+    },
+    {
+      "ID": "sha256:c2ab76624dded881c61ac28e2e551b0e488ef01816b98ac96e81fa0ef735524a",
+      "ContainerName": "sonri-phase2-synthetic-app-1",
+      "Repository": "sonri-app",
+      "Tag": "local",
+      "Platform": "linux/amd64",
+      "Size": 325170687,
+      "LastTagTime": "2026-10-25T03:46:37.572949868Z"
+    },
+    {
+      "ID": "sha256:b695f87c1359053cb5f93e517758ca05a5d8406d55f6e82ccd6c1ea691ad4433",
+      "ContainerName": "sonri-phase2-synthetic-firebase-1",
+      "Repository": "sonri-firebase-emulators",
+      "Tag": "synthetic",
+      "Platform": "linux/amd64",
+      "Size": 2163199424,
+      "LastTagTime": "2026-10-25T03:45:50.232292709Z"
+    }
+  ],
+  "cloud_run_local_container_contract": [
+    {
+      "record_type": "BUILD_SOURCE_LINKAGE",
+      "scope": "LOCAL_DOCKER_BUILD_ONLY",
+      "executed_at_utc": "2026-10-25T03:43:49.912892+00:00",
+      "image_id": "sha256:4d98a097b165538b354924918ec69741d5f6d598e4a9f38fe3ad86d05cb08697",
+      "image_tag": "sonri-cloud-run-contract:local",
+      "build_target": "onnx-cpu",
+      "source_checkout_sha": "951fc170c718f7fec3d052c33f99ee47726375b3",
+      "requested_branch_head_sha": "6bb7bad3f7f3c3997c281fc9db609356b1531499",
+      "github_event_sha": "951fc170c718f7fec3d052c33f99ee47726375b3",
+      "source_worktree_dirty": false,
+      "registry_push_performed": false,
+      "cloud_run_deployment_performed": false
+    },
+    {
+      "scope": "DOCKER_CLOUD_RUN_PORT_CONTRACT_ONLY",
+      "port": 8080,
+      "health": "PASS",
+      "anonymous_denial": "PASS",
+      "protected_inventory": "PASS",
+      "onnxruntime_version": "1.24.3",
+      "uid": 10001,
+      "models": "ALL_UNAVAILABLE",
+      "cloud_iam_tested": false,
+      "billable_cloud_actions_executed": false,
+      "clinical_validation": "NOT_PERFORMED"
+    },
+    {
+      "scope": "DOCKER_CLOUD_RUN_PORT_CONTRACT_ONLY",
+      "port": 8091,
+      "health": "PASS",
+      "anonymous_denial": "PASS",
+      "protected_inventory": "PASS",
+      "onnxruntime_version": "1.24.3",
+      "uid": 10001,
+      "models": "ALL_UNAVAILABLE",
+      "cloud_iam_tested": false,
+      "billable_cloud_actions_executed": false,
+      "clinical_validation": "NOT_PERFORMED"
+    }
+  ],
+  "compiled_staging_config_fixture": {
+    "schema_version": "sonri.compiled-staging-config-smoke.v1",
+    "status": "PASSED_LOCAL_COMPILED_CONFIG_BOUNDARIES",
+    "distribution": ".next-workflow",
+    "project_id": "synthetic-compiled-staging",
+    "probes": [
+      {
+        "mode": "runtime-project-mismatch",
+        "anonymous_status": 401,
+        "malformed_token_status": 503,
+        "expected_malformed_status": 503
+      },
+      {
+        "mode": "matching-compiled-staging",
+        "anonymous_status": 401,
+        "malformed_token_status": 401,
+        "expected_malformed_status": 401
+      }
+    ],
+    "credentials_supplied": false,
+    "outbound_network_attempted": false,
+    "cloud_calls": 0,
+    "real_identities": false,
+    "cloud_writes": 0,
+    "hosted_staging_tested": false,
+    "clinical_validation": false
+  },
+  "unpacked_file_sha256": {
+    "compiled-config/config-build-smoke.json": "6d7a2cb2ccc18b45129ee3b62773fb467a19101372aa1b20189304c8500e5696",
+    "docker/cloud-run-local-container-contract/port-contract.ndjson": "37172da15b7f8f338a202d1a564c9caf50895c2c4c3849f5d580631301843297",
+    "docker/synthetic-container-staging-evidence/acceptance.json": "2c5127d5b9d6d6adf855f29959556dee8194ebf563956e94a68d0490e993a88e",
+    "docker/synthetic-container-staging-evidence/browser.json": "5c04aeb13d18f66fc116180395f4649b891cf31a4f37baad56ab5c735e0443b2",
+    "docker/synthetic-container-staging-evidence/container-images.json": "58801659f3b7f20b1104bc1bffe169b06bf82f87aaaf6ca62a905584a04cad4e",
+    "docker/synthetic-container-staging-evidence/network.json": "167772124a8d38fc69893fa1c9c3a671dab693e6acc2e60caa1ae3da234b00e0",
+    "docker/synthetic-container-staging-evidence/observability.json": "bd7159358dfe69f53fd9b051bd5b2b09d45c84ede500ebc06ae24bcba8b51dab",
+    "docker/synthetic-container-staging-evidence/recovery-baseline.json": "8fc02f626bf1bde0cade086728b41197f28534def061d8fcedd6f50e2d152f02",
+    "docker/synthetic-container-staging-evidence/restart.json": "2890cbfd21dd9720ddf729455d17793a65eb1f540c82c4c70e02915fd232bb62",
+    "docker/synthetic-container-staging-evidence/restore.json": "e7b094a5a7eb48a087ac1d479e494a84ae6a66a9763ee0e85e4c9e51bd8e7300",
+    "docker/synthetic-container-staging-evidence/run.json": "58eeb4e553ee3ba702e96205fcc239947daa7ebeb3756061c6156c8f369b9c19",
+    "docker/synthetic-container-staging-evidence/worker-boundary.json": "31cca1e676e795d87b8a934b11a94ba7ff5df26b444cb494e4c57aecc419307d"
+  },
+  "limitations": [
+    "All identities and cases are synthetic; Auth/Firestore emulators are not managed Firebase staging.",
+    "All checkpoint registries are disabled. No hosted IAM/WIF, checkpoint inference, independent clinical evaluation or clinical validation is established.",
+    "The patient-profile collection is empty; recovery hashes cover six collections but do not establish recovery of populated real-patient profiles.",
+    "This is the exact 6bb7bad PR merge execution. Later changes require their own completed CI checks; see the current draft PR for final-head results.",
+    "Only browser pass statistics are retained here; the raw browser report remains outside application Git."
+  ]
+}
