@@ -44,6 +44,7 @@ export async function updateRecord(id: string, updates: Record<string, unknown>)
   if (Object.keys(updates).some(k => k !== 'is_accurate')) throw new Error('Hanya umpan balik yang didukung.');
   const current = await authenticatedFetch(`/api/records?id=${encodeURIComponent(id)}`);
   const { records } = await current.json();
+  if (!Array.isArray(records) || !records[0]) throw new Error('Rekam medis tidak ditemukan.');
   const res = await authenticatedFetch('/api/records', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, is_accurate: updates.is_accurate, expectedVersion: records[0].version ?? 0 }) });
   return res.json();
 }

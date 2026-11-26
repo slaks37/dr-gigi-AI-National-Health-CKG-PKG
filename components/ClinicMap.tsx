@@ -29,6 +29,16 @@ export default function ClinicMap({ userLat, userLng, clinics, selectedClinicId,
   const markersRef = useRef<any[]>([]);
 
   useEffect(() => {
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+      markersRef.current = [];
+    };
+  }, []);
+
+  useEffect(() => {
     // Load Leaflet CSS dynamically if not present
     if (!document.getElementById('leaflet-css')) {
       const link = document.createElement('link');
@@ -43,8 +53,8 @@ export default function ClinicMap({ userLat, userLng, clinics, selectedClinicId,
     import('leaflet').then((L) => {
       if (!isMounted || !mapRef.current) return;
 
-      const centerLat = userLat || -6.2088;
-      const centerLng = userLng || 106.8456;
+      const centerLat = userLat ?? -6.2088;
+      const centerLng = userLng ?? 106.8456;
 
       // Fix Leaflet default icon URL resolution issue in Next.js build
       delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -55,6 +65,9 @@ export default function ClinicMap({ userLat, userLng, clinics, selectedClinicId,
       });
 
       if (!mapInstanceRef.current) {
+        if ((mapRef.current as any)._leaflet_id) {
+          delete (mapRef.current as any)._leaflet_id;
+        }
         const map = L.map(mapRef.current).setView([centerLat, centerLng], 13);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -108,12 +121,17 @@ export default function ClinicMap({ userLat, userLng, clinics, selectedClinicId,
 
         const marker = L.marker([clinic.lat, clinic.lng], { icon: clinicIcon }).addTo(map);
 
+        const osmHref =
+          userLat !== null && userLat !== undefined && userLng !== null && userLng !== undefined
+            ? `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${userLat}%2C${userLng}%3B${clinic.lat}%2C${clinic.lng}`
+            : `https://www.openstreetmap.org/?mlat=${clinic.lat}&mlon=${clinic.lng}#map=17/${clinic.lat}/${clinic.lng}`;
+
         const popupContent = `
           <div style="font-family: sans-serif; padding: 2px; max-width: 220px;">
             <h4 style="margin: 0 0 4px 0; font-weight: bold; color: #0f172a; font-size: 13px;">${escapeHtml(clinic.name)}</h4>
             <p style="margin: 0 0 6px 0; color: #64748b; font-size: 11px;">${escapeHtml(clinic.address)}</p>
             ${clinic.distance ? `<p style="margin: 0 0 6px 0; color: #059669; font-weight: bold; font-size: 11px;">📍 ${escapeHtml(clinic.distance)}</p>` : ''}
-            <a href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${userLat || ''}%2C${userLng || ''}%3B${clinic.lat}%2C${clinic.lng}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #059669; color: white; text-decoration: none; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold;">
+            <a href="${osmHref}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #059669; color: white; text-decoration: none; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold;">
               🗺️ Rute OpenStreetMap
             </a>
           </div>

@@ -25,17 +25,19 @@ export default function ScreeningWorkflow({context}:{context:'ADULT'|'PEDIATRIC'
  useEffect(()=>()=>{items.current.forEach(m=>URL.revokeObjectURL(m.url));},[]);
  const invalidate=()=>{setResult(null);setRecordId(null);setFeedback(null);requestId.current=null;};
  const answer=(key:typeof symptomKeys[number],value:'YES'|'NO'|'UNKNOWN')=>{invalidate();setSymptoms(prev=>({...prev,[key]:value}));};
- const addFiles=(files:FileList|null)=>{
+  const resolveMime=(f:File)=>f.type||(/\.heic$/i.test(f.name)?'image/heic':/\.heif$/i.test(f.name)?'image/heif':'');
+  const addFiles=(files:FileList|null)=>{
   if(!files)return;invalidate();
   const selected=Array.from(files).slice(0,4-media.length);
-  if(selected.some(f=>!['image/jpeg','image/png','image/webp','image/heic','image/heif'].includes(f.type)||f.size>12_000_000)){setMessage('Gunakan JPEG, PNG, WebP, HEIC/HEIF hingga 12 MB.');return;}
+  if(selected.some(f=>!['image/jpeg','image/png','image/webp','image/heic','image/heif'].includes(resolveMime(f))||f.size>12_000_000)){setMessage('Gunakan JPEG, PNG, WebP, HEIC/HEIF hingga 12 MB.');return;}
   setMedia(prev=>[...prev,...selected.map(file=>({file,url:URL.createObjectURL(file)}))]);
  };
  const imagePart=async(file:File)=>{
-  if(['image/heic','image/heif'].includes(file.type)){
+  const mime=resolveMime(file);
+  if(['image/heic','image/heif'].includes(mime)){
    if(file.size>2_500_000)throw new Error('HEIC/HEIF terlalu besar. Konversi secara lokal ke JPEG terlebih dahulu.');
    const data=await new Promise<string>((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=()=>reject(new Error('Berkas tidak dapat dibaca.'));reader.readAsDataURL(file);});
-   return{data,mime_type:file.type};
+   return{data,mime_type:mime};
   }
   const compressed=await compressImageToGenerativePart(file,1000,0.8);return{data:compressed.data,mime_type:compressed.mimeType};
  };
@@ -44,9 +46,15 @@ export default function ScreeningWorkflow({context}:{context:'ADULT'|'PEDIATRIC'
   try{
    if(!user)throw new Error('Masuk akun untuk menyimpan skrining. Pesan tanda bahaya tetap dapat dibaca tanpa akun.');
    if(!consent)throw new Error('Persetujuan pemrosesan diperlukan.');
+   const parsedAge=age===''?null:Number(age);
+   if(parsedAge!==null){
+    if(!Number.isInteger(parsedAge)||(context==='PEDIATRIC'&&(parsedAge<0||parsedAge>=18))||(context==='ADULT'&&(parsedAge<18||parsedAge>120))){
+     throw new Error(context==='PEDIATRIC'?'Usia anak harus bilangan bulat antara 0 hingga 17 tahun.':'Usia dewasa harus bilangan bulat antara 18 hingga 120 tahun.');
+    }
+   }
    const images=urgency.level==='EMERGENCY'?[]:await Promise.all(media.map(m=>imagePart(m.file)));
    if(!requestId.current)requestId.current=`scr_${crypto.randomUUID()}`;
-   const body=JSON.stringify({screening_id:requestId.current,context,patient_age:age===''?null:Number(age),symptoms,patient_subject_id:subject||null,guardian_authorized:guardian,images,consent_to_process:true});
+   const body=JSON.stringify({screening_id:requestId.current,context,patient_age:parsedAge,symptoms,patient_subject_id:subject||null,guardian_authorized:guardian,images,consent_to_process:true});
    if(new Blob([body]).size>3_900_000)throw new Error('Gabungan foto terlalu besar. Kurangi foto atau konversi HEIC secara lokal ke JPEG.');
    const response=await authenticatedFetch('/api/screenings',{method:'POST',headers:{'Content-Type':'application/json'},body});
    const saved=await response.json();const validated=ScreeningSchema.parse(saved.screening);
@@ -74,7 +82,7 @@ export default function ScreeningWorkflow({context}:{context:'ADULT'|'PEDIATRIC'
   <div className="grid sm:grid-cols-2 gap-4">{fieldOrder.map(key=><label key={key} className="text-slate-800">{labels[key]}<select aria-label={labels[key]} value={symptoms[key]} onChange={e=>answer(key,e.target.value as 'YES'|'NO'|'UNKNOWN')} className="block mt-1 border rounded-lg p-2 w-full"><option value="UNKNOWN">Belum diketahui</option><option value="YES">Ya</option><option value="NO">Tidak</option></select></label>)}</div>
   <div className="grid sm:grid-cols-3 gap-4">{[['pain_severity','Skala nyeri (0–10)',10],['pain_duration_days','Lama nyeri (hari)',3650],['lesion_duration_days','Lama lesi/sariawan (hari)',3650]].map(([key,label,max])=><label key={String(key)}>{label}<input aria-label={String(label)} type="number" min="0" max={Number(max)} value={symptoms[key as 'pain_severity']??''} onChange={e=>{invalidate();setSymptoms(prev=>({...prev,[String(key)]:e.target.value===''?null:Number(e.target.value)}));}} className="block mt-1 border rounded-lg p-2 w-full" /></label>)}</div>
   <label className="block">Riwayat gigi yang relevan (opsional)<textarea value={symptoms.dental_history} maxLength={2000} onChange={e=>{invalidate();setSymptoms(prev=>({...prev,dental_history:e.target.value}));}} className="block mt-1 border rounded-lg p-2 w-full" /></label>
-  <div><label className="block font-semibold">Foto mulut (opsional, maksimal 4)<input aria-label="Foto skrining oral" type="file" multiple accept="image/jpeg,image/png,image/webp,image/heic,image/heif" disabled={media.length>=4||urgency.level==='EMERGENCY'} onChange={e=>{addFiles(e.target.files);e.target.value='';}} className="block mt-2" /></label><p className="text-sm text-slate-600 mt-2">Foto diproses secara lokal pada server aplikasi untuk pemeriksaan berkas. Foto tidak disimpan dalam rekam dan tidak dikirim ke penyedia AI. HEIC/HEIF memerlukan decoder yang tersedia; bila gagal, gunakan JPEG/PNG.</p><div className="flex gap-3 flex-wrap mt-3">{media.map((m,i)=><div key={m.url} className="border rounded-lg p-2"><p>Foto {i+1}</p>{!['image/heic','image/heif'].includes(m.file.type)?<Image src={m.url} alt={`Pratinjau foto mulut ${i+1}`} width={160} height={120} unoptimized className="w-40 h-32 object-contain"/>:<p className="text-sm">Pratinjau HEIF bergantung pada perangkat.</p>}<button type="button" onClick={()=>{invalidate();URL.revokeObjectURL(m.url);setMedia(prev=>prev.filter(x=>x.url!==m.url));}} className="text-red-700">Hapus foto {i+1}</button></div>)}</div></div>
+  <div><label className="block font-semibold">Foto mulut (opsional, maksimal 4)<input aria-label="Foto skrining oral" type="file" multiple accept="image/jpeg,image/png,image/webp,image/heic,image/heif" disabled={media.length>=4||urgency.level==='EMERGENCY'} onChange={e=>{addFiles(e.target.files);e.target.value='';}} className="block mt-2" /></label><p className="text-sm text-slate-600 mt-2">Foto diproses secara lokal pada server aplikasi untuk pemeriksaan berkas. Foto tidak disimpan dalam rekam dan tidak dikirim ke penyedia AI. HEIC/HEIF memerlukan decoder yang tersedia; bila gagal, gunakan JPEG/PNG.</p><div className="flex gap-3 flex-wrap mt-3">{media.map((m,i)=><div key={m.url} className="border rounded-lg p-2"><p>Foto {i+1}</p>{!['image/heic','image/heif'].includes(resolveMime(m.file))?<Image src={m.url} alt={`Pratinjau foto mulut ${i+1}`} width={160} height={120} unoptimized className="w-40 h-32 object-contain"/>:<p className="text-sm">Pratinjau HEIF bergantung pada perangkat.</p>}<button type="button" onClick={()=>{invalidate();URL.revokeObjectURL(m.url);setMedia(prev=>prev.filter(x=>x.url!==m.url));}} className="text-red-700">Hapus foto {i+1}</button></div>)}</div></div>
   <label className="flex items-start gap-2"><input type="checkbox" checked={consent} onChange={e=>{invalidate();setConsent(e.target.checked);}} className="mt-1" /><span>Saya menyetujui pemrosesan gejala/foto pada aplikasi dan penyimpanan hasil skrining di akun saya. Diagnosis akhir memerlukan dokter.</span></label>
   <button disabled={busy||!user||!consent||(context==='PEDIATRIC'&&(!subject||!guardian))} onClick={run} className="rounded-xl bg-emerald-700 text-white px-5 py-3 disabled:opacity-50">{busy?'Memproses…':'Simpan skrining terstruktur'}</button>{!user&&<p>Masuk melalui tombol akun untuk memproses dan menyimpan hasil.</p>}
   <p role="status" aria-live="polite">{message}</p>

@@ -158,8 +158,13 @@ export default function CheckupPage() {
       if (p) {
         setPatientName(p.name);
         if (p.dateOfBirth) {
-            const age = new Date().getFullYear() - new Date(p.dateOfBirth).getFullYear();
-            setPatientAge(age.toString());
+            const dob = new Date(p.dateOfBirth);
+            if (Number.isFinite(dob.getTime())) {
+              const age = Math.max(0, new Date().getFullYear() - dob.getFullYear());
+              setPatientAge(age.toString());
+            } else {
+              setPatientAge('');
+            }
         } else {
             setPatientAge('');
         }
@@ -226,7 +231,7 @@ export default function CheckupPage() {
   };
 
   const capturePhoto = () => {
-    if (videoRef.current) {
+    if (videoRef.current && videoRef.current.videoWidth > 0 && videoRef.current.videoHeight > 0) {
       const canvas = document.createElement('canvas');
       canvas.width = videoRef.current.videoWidth;
       canvas.height = videoRef.current.videoHeight;
@@ -249,6 +254,10 @@ export default function CheckupPage() {
       const stream = videoRef.current.srcObject as MediaStream;
       stream.getTracks().forEach(track => track.stop());
       videoRef.current.srcObject = null;
+    }
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(track => track.stop());
+      mediaStreamRef.current = null;
     }
     setIsCameraOpen(false);
   };
@@ -544,7 +553,7 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
 
   const exportJSON = () => {
     if (!result) return;
-    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+    const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(
       JSON.stringify(result.json_output, null, 2)
     )}`;
     const link = document.createElement("a");
@@ -742,7 +751,7 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
                 {mediaItems.map((item) => (
                   <div key={item.id} className="relative aspect-square rounded-lg overflow-hidden border border-slate-200 bg-slate-100 group">
-                    <Image src={item.url} alt="Preview" fill className="object-cover " />
+                    <Image src={item.url} alt="Preview" fill unoptimized className="object-cover " />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
                     <button 
                       onClick={() => removeMedia(item.id)}

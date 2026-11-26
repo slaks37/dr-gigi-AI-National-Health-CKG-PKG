@@ -39,7 +39,7 @@ import {
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import Image from 'next/image';
-import { saveRecord, updateRecord } from '../lib/db';
+import { saveRecord, updateRecord, generateSecureId } from '../lib/db';
 import { compressImageToGenerativePart as compressImage, safeCallGeminiAnalyze } from '../lib/imageUtils';
 import { useLanguage } from '../../components/LanguageProvider';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, Cell } from 'recharts';
@@ -304,11 +304,13 @@ export default function AntropometriPage() {
     }
   };
 
-  const startCamera = async (autoRecord = false) => {
+  const startCamera = async (autoRecord = false, preferredFacingMode?: 'user' | 'environment') => {
+    const mode = preferredFacingMode || facingMode;
+    if (preferredFacingMode) setFacingMode(preferredFacingMode);
     setIsCameraOpen(true);
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: facingMode } 
+        video: { facingMode: mode } 
       });
       if (videoRef.current) {
         mediaStreamRef.current = stream;
@@ -316,7 +318,7 @@ export default function AntropometriPage() {
       }
       if (autoRecord) {
         setTimeout(() => {
-          startVideoRecording();
+          startVideoRecording(mode);
         }, 600);
       }
     } catch (err) {
@@ -379,13 +381,14 @@ export default function AntropometriPage() {
     }
   };
 
-  const startVideoRecording = async () => {
+  const startVideoRecording = async (preferredFacingMode?: 'user' | 'environment') => {
+    const mode = preferredFacingMode || facingMode;
     try {
       let stream = videoRef.current?.srcObject as MediaStream;
       if (!stream || !stream.active) {
         setIsCameraOpen(true);
         stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { facingMode: facingMode } 
+          video: { facingMode: mode } 
         });
         if (videoRef.current) {
           mediaStreamRef.current = stream;
@@ -527,6 +530,10 @@ export default function AntropometriPage() {
       stream.getTracks().forEach(track => track.stop());
       videoRef.current.srcObject = null;
     }
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(track => track.stop());
+      mediaStreamRef.current = null;
+    }
     setIsCameraOpen(false);
   };
 
@@ -647,7 +654,7 @@ export default function AntropometriPage() {
           : 'Pemeriksaan Terpadu MCU';
 
       const newRecord = {
-        id: Math.random().toString(36).substring(7),
+        id: generateSecureId('rec'),
         timestamp: new Date().toISOString(),
         patient_id: data.json_output.patient_id || 'unknown',
         type: sessionTitle,
@@ -890,10 +897,23 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
               if (img.width && img.height) {
                 const margin = 10;
                 const maxImgWidth = pdfWidth - (margin * 2);
+                const maxImgHeight = pdfHeight - (margin * 2) - 25;
                 const imgRatio = img.width / img.height;
-                const finalWidth = maxImgWidth;
-                const finalHeight = finalWidth / imgRatio;
-                pdf.addImage(item.url, 'JPEG', margin, 25, finalWidth, finalHeight);
+                let finalWidth = maxImgWidth;
+                let finalHeight = finalWidth / imgRatio;
+                if (finalHeight > maxImgHeight) {
+                  finalHeight = maxImgHeight;
+                  finalWidth = finalHeight * imgRatio;
+                }
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = img.width;
+                tempCanvas.height = img.height;
+                const ctx = tempCanvas.getContext('2d');
+                if (ctx) {
+                  ctx.drawImage(img, 0, 0);
+                  const itemImgData = tempCanvas.toDataURL('image/jpeg', 0.9);
+                  pdf.addImage(itemImgData, 'JPEG', margin, 25, finalWidth, finalHeight);
+                }
               }
             } catch (err) {
               console.warn("Could not append image to PDF:");
@@ -1391,7 +1411,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
                 {/* 5s Video Record Button */}
                 {activeSession !== 'posture' && (
                   <button 
-                    onClick={isRecording ? stopVideoRecording : startVideoRecording}
+                    onClick={() => (isRecording ? stopVideoRecording() : startVideoRecording())}
                     className="flex flex-col items-center gap-1 text-white"
                     title={isRecording ? "Hentikan Rekaman" : "Mulai Rekam Video Wajah 5 Detik"}
                   >
@@ -1444,10 +1464,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
               {activeSession === 'posture' && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <button 
-                    onClick={() => {
-                      setFacingMode('environment');
-                      startCamera(false);
-                    }}
+                    onClick={() => startCamera(false, 'environment')}
                     className="flex flex-col items-center justify-center p-5 border-2 border-dashed border-emerald-300 rounded-2xl bg-emerald-50/70 hover:bg-emerald-100 transition-all gap-2 group text-center"
                   >
                     <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-700 group-hover:scale-110 transition-transform shadow-sm">
@@ -1484,10 +1501,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
               {activeSession === 'face_rppg' && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <button 
-                    onClick={() => {
-                      setFacingMode('user');
-                      startCamera(true);
-                    }}
+                    onClick={() => startCamera(true, 'user')}
                     className="flex flex-col items-center justify-center p-5 border-2 border-dashed border-rose-300 rounded-2xl bg-rose-50/80 hover:bg-rose-100 transition-all gap-2 group text-center relative overflow-hidden"
                   >
                     <div className="absolute top-2 right-2 px-2 py-0.5 bg-rose-600 text-white text-[9px] font-bold rounded-full uppercase tracking-wider">
@@ -1541,10 +1555,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
                     </div>
                     <div className="flex gap-2">
                       <button
-                        onClick={() => {
-                          setFacingMode('environment');
-                          startCamera(false);
-                        }}
+                        onClick={() => startCamera(false, 'environment')}
                         className="flex-1 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1 shadow-sm"
                       >
                         <Camera size={14} /> Foto Kamera
@@ -1583,10 +1594,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
                     </div>
                     <div className="flex gap-2">
                       <button
-                        onClick={() => {
-                          setFacingMode('user');
-                          startCamera(true);
-                        }}
+                        onClick={() => startCamera(true, 'user')}
                         className="flex-1 py-2 px-3 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1 shadow-sm"
                       >
                         <Video size={14} /> Rekam 5s
@@ -1656,7 +1664,7 @@ TUGAS KHUSUS ESTIMASI ANTROPOMETRI DARI FOTO:
                       </div>
                     ) : (
                       <>
-                        <Image src={item.url} alt="Preview" fill className="object-cover" />
+                        <Image src={item.url} alt="Preview" fill unoptimized className="object-cover" />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
                         <span className="absolute bottom-2 left-2 bg-slate-800/80 text-white text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center gap-1 backdrop-blur-sm pointer-events-none">
                           <Camera size={11} /> {item.sessionCategory === 'posture_body' ? 'Foto Postur' : 'Foto Wajah'}

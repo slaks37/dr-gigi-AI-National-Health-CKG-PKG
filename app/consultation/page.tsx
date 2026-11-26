@@ -235,16 +235,33 @@ export default function ConsultationPage() {
     }
 
     try {
-        const html2canvas = (await import('html2canvas')).default;
+        const html2canvas = (await import('html2canvas-pro')).default;
         const { jsPDF } = await import('jspdf');
 
-        const canvas = await html2canvas(reportElement, { scale: 2 });
+        const canvas = await html2canvas(reportElement, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+        });
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'mm', 'a4');
         const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-        
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        let heightLeft = imgHeight;
+        let position = 0;
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+        heightLeft -= pageHeight;
+
+        while (heightLeft > 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+
         pdf.save(`${language === 'en' ? 'Consultation-Report' : 'Laporan-Konsultasi'}-${new Date().toISOString().split('T')[0]}.pdf`);
     } catch (error) {
         console.error("PDF Export Error:");
@@ -299,6 +316,7 @@ export default function ConsultationPage() {
                       alt="Uploaded content" 
                       width={400} 
                       height={300} 
+                      unoptimized
                       className="max-w-full h-auto max-h-60 object-cover" 
                     />
                   </div>
@@ -406,6 +424,7 @@ export default function ConsultationPage() {
                   alt="Preview" 
                   width={80} 
                   height={80} 
+                  unoptimized
                   className="h-20 w-auto rounded-lg object-cover" 
                 />
                 <button 
