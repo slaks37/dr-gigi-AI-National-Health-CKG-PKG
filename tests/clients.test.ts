@@ -23,6 +23,10 @@ describe('client persistence and privacy', () => {
     expect(fetch.mock.calls[0][0]).toBe('/api/records?id=saved-id');
     expect(JSON.parse(fetch.mock.calls[1][1].body)).toEqual({ id: 'saved-id', is_accurate: true, expectedVersion: 4 });
   });
+  it('feedback fails cleanly when target record is missing', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ records: [] }))));
+    await expect(updateRecord('missing-id', { is_accurate: true })).rejects.toThrow('Rekam medis tidak ditemukan.');
+  });
   it('removes unscoped legacy caches without reading or migrating another patient', async () => {
     const removeItem = vi.fn(); const getItem = vi.fn(); const setItem = vi.fn();
     vi.stubGlobal('window', {}); vi.stubGlobal('localStorage', { removeItem, getItem, setItem });

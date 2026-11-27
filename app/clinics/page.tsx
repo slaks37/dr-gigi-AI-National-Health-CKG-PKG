@@ -39,8 +39,19 @@ function ClinicsList() {
   const lngStr = searchParams?.get('lng');
   const initialKeyword = searchParams?.get('keyword') || searchParams?.get('q') || 'all';
 
-  const userLat = latStr ? parseFloat(latStr) : null;
-  const userLng = lngStr ? parseFloat(lngStr) : null;
+  const initialLat = latStr ? parseFloat(latStr) : null;
+  const initialLng = lngStr ? parseFloat(lngStr) : null;
+
+  const [coords, setCoords] = useState<{ lat: number | null; lng: number | null }>({
+    lat: initialLat !== null && Number.isFinite(initialLat) ? initialLat : null,
+    lng: initialLng !== null && Number.isFinite(initialLng) ? initialLng : null,
+  });
+  const [manualLat, setManualLat] = useState(latStr || '');
+  const [manualLng, setManualLng] = useState(lngStr || '');
+  const [locating, setLocating] = useState(false);
+
+  const userLat = coords.lat;
+  const userLng = coords.lng;
 
   const [clinics, setClinics] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,6 +60,40 @@ function ClinicsList() {
   const [viewMode, setViewMode] = useState<'both' | 'map' | 'list'>('both');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeKeyword, setActiveKeyword] = useState<string>(initialKeyword);
+
+  const handleUseMyLocation = () => {
+    if (typeof window === 'undefined' || !('geolocation' in navigator)) {
+      setError('Browser Anda tidak mendukung geolokasi. Masukkan koordinat secara manual.');
+      return;
+    }
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = Number(pos.coords.latitude.toFixed(6));
+        const lng = Number(pos.coords.longitude.toFixed(6));
+        setCoords({ lat, lng });
+        setManualLat(String(lat));
+        setManualLng(String(lng));
+        setLocating(false);
+      },
+      () => {
+        setLocating(false);
+        setError('Gagal mengakses lokasi otomatis. Izinkan lokasi atau berikan koordinat secara manual.');
+      },
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 }
+    );
+  };
+
+  const handleManualCoordsSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsedLat = parseFloat(manualLat);
+    const parsedLng = parseFloat(manualLng);
+    if (!Number.isFinite(parsedLat) || !Number.isFinite(parsedLng) || Math.abs(parsedLat) > 90 || Math.abs(parsedLng) > 180) {
+      setError('Koordinat tidak valid. Latitude harus -90 s/d 90 dan Longitude -180 s/d 180.');
+      return;
+    }
+    setCoords({ lat: parsedLat, lng: parsedLng });
+  };
 
   useEffect(() => {
     async function fetchClinics() {
@@ -142,10 +187,48 @@ function ClinicsList() {
       {error && (
         <div className="mb-6 p-4 bg-amber-50 text-amber-800 border border-amber-200 rounded-xl flex items-start gap-3 text-sm">
           <AlertCircle className="shrink-0 mt-0.5" size={18} />
-          <div>
-            <p className="font-bold mb-1">Informasi:</p>
-            <p>{error}</p>
-            <p className="mt-1 text-amber-700/80">Menampilkan rekomendasi klinik gigi dan rumah sakit terdaftar.</p>
+          <div className="flex-1 space-y-3">
+            <div>
+              <p className="font-bold mb-1">Informasi:</p>
+              <p>{error}</p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={handleUseMyLocation}
+                disabled={locating}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors disabled:opacity-50"
+              >
+                <Navigation size={13} />
+                {locating ? 'Mencari Lokasi...' : 'Gunakan Lokasi Saya'}
+              </button>
+              <form onSubmit={handleManualCoordsSubmit} className="flex flex-wrap items-center gap-1.5">
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  value={manualLat}
+                  onChange={(e) => setManualLat(e.target.value)}
+                  placeholder="Lat (mis. -6.2088)"
+                  aria-label="Latitude"
+                  className="w-32 px-2.5 py-1.5 bg-white border border-amber-300 rounded-lg text-xs text-slate-800"
+                />
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  value={manualLng}
+                  onChange={(e) => setManualLng(e.target.value)}
+                  placeholder="Lng (mis. 106.8456)"
+                  aria-label="Longitude"
+                  className="w-36 px-2.5 py-1.5 bg-white border border-amber-300 rounded-lg text-xs text-slate-800"
+                />
+                <button
+                  type="submit"
+                  className="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold transition-colors"
+                >
+                  Cari Koordinat
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       )}
@@ -396,9 +479,11 @@ function ClinicsList() {
                     <div className="flex items-center gap-2">
                       {clinic.lat && clinic.lng && (
                         <a
-                          href={`https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${
-                            userLat || ''
-                          }%2C${userLng || ''}%3B${clinic.lat}%2C${clinic.lng}`}
+                          href={
+                            userLat !== null && userLng !== null
+                              ? `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${userLat}%2C${userLng}%3B${clinic.lat}%2C${clinic.lng}`
+                              : `https://www.openstreetmap.org/?mlat=${clinic.lat}&mlon=${clinic.lng}#map=17/${clinic.lat}/${clinic.lng}`
+                          }
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}

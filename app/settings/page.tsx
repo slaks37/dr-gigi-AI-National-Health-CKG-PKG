@@ -19,7 +19,7 @@ export default function SettingsPage() {
     if (!user) return;
     let active = true;
     authenticatedFetch('/api/preferences').then(r => r.json()).then(({ preferences: p }) => {
-      if (!active) return;
+      if (!active || !p) return;
       if (p.language === 'id' || p.language === 'en') setLanguage(p.language);
       if (['small', 'medium', 'large'].includes(p.textSize)) setTextSize(p.textSize);
       setHighContrast(p.highContrast === true);

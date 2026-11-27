@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { LayoutDashboard, ArrowLeft, Search, Calendar, User, FileText, Trash2, Eye, Download, Activity, AlertCircle, FileJson, FileType, Archive, X, Smile, MapPin, Settings } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import Image from 'next/image';
-import { getAllRecords, deleteRecord, migrateFromLocalStorage, saveAppointment, getAllUsers, getAllAppointments, getAllPatients } from '../lib/db';
+import { getAllRecords, deleteRecord, migrateFromLocalStorage, saveAppointment, getAllUsers, getAllPatients, generateSecureId } from '../lib/db';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { useLanguage } from '../../components/LanguageProvider';
@@ -84,12 +84,17 @@ export default function DashboardPage() {
 
   const handleDelete = async (id: string) => {
     if (confirm('Apakah Anda yakin ingin menghapus data rekam medis ini?')) {
-      await deleteRecord(id);
-      const newRecords = records.filter(r => r.id !== id);
-      setRecords(newRecords);
-      if (selectedRecord?.id === id) {
-        setSelectedRecord(null);
-        setIsMobileDetailOpen(false);
+      try {
+        await deleteRecord(id);
+        const newRecords = records.filter(r => r.id !== id);
+        setRecords(newRecords);
+        if (selectedRecord?.id === id) {
+          setSelectedRecord(null);
+          setIsMobileDetailOpen(false);
+        }
+      } catch (error) {
+        console.error('Failed to delete record:', error);
+        alert('Gagal menghapus rekam medis. Periksa koneksi dan izin akun Anda.');
       }
     }
   };
@@ -195,17 +200,25 @@ export default function DashboardPage() {
     }
   };
 
-  const getPatientName = (patient_id: string, record: any) => {
-    const p = patients.find(p => p.id === patient_id);
-    if (p && p.name) return p.name;
-    return record.json_output?.patient_name || patient_id;
+  const getRecordPatientId = (record: any): string => {
+    return record?.patient_id || record?.json_output?.patient_id || '';
+  };
+
+  const getPatientName = (patient_id: string | undefined, record: any): string => {
+    const resolvedId = patient_id || record?.json_output?.patient_id;
+    if (resolvedId) {
+      const p = patients.find(p => p.id === resolvedId);
+      if (p && p.name) return p.name;
+    }
+    return record?.json_output?.patient_name || resolvedId || 'Pasien';
   };
 
   const filteredRecords = records.filter(record => {
+    const queryLower = searchTerm.toLowerCase();
     const matchesSearch = 
-      getPatientName(record.patient_id, record).toLowerCase().includes(searchTerm.toLowerCase()) ||
-      record.diagnosa.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      record.icd10.toLowerCase().includes(searchTerm.toLowerCase());
+      getPatientName(record.patient_id, record).toLowerCase().includes(queryLower) ||
+      (record.diagnosa || '').toLowerCase().includes(queryLower) ||
+      (record.icd10 || '').toLowerCase().includes(queryLower);
     
     let matchesDate = true;
     if (startDate) {
@@ -269,8 +282,10 @@ export default function DashboardPage() {
 
   const getPatientHistory = () => {
     if (!selectedRecord) return [];
+    const targetPatientId = getRecordPatientId(selectedRecord);
+    if (!targetPatientId) return [selectedRecord];
     return records
-      .filter(r => r.patient_id === selectedRecord.patient_id)
+      .filter(r => getRecordPatientId(r) === targetPatientId)
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   };
 
@@ -279,9 +294,14 @@ export default function DashboardPage() {
     if (!selectedRecord) return;
     
     const appointmentDate = new Date(`${scheduleData.date}T${scheduleData.time}`);
+    if (Number.isNaN(appointmentDate.getTime())) {
+      window.alert('Tanggal atau waktu janji temu tidak valid.');
+      return;
+    }
+    const resolvedPatientId = getRecordPatientId(selectedRecord) || selectedRecord.id;
     const appointment = {
-      id: Math.random().toString(36).substring(7),
-      patient_id: selectedRecord.patient_id,
+      id: generateSecureId('apt'),
+      patient_id: resolvedPatientId,
       patient_name: getPatientName(selectedRecord.patient_id, selectedRecord),
       date: appointmentDate.toISOString(),
       doctor: scheduleData.doctor,
@@ -296,7 +316,7 @@ export default function DashboardPage() {
     const endTime = new Date(appointmentDate.getTime() + 60 * 60 * 1000); // 1 hour later
     const formatGCalDate = (date: Date) => date.toISOString().replace(/-|:|\.\d\d\d/g, "");
     
-    const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Konsultasi+Follow-up:+${encodeURIComponent(selectedRecord.patient_id)}&dates=${formatGCalDate(appointmentDate)}/${formatGCalDate(endTime)}&details=${encodeURIComponent(scheduleData.notes)}&location=${encodeURIComponent(scheduleData.doctor)}`;
+    const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Konsultasi+Follow-up:+${encodeURIComponent(getPatientName(selectedRecord.patient_id, selectedRecord))}&dates=${formatGCalDate(appointmentDate)}/${formatGCalDate(endTime)}&details=${encodeURIComponent(scheduleData.notes)}&location=${encodeURIComponent(scheduleData.doctor)}`;
     
     setShowScheduleModal(false);
     setScheduleData({ date: '', time: '', doctor: '', notes: '' });
@@ -491,9 +511,13 @@ export default function DashboardPage() {
                           : 'bg-white border-slate-200 hover:border-emerald-300'
                       }`}
                     >
-                      <div className="w-16 h-16 rounded-md overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200 relative">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={record.image_url} alt="Thumbnail" className="w-full h-full object-cover" />
+                      <div className="w-16 h-16 rounded-md overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200 relative flex items-center justify-center">
+                        {record.image_url ? (
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img src={record.image_url} alt="Thumbnail" className="w-full h-full object-cover" />
+                        ) : (
+                          <FileText size={22} className="text-slate-400" />
+                        )}
                       </div>
                       <div className="flex-1 min-w-0 flex flex-col justify-between">
                         <div className="flex justify-between items-start">
@@ -511,14 +535,14 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex items-center gap-2 mt-2">
                           <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium flex-shrink-0 ${
-                            record.diagnosa.toLowerCase().includes('sehat') || record.diagnosa.toLowerCase().includes('normal')
+                            (record.diagnosa || '').toLowerCase().includes('sehat') || (record.diagnosa || '').toLowerCase().includes('normal')
                               ? 'bg-emerald-100 text-emerald-700' 
                               : 'bg-red-100 text-red-700'
                           }`}>
-                            {record.icd10}
+                            {record.icd10 || 'Draft'}
                           </span>
                           <span className="text-xs text-slate-600 truncate">
-                            {record.diagnosa}
+                            {record.diagnosa || 'Skrining belum dikonfirmasi dokter'}
                           </span>
                         </div>
                       </div>
@@ -615,15 +639,24 @@ export default function DashboardPage() {
                           <h3 className="font-semibold text-slate-700 mb-3 flex items-center gap-2">
                             <Eye size={18} /> {language === 'en' ? 'Clinical Visualization' : 'Visualisasi Klinis'}
                           </h3>
-                          <div className="relative rounded-xl overflow-hidden bg-black border border-slate-200 w-full aspect-video group">
-                            {/* Use standard img tag for better compatibility with html2canvas */}
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img 
-                              src={selectedRecord.image_url} 
-                              alt="Clinical" 
-                              className="w-full h-full object-contain"
-                              crossOrigin="anonymous"
-                            />
+                          <div className="relative rounded-xl overflow-hidden bg-black border border-slate-200 w-full aspect-video group flex items-center justify-center">
+                            {selectedRecord.image_url ? (
+                              <>
+                                {/* Use standard img tag for better compatibility with html2canvas */}
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img 
+                                  src={selectedRecord.image_url} 
+                                  alt="Clinical" 
+                                  className="w-full h-full object-contain"
+                                  crossOrigin="anonymous"
+                                />
+                              </>
+                            ) : (
+                              <div className="flex flex-col items-center justify-center text-slate-400 p-6 text-center bg-slate-100 w-full h-full">
+                                <FileText size={36} className="mb-2 text-slate-400" />
+                                <p className="text-xs font-medium text-slate-600">Foto sumber tidak disimpan demi privasi medis</p>
+                              </div>
+                            )}
                             
                             {/* Bounding Box Overlay */}
                             {selectedRecord.json_output?.findings?.map((finding: any, index: number) => {
@@ -795,9 +828,9 @@ export default function DashboardPage() {
                           </div>
                           <div className="prose prose-sm prose-slate max-w-none">
                             <ReactMarkdown>
-                              {historyRecord.markdown_report.split('### 💡 Rekomendasi Kesehatan')[1] 
-                                ? '### Rekomendasi\n' + historyRecord.markdown_report.split('### 💡 Rekomendasi Kesehatan')[1].split('---')[0]
-                                : '*Detail rekomendasi tidak tersedia*'}
+                              {(historyRecord.markdown_report || '').split('### 💡 Rekomendasi Kesehatan')[1] 
+                                ? '### Rekomendasi\n' + (historyRecord.markdown_report || '').split('### 💡 Rekomendasi Kesehatan')[1].split('---')[0]
+                                : (historyRecord.markdown_report || '*Detail rekomendasi tidak tersedia*')}
                             </ReactMarkdown>
                           </div>
                         </div>

@@ -205,7 +205,7 @@ export default function CheckupAnakPage() {
   };
 
   const capturePhoto = () => {
-    if (videoRef.current) {
+    if (videoRef.current && videoRef.current.videoWidth > 0 && videoRef.current.videoHeight > 0) {
       const canvas = document.createElement('canvas');
       canvas.width = videoRef.current.videoWidth;
       canvas.height = videoRef.current.videoHeight;
@@ -228,6 +228,10 @@ export default function CheckupAnakPage() {
       const stream = videoRef.current.srcObject as MediaStream;
       stream.getTracks().forEach(track => track.stop());
       videoRef.current.srcObject = null;
+    }
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(track => track.stop());
+      mediaStreamRef.current = null;
     }
     setIsCameraOpen(false);
   };
@@ -509,7 +513,7 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
 
   const exportJSON = () => {
     if (!result) return;
-    const jsonString = 'data:text/json;chatset=utf-8,' + encodeURIComponent(
+    const jsonString = 'data:text/json;charset=utf-8,' + encodeURIComponent(
       JSON.stringify(result.json_output, null, 2)
     );
     const link = document.createElement("a");
@@ -676,7 +680,7 @@ IMPORTANT: Output all text, explanations, and markdown reports in ${language ===
               <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {mediaItems.map((item) => (
                   <div key={item.id} className="relative flex-none w-32 h-32 sm:w-40 sm:h-40 snap-center rounded-lg overflow-hidden border border-slate-200 bg-slate-100 group">
-                    <Image src={item.url} alt="Preview" fill className="object-cover " />
+                    <Image src={item.url} alt="Preview" fill unoptimized className="object-cover " />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
                     <button 
                       onClick={() => removeMedia(item.id)}
